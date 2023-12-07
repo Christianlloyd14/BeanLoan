@@ -7,9 +7,15 @@ import java.awt.event.*;
 public class RegisterView{
 	public RegisterView(JFrame frame, JPanel loginPanel){
 		JPanel registerPanel = new JPanel();
-		registerPanel.setBounds(0, 0, 380, 400);
-		registerPanel.setBackground(Color.WHITE);
+		registerPanel.setBounds(0, 0, 897, 516);
+		registerPanel.setBackground(new Color(50, 129, 186));
 		registerPanel.setLayout(null);
+
+		JPanel bluePanel = new JPanel();
+		bluePanel.setBounds(0, 0, 312, 516);
+		bluePanel.setBackground(new Color(23, 53, 99));
+		bluePanel.setLayout(null);		
+		registerPanel.add(bluePanel);
 		
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(registerPanel);
@@ -17,36 +23,36 @@ public class RegisterView{
 		frame.revalidate();
 		
 		JLabel registerLabel = new JLabel("REGISTER");
-		registerLabel.setBounds(10, 10, 500, 40);
+		registerLabel.setBounds(350, 10, 500, 40);
 		registerLabel.setFont(new Font("Arial", Font.BOLD, 25));
 		registerPanel.add(registerLabel);
 		
 		JLabel nameLabel = new JLabel("Name");
-		nameLabel.setBounds(10, 70, 100, 40);
+		nameLabel.setBounds(460, 70, 100, 40);
 		registerPanel.add(nameLabel);
 		
 		JTextField nameField = new JTextField("");
-		nameField.setBounds(10, 110, 350, 30);
+		nameField.setBounds(460, 110, 350, 30);
 		registerPanel.add(nameField);
 		
 		JLabel userLabel = new JLabel("Username");
-		userLabel.setBounds(10, 140, 100, 40);
+		userLabel.setBounds(460, 140, 100, 40);
 		registerPanel.add(userLabel);
 		
 		JTextField userField = new JTextField("");
-		userField.setBounds(10, 180, 350, 30);
+		userField.setBounds(460, 180, 350, 30);
 		registerPanel.add(userField);
 		
 		JLabel passLabel = new JLabel("Password");
-		passLabel.setBounds(10, 210, 100, 40);
+		passLabel.setBounds(460, 210, 100, 40);
 		registerPanel.add(passLabel);
 		
 		JPasswordField passField = new JPasswordField("");
-		passField.setBounds(10, 250, 350, 30);
+		passField.setBounds(460, 250, 350, 30);
 		registerPanel.add(passField);
 		
 		JButton registerButton = new JButton("Register");
-		registerButton.setBounds(265, 320, 100, 30);
+		registerButton.setBounds(680, 320, 100, 30);
 		registerButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				RegisterController.toCreateUser(frame, nameField, userField, passField, loginPanel);
@@ -55,7 +61,7 @@ public class RegisterView{
 		registerPanel.add(registerButton);
 		
 		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(160, 320, 100, 30);
+		cancelButton.setBounds(495, 320, 100, 30);
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.getContentPane().removeAll();
@@ -65,5 +71,9 @@ public class RegisterView{
 			}	
 		});
 		registerPanel.add(cancelButton);
+
+		JLabel termsLabel = new JLabel("Terms and privacy");
+		termsLabel.setBounds(583, 370, 150, 30);
+		registerPanel.add(termsLabel);
 	}
 }
