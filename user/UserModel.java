@@ -24,7 +24,7 @@ public class UserModel{
 			return;
 		}
 		
-		try(FileWriter fwrite = new FileWriter("C:\\Users\\tingjp\\Desktop\\practice sa\\database\\users.dat", true)){
+		try(FileWriter fwrite = new FileWriter("users.dat", true)){
 			fwrite.write(name + ":" + username + ":" + new String(password) + System.lineSeparator());
 			JOptionPane.showMessageDialog(frame, "Register successfully");
 			
@@ -40,7 +40,7 @@ public class UserModel{
 	}
 	
 	public static boolean readUser(String username, String password){
-		try(BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\tingjp\\Desktop\\practice sa\\database\\users.dat"))){
+		try(BufferedReader reader = new BufferedReader(new FileReader("users.dat"))){
 			String line;
 			while((line = reader.readLine()) != null){
 				String [] parts = line.split(":");
