@@ -21,27 +21,84 @@ class DashboardView{
 		loaningAppLabel.setFont(new Font("Arial", Font.BOLD, 25));
 		welcomePanel.add(loaningAppLabel);
 
-		
+
+
 
 		JPanel violetPanel = new JPanel();
-		violetPanel.setBounds(50, 109, 360, 300);
+		violetPanel.setBounds(100, 109, 700, 300);
 		violetPanel.setBackground(new Color(73, 30, 192));
 		violetPanel.setLayout(null);
-		welcomePanel.add(violetPanel); 
+		welcomePanel.add(violetPanel);
+
+
 
 		JButton borrowButton = new JButton("Borrow Now");
 		borrowButton.setBounds(85, 200, 200, 30);
 		violetPanel.add(borrowButton);
 
-		JLabel amountLabel = new JLabel("Loan Amount()");
-		amountLabel.setBounds(150, 50, 100,30);
-		amountLabel.setForeground( Color.WHITE);
+		JLabel amountLabel = new JLabel("Loan Amount(₱)");
+		amountLabel.setBounds(150, 50, 100, 30);
+		amountLabel.setForeground(Color.WHITE);
 		violetPanel.add(amountLabel);
 
-		JLabel totalLabel = new JLabel("Total Amount");
+
+		JLabel totalLabel = new JLabel("Total Amount(₱)");
 		totalLabel.setBounds(150, 150, 100, 30);
 		totalLabel.setForeground(Color.WHITE);
 		violetPanel.add(totalLabel);
+
+		JLabel commentLabel = new JLabel("Amount will be increased by repeat borrowing");
+		commentLabel.setBounds(60, 250, 300, 30);
+		commentLabel.setForeground(Color.GRAY);
+		violetPanel.add(commentLabel);
+
+
+		JLabel specialOfferLabel = new JLabel("Special Offer");
+		specialOfferLabel.setBounds(450, 50, 200, 30);
+		specialOfferLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 15));
+		specialOfferLabel.setForeground(Color.WHITE);
+		violetPanel.add(specialOfferLabel);
+
+
+
+/*		JPanel couponPanel = new JPanel();
+		couponPanel.setBounds(550, 50, 100, 30);
+		couponPanel.setBackground(new Color(73, 30, 192));
+		couponPanel.setLayout(null);
+		welcomePanel.add(couponPanel);
+*/
+		JLabel couponLabel = new JLabel("Coupon Offer");
+		couponLabel.setBounds(450, 80, 100, 30);
+		couponLabel.setForeground(Color.WHITE);
+/*		couponLabel.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e ) {
+
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(couponPanel);
+				frame.getContentPane().add(violetPanel);
+				frame.getContentPane().add(welcomePanel);
+				frame.getContentPane().add(tabPanel);
+				frame.repaint();
+				frame.revalidate();
+
+			}
+		});
+*/
+		violetPanel.add(couponLabel);
+
+		JLabel creditScoreLabel = new JLabel("Credit Score Boost");
+		creditScoreLabel.setBounds(450, 120, 200, 30);
+		creditScoreLabel.setForeground(Color.WHITE);
+		violetPanel.add(creditScoreLabel);
+
+		JLabel premiumUserLabel = new JLabel("Premium User");
+		premiumUserLabel.setBounds(450, 160, 200, 30);
+		premiumUserLabel.setForeground(Color.WHITE);
+		violetPanel.add(premiumUserLabel);
+
+
+
+
 		
 		JPanel tabPanel = new JPanel();
 		tabPanel.setBounds(0, 470, 897, 516);
