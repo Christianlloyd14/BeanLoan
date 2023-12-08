@@ -3,6 +3,8 @@ package book.system.dashboard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
+
 
 class DashboardView{
 	public DashboardView(JFrame frame, JPanel loginPanel){
@@ -34,6 +36,46 @@ class DashboardView{
 
 		JButton borrowButton = new JButton("Borrow Now");
 		borrowButton.setBounds(85, 200, 200, 30);
+		borrowButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JPanel borrowPanel = new JPanel();
+				borrowPanel.setBounds(0,0, 897,516);
+				borrowPanel.setBackground(Color.BLACK);
+				borrowPanel.setLayout(null);
+				
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(borrowPanel);
+				frame.repaint();
+				frame.revalidate();
+				
+				
+				JLabel backLabel = new JLabel("Back");
+				backLabel.setBounds(10,10,100,40);
+				backLabel.addMouseListener(new MouseAdapter(){
+					public void mouseClicked(MouseEvent e){
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}	
+				});
+				borrowPanel.add(backLabel);
+				
+				String[] purposeOfLoanChoice = {"Purpose of Loan", "Business Startup", "Medical", "Loans", "Others"};
+				JComboBox<String> loanPurpose = new JComboBox<>(purposeOfLoanChoice);
+				loanPurpose.setBounds(10, 50, 150, 30);
+				borrowPanel.add(loanPurpose);
+				
+				String[] professionChoice = {"Profession", "OFW", "Unemployed", "Government Employee", "Self-employed", "Others"};
+				JComboBox<String> profession = new JComboBox<>(professionChoice);
+				profession.setBounds(10, 90, 150, 30);
+				borrowPanel.add(profession);
+				
+			
+
+
+			}	
+		});
 		violetPanel.add(borrowButton);
 
 		JLabel amountLabel = new JLabel("Loan Amount(₱)");
@@ -59,32 +101,49 @@ class DashboardView{
 		specialOfferLabel.setForeground(Color.WHITE);
 		violetPanel.add(specialOfferLabel);
 
-
-
-/*		JPanel couponPanel = new JPanel();
-		couponPanel.setBounds(550, 50, 100, 30);
-		couponPanel.setBackground(new Color(73, 30, 192));
+		
+				
+		JPanel couponPanel = new JPanel();
+		couponPanel.setBounds(0, 0, 897,516);
+		couponPanel.setBackground(Color.BLACK);
 		couponPanel.setLayout(null);
-		welcomePanel.add(couponPanel);
-*/
-		JLabel couponLabel = new JLabel("Coupon Offer");
-		couponLabel.setBounds(450, 80, 100, 30);
-		couponLabel.setForeground(Color.WHITE);
-/*		couponLabel.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e ) {
+		
+		
+		
+		JPanel tabPanel = new JPanel();
+		tabPanel.setBounds(0, 470, 897, 516);
+		tabPanel.setBackground(Color.WHITE);
+		tabPanel.setLayout(null);
+		welcomePanel.add(tabPanel);
 
+		JLabel couponLabel = new JLabel("Coupon Offer");
+        couponLabel.setBounds(450, 80, 100, 30);
+        couponLabel.setForeground(Color.WHITE);
+        couponLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(couponPanel);
-				frame.getContentPane().add(violetPanel);
-				frame.getContentPane().add(welcomePanel);
-				frame.getContentPane().add(tabPanel);
 				frame.repaint();
 				frame.revalidate();
-
-			}
-		});
-*/
-		violetPanel.add(couponLabel);
+				
+				JLabel backLabel = new JLabel("Back");
+				backLabel.setBounds(10,10,100,40);
+				backLabel.addMouseListener(new MouseAdapter(){
+					public void mouseClicked(MouseEvent e){
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}	
+				});
+				couponPanel.add(backLabel);
+				
+				JButton useButton = new JButton("Use");
+				useButton.setBounds(10, 170, 70, 30);
+				couponPanel.add(useButton);
+            }
+        });
+        violetPanel.add(couponLabel);
 
 		JLabel creditScoreLabel = new JLabel("Credit Score Boost");
 		creditScoreLabel.setBounds(450, 120, 200, 30);
@@ -99,12 +158,6 @@ class DashboardView{
 
 
 
-		
-		JPanel tabPanel = new JPanel();
-		tabPanel.setBounds(0, 470, 897, 516);
-		tabPanel.setBackground(Color.WHITE);
-		tabPanel.setLayout(null);
-		welcomePanel.add(tabPanel);
 		
 		JLabel homeTabLabel = new JLabel("Home");
 		homeTabLabel.setBounds(50, 7, 100, 40);
@@ -199,30 +252,50 @@ class DashboardView{
 		meTabLabel.setBounds(800, 7, 100, 40);
 		meTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
 		meTabLabel.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent e) {
-				JPanel mePanel = new JPanel();
-				mePanel.setBounds(0,0,897,470);
-				mePanel.setBackground(Color.BLUE);
+			public void mouseClicked(MouseEvent e) {
+				JPanel mePanel = new JPanel() {
+					@Override
+					protected void paintComponent(Graphics g) {
+						super.paintComponent(g);
+						Graphics2D g2d = (Graphics2D) g.create();
+						g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+						Shape circle = new Ellipse2D.Double(10, 50, 100, 100); // Adjusted position and size
+						g2d.setColor(Color.BLUE);
+						g2d.fill(circle);
+						g2d.dispose();
+					}
+				};
+				mePanel.setBounds(0, 0, 897, 470);
 				mePanel.setLayout(null);
-				
+
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(mePanel);
 				frame.getContentPane().add(tabPanel);
 				frame.repaint();
 				frame.revalidate();
 				
+				JPanel bluePanel = new JPanel();
+				bluePanel.setBounds(0, 160, 897, 516);
+				bluePanel.setBackground(Color.BLUE);
+				bluePanel.setLayout(null);
+				mePanel.add(bluePanel);
+				
+				JLabel couponLabelInMe = new JLabel("Coupon");
+				couponLabelInMe.setBounds(10, 10, 100, 30);
+				bluePanel.add(couponLabelInMe);
+
 				JButton logoutButton = new JButton("Logout");
-				logoutButton.setBounds(265, 400, 100, 30);
-				logoutButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
+				logoutButton.setBounds(10, 50, 100, 30);
+				logoutButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
 						frame.getContentPane().removeAll();
 						frame.getContentPane().add(loginPanel);
 						frame.repaint();
-						frame.revalidate(); 
-					}	
+						frame.revalidate();
+					}
 				});
-				mePanel.add(logoutButton);
-		    }
+				bluePanel.add(logoutButton);
+			}
 		});
 		tabPanel.add(meTabLabel);
 
