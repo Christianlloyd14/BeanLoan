@@ -1,42 +1,63 @@
 package book.system.login;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
-public class LoginView{
-	private JFrame frame;
-	private JPanel loginPanel;
-	public LoginView(JFrame frame, JPanel loginPanel){
-		this.frame = frame;
-		this.loginPanel = loginPanel;
-		initView();
-	}
-	
-	public void initView(){
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(897, 516);
-		frame.setLayout(null);
-		frame.setUndecorated(true);
-		frame.setLocationRelativeTo(null);
+public class LoginView {
+    private JFrame frame;
+    private JPanel loginPanel;
 
+    public LoginView(JFrame frame, JPanel loginPanel) {
+        this.frame = frame;
+        this.loginPanel = loginPanel;
+        initView();
+    }
 
-		loginPanel.setBounds(0,0, 897, 516);
-		loginPanel.setBackground(new Color(50, 129, 186));
-		loginPanel.setLayout(null);
-		frame.add(loginPanel);
+    public void initView() {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(897, 516);
+        frame.setLayout(null);
+        frame.setUndecorated(true);
+        frame.setLocationRelativeTo(null);
 
-		JLabel img = new JLabel(); //JLabel Creation
-        img.setIcon(new ImageIcon("img.jpg")); //Sets the image to be displayed as an icon
-        Dimension size = img.getPreferredSize(); //Gets the size of the image
-        img.setBounds(0, 0, 390, 515); //Sets the location of the image
- 
-   		loginPanel.add(img); //Adds objects to the container
-        frame.setVisible(true);	
+        loginPanel.setBounds(0, 0, 897, 516);
+        loginPanel.setBackground(new Color(50, 129, 186));
+        loginPanel.setLayout(null);
+        frame.add(loginPanel);
 
+        JLabel pic = new JLabel(); // JLabel Creation
+        ImageIcon picIcon = new ImageIcon("pic.jpg"); // Load the image
+        pic.setIcon(picIcon);
+        pic.setBounds(0, 0, 390, 515); // Set the location and size of the image
+
+        loginPanel.add(pic); // Adds objects to the container
+        frame.setVisible(true);
+
+        JLabel img = new JLabel();
+        ImageIcon icon = new ImageIcon("img.jpg");
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        img.setIcon(scaledIcon);
+        Dimension imgSize = img.getPreferredSize(); // Use a different variable name
+        img.setBounds(570, 50, 150, 150);
+        applyCircularMask(img);
+
+        loginPanel.add(img);
+        
         JTextField usernameField = new JTextField("Username");
         usernameField.setBounds(469, 218, 332, 46);
         usernameField.setForeground(Color.GRAY);
+        
+        // Create a rounded border for the JTextField
+        Border roundedBorder = new RoundedBorder(10); // Adjust the corner radius as needed
+        usernameField.setBorder(roundedBorder);
+
         usernameField.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (usernameField.getText().equals("Username")) {
@@ -132,6 +153,39 @@ public class LoginView{
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}
+    private void applyCircularMask(JLabel label) {
+        int diameter = Math.min(label.getWidth(), label.getHeight());
+        BufferedImage image = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+
+        Ellipse2D.Double ellipse = new Ellipse2D.Double(0, 0, diameter, diameter);
+        g2d.setClip(ellipse);
+        g2d.drawImage(((ImageIcon) label.getIcon()).getImage(), 0, 0, diameter, diameter, null);
+        g2d.dispose();
+
+        label.setIcon(new ImageIcon(image));
 	
-	
+    }
+        // Custom rounded border class
+    private static class RoundedBorder implements Border {
+        private int radius;
+
+        public RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+        }
+
+        public boolean isBorderOpaque() {
+            return true;
+        }
+
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.setColor(c.getBackground());
+            g.fillRoundRect(x, y, width, height, radius, radius);
+        }
+    }
+
 }
