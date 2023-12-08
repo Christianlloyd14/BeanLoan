@@ -7,7 +7,7 @@ import java.awt.event.*;
 class DashboardView{
 	public DashboardView(JFrame frame, JPanel loginPanel){
 		JPanel welcomePanel = new JPanel();
-		welcomePanel.setBounds(0, 0, 897, 516);
+		welcomePanel.setBounds(0, 0, 380, 400);
 		welcomePanel.setBackground(Color.WHITE);
 		welcomePanel.setLayout(null);
 		
