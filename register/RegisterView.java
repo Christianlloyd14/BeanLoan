@@ -37,7 +37,17 @@ public class RegisterView {
 		bluePanel.setBackground(new Color(23, 53, 99));
 		bluePanel.setLayout(null);		
 		registerPanel.add(bluePanel);
-		
+       
+        ImageIcon pictureIcon = new ImageIcon("insta.png");
+
+        JLabel logoLabel1 = new JLabel(pictureIcon);
+        logoLabel1.setBounds(50, 50, pictureIcon.getIconWidth(), pictureIcon.getIconHeight());
+        registerPanel.add(logoLabel1);
+
+        JLabel logoLabel2 = new JLabel(pictureIcon);
+        logoLabel2.setBounds(350, 250, 200, 150);
+        registerPanel.add(logoLabel2);
+
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(registerPanel);
 		frame.repaint();
