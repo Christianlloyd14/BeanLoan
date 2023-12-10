@@ -42,14 +42,15 @@ public class RegisterView {
 
         JLabel logoLabel1 = new JLabel(pictureIcon);
         logoLabel1.setBounds(50, 50, pictureIcon.getIconWidth(), pictureIcon.getIconHeight());
-        registerPanel.add(logoLabel1);
+        bluePanel.add(logoLabel1);
 
         JLabel logoLabel2 = new JLabel(pictureIcon);
         logoLabel2.setBounds(350, 250, 200, 150);
-        registerPanel.add(logoLabel2);
+        bluePanel.add(logoLabel2);
 
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(registerPanel);
+        frame.setSize(897, 516);
 		frame.repaint();
 		frame.revalidate();
 		
@@ -62,7 +63,7 @@ public class RegisterView {
 		nameLabel.setBounds(460, 70, 100, 40);
 		registerPanel.add(nameLabel);
 
-        JTextField nameField = new RoundedTextField(10, 10);
+        JTextField nameField = new RoundedTextField(20, 20);
         nameField.setBounds(460, 110, 350, 30);
         registerPanel.add(nameField);
 
@@ -70,7 +71,7 @@ public class RegisterView {
 		userLabel.setBounds(460, 140, 100, 40);
 		registerPanel.add(userLabel);
 
-        JTextField userField = new RoundedTextField(10, 10);
+        JTextField userField = new RoundedTextField(20, 20);
         userField.setBounds(460, 180, 350, 30);
         registerPanel.add(userField);
 
@@ -98,6 +99,7 @@ public class RegisterView {
 
         frame.getContentPane().removeAll();
         frame.getContentPane().add(registerPanel);
+        frame.setSize(897, 516);
         frame.repaint();
         frame.revalidate();
 
