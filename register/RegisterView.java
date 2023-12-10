@@ -75,7 +75,7 @@ public class RegisterView {
 
         JButton registerButton = new JButton("Register");
         registerButton.setBounds(680, 320, 100, 30);
-        styleButton(registerButton); 
+        styleButton(registerButton);
         registerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 RegisterController.toCreateUser(frame, nameField, userField, passField, loginPanel);
@@ -85,7 +85,7 @@ public class RegisterView {
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBounds(495, 320, 100, 30);
-        styleButton(cancelButton); 
+        styleButton(cancelButton);
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.getContentPane().removeAll();
@@ -96,8 +96,91 @@ public class RegisterView {
         });
         registerPanel.add(cancelButton);
 
+        JPanel termsPanel = new JPanel();
+        termsPanel.setBounds(10, 410, 877, 100);
+        termsPanel.setBackground(new Color(220, 220, 220));
+        termsPanel.setLayout(new BorderLayout());
+
+        JTextArea termsText = new JTextArea(
+                "Terms and Privacy Information for Loaning System\n\n" +
+                        "1. User Agreement:\n" +
+                        "   By using our loaning system, you agree to abide by the terms and conditions outlined in this agreement.\n\n" +
+                        "2. Eligibility:\n" +
+                        "   To use the loaning system, you must be at least 18 years old and have the legal capacity to enter into a contract.\n\n" +
+                        "3. Loan Approval:\n" +
+                        "   Loan approval is subject to eligibility criteria, credit assessment, and our internal policies. We reserve the right to deny a loan application without providing a reason.\n\n" +
+                        "4. Interest Rates and Fees:\n" +
+                        "   The interest rates and fees associated with loans are clearly communicated during the application process. It is the user's responsibility to review and understand the associated costs.\n\n" +
+                        "5. Repayment Terms:\n" +
+                        "   Users are required to repay the loan amount according to the agreed-upon schedule. Late payments may result in additional fees.\n\n" +
+                        "6. Privacy Policy:\n" +
+                        "   We are committed to protecting your privacy. Personal information collected during the loan application process is used solely for the purpose of processing the loan and will not be shared with third parties without your consent.\n\n" +
+                        "7. Security Measures:\n" +
+                        "   We implement industry-standard security measures to protect your personal and financial information. However, users are advised to take necessary precautions, such as maintaining secure login credentials.\n\n" +
+                        "8. Termination of Account:\n" +
+                        "   We reserve the right to terminate user accounts for any violation of the terms and conditions or suspicious activities.\n\n" +
+                        "9. Changes to Terms:\n" +
+                        "   We may update our terms and privacy policies periodically. Users will be notified of any changes, and continued use of the loaning system implies acceptance of the updated terms.\n\n" +
+                        "10. Contact Information:\n" +
+                        "    For questions or concerns regarding our terms and privacy policies, please contact our customer support at [your contact information].\n\n" +
+                        "By clicking \"Agree\" or using our loaning system, you acknowledge that you have read, understood, and agree to the terms and privacy information outlined above."
+        );
+
+        termsText.setEditable(false);
+        termsText.setLineWrap(true);
+        termsText.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(termsText);
+        scrollPane.setPreferredSize(new Dimension(800, 60));
+
+        termsPanel.add(scrollPane, BorderLayout.CENTER);
+
+       
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                termsPanel.setVisible(false);
+            }
+        });
+        termsPanel.add(closeButton, BorderLayout.SOUTH);
+
+        termsPanel.setVisible(false); 
+        registerPanel.add(termsPanel);
+
         JLabel termsLabel = new JLabel("Terms and privacy");
         termsLabel.setBounds(583, 370, 150, 30);
+        termsLabel.setForeground(Color.BLUE);
+        termsLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        termsLabel.addMouseListener(new MouseAdapter() {
+            
+            public void mouseClicked(MouseEvent e) {
+                showTermsWindow(
+                        "Terms and Privacy Information for Loaning System\n\n" +
+                                "1. User Agreement:\n" +
+                                "   By using our loaning system, you agree to abide by the terms and conditions outlined in this agreement.\n\n" +
+                                "2. Eligibility:\n" +
+                                "   To use the loaning system, you must be at least 18 years old and have the legal capacity to enter into a contract.\n\n" +
+                                "3. Loan Approval:\n" +
+                                "   Loan approval is subject to eligibility criteria, credit assessment, and our internal policies. We reserve the right to deny a loan application without providing a reason.\n\n" +
+                                "4. Interest Rates and Fees:\n" +
+                                "   The interest rates and fees associated with loans are clearly communicated during the application process. It is the user's responsibility to review and understand the associated costs.\n\n" +
+                                "5. Repayment Terms:\n" +
+                                "   Users are required to repay the loan amount according to the agreed-upon schedule. Late payments may result in additional fees.\n\n" +
+                                "6. Privacy Policy:\n" +
+                                "   We are committed to protecting your privacy. Personal information collected during the loan application process is used solely for the purpose of processing the loan and will not be shared with third parties without your consent.\n\n" +
+                                "7. Security Measures:\n" +
+                                "   We implement industry-standard security measures to protect your personal and financial information. However, users are advised to take necessary precautions, such as maintaining secure login credentials.\n\n" +
+                                "8. Termination of Account:\n" +
+                                "   We reserve the right to terminate user accounts for any violation of the terms and conditions or suspicious activities.\n\n" +
+                                "9. Changes to Terms:\n" +
+                                "   We may update our terms and privacy policies periodically. Users will be notified of any changes, and continued use of the loaning system implies acceptance of the updated terms.\n\n" +
+                                "10. Contact Information:\n" +
+                                "    For questions or concerns regarding our terms and privacy policies, please contact our customer support at [your contact information].\n\n" +
+                                "By clicking \"Agree\" or using our loaning system, you acknowledge that you have read, understood, and agree to the terms and privacy information outlined above."
+                );
+            }
+        });
         registerPanel.add(termsLabel);
     }
 
@@ -110,11 +193,26 @@ public class RegisterView {
 
         int borderRadius = 15;
         Border roundedBorder = BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(255, 255, 255), 2), // Border color and thickness
-                new EmptyBorder(borderRadius, borderRadius, borderRadius, borderRadius) // Empty space inside the border
+                new LineBorder(new Color(255, 255, 255), 2), 
+                new EmptyBorder(borderRadius, borderRadius, borderRadius, borderRadius) 
         );
         button.setBorder(roundedBorder);
         button.setToolTipText("Click to Register");
+    }
+
+    private void showTermsWindow(String termsInfo) {
+        JFrame termsFrame = new JFrame("Terms and Privacy");
+        termsFrame.setSize(400, 300);
+        termsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        JTextArea termsText = new JTextArea(termsInfo);
+        termsText.setEditable(false);
+        termsText.setLineWrap(true);
+        termsText.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(termsText);
+        termsFrame.add(scrollPane);
+
+        termsFrame.setVisible(true);
     }
 
     public static void main(String[] args) {
