@@ -141,6 +141,7 @@ public class LoginView {
 
 		JLabel signupLabel = new JLabel("Don’t have a Bean account yet?");
 		signupLabel.setBounds(515, 390, 200, 30);
+		signupLabel.setForeground(Color.WHITE);
 		loginPanel.add(signupLabel);
 		
 		JLabel registerButton = new JLabel("Sign up now!");
@@ -154,11 +155,11 @@ public class LoginView {
 		    }
 
 		    public void mouseEntered(MouseEvent e) {
-		        registerButton.setForeground(Color.RED);  // Highlighted foreground color
+		        registerButton.setForeground(Color.WHITE);  // Highlighted foreground color
 		    }
 
 		    public void mouseExited(MouseEvent e) {
-		        registerButton.setForeground(Color.WHITE);  // Restore the initial foreground color
+		        registerButton.setForeground(Color.RED);  // Restore the initial foreground color
 		    }
 		});
 		loginPanel.add(registerButton);
