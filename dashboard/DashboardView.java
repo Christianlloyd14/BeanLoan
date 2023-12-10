@@ -5,18 +5,30 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.io.*;
+import java.util.ArrayList;
 
 
 
 class DashboardView{
-	public DashboardView(JFrame frame, JPanel loginPanel){
+		private ArrayList<String> pendingRequests;
+		private JPanel tabPanel;
+		public DashboardView(JFrame frame, JPanel loginPanel){
 		JPanel welcomePanel = new JPanel();
 		welcomePanel.setBounds(0, 0, 897, 516);
 		welcomePanel.setBackground(new Color(50, 129, 186));
 		welcomePanel.setLayout(null);
+
+		pendingRequests = new ArrayList<>();
+
+		tabPanel = new JPanel();
+        tabPanel.setBounds(0, 470, 897, 516);
+        tabPanel.setBackground(Color.WHITE);
+        tabPanel.setLayout(null);
+        welcomePanel.add(tabPanel);
 		
 		frame.getContentPane().removeAll();
 		frame.getContentPane().add(welcomePanel);
+		frame.getContentPane().add(tabPanel);
 		frame.repaint();
 		frame.revalidate();
 		
@@ -63,6 +75,21 @@ class DashboardView{
 				});
 				borrowPanel.add(backLabel);
 
+				JButton exitButton = new JButton("X");
+				exitButton.setBounds(847, 10, 40, 20); // Adjust the position and size as needed
+				exitButton.setFont(new Font("Arial", Font.BOLD, 12)); // Adjust font as needed
+
+				// Adjusting the text inside the button by setting margins
+				Insets margin = new Insets(2, 2, 2, 2); // Adjust margins as needed
+				exitButton.setMargin(margin);
+
+				exitButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						System.exit(0); // Exit the application
+					}
+				});
+				welcomePanel.add(exitButton);
+
 				JTextField loanAmountField = new JTextField("Loan Amount");
 				loanAmountField.setBounds(10, 50, 150, 30);
 				loanAmountField.addFocusListener(new FocusAdapter() {
@@ -106,10 +133,11 @@ class DashboardView{
 				monthlyIncome.setBounds(10, 250, 150, 30);
 				borrowPanel.add(monthlyIncome);
 
-				JButton continueButton = new JButton("Continue");
+				JButton continueButton = new JButton("Submit");
 				continueButton.setBounds(10, 290, 150, 30);
 				continueButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						continueButton.setEnabled(false);
 						// Validate if any field is empty
 						if (loanAmountField.getText().isEmpty() || fullNameField.getText().isEmpty() ||
 								numberField.getText().isEmpty() || loanPurpose.getSelectedIndex() == 0 ||
@@ -134,7 +162,30 @@ class DashboardView{
 								fileWriter.write("Profession: " + selectedProfession + "\n");
 								fileWriter.write("Monthly Income: " + selectedIncome + "\n");
 								fileWriter.close();
-								JOptionPane.showMessageDialog(frame, "Information saved successfully!");
+								
+
+								// Show a confirmation message
+								JOptionPane.showMessageDialog(frame, "Your information has been sent to our management. Please wait for approval.", "Submission Successful", JOptionPane.INFORMATION_MESSAGE);
+
+								// Clear the fields after submission
+								loanAmountField.setText("");
+								fullNameField.setText("");
+								numberField.setText("");
+								loanPurpose.setSelectedIndex(0);
+								profession.setSelectedIndex(0);
+								monthlyIncome.setSelectedIndex(0);
+
+								// Add the user's request to the pendingRequests list
+								String requestInfo = "Full Name: " + fullName + ", Loan Amount: " + loanAmount;
+								pendingRequests.add(requestInfo);
+
+								// Go back to the home page
+								frame.getContentPane().removeAll();
+								frame.getContentPane().add(welcomePanel);
+								frame.getContentPane().add(tabPanel);
+								frame.repaint();
+								frame.revalidate();
+
 							} catch (NumberFormatException ex) {
 								JOptionPane.showMessageDialog(frame, "Please enter a valid number for the loan amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
 							} catch (IOException ex) {
@@ -168,10 +219,10 @@ class DashboardView{
 		amountLabel.setForeground(Color.WHITE);
 		violetPanel.add(amountLabel);
 		
-		JTextArea loanArea = new JTextArea(" 20,000");
+		JLabel loanArea = new JLabel(" 20,000");
 		loanArea.setBounds(150 ,100, 100, 30);
-		loanArea.setFont(new Font("Arial", Font.BOLD, 25));
-		loanArea.setEditable(false);
+		loanArea.setForeground(Color.WHITE);
+		loanArea.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
 		violetPanel.add(loanArea);
 
 		JLabel totalLabel = new JLabel("Total Amount(₱)");
@@ -207,44 +258,101 @@ class DashboardView{
 		welcomePanel.add(tabPanel);
 
 		JLabel couponLabel = new JLabel("Coupon Offer");
-        couponLabel.setBounds(450, 80, 100, 30);
-        couponLabel.setForeground(Color.WHITE);
-        couponLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(couponPanel);
-				frame.repaint();
-				frame.revalidate();
-				
-				JLabel backLabel = new JLabel("Back");
-				backLabel.setBounds(10,10,100,40);
-				backLabel.addMouseListener(new MouseAdapter(){
-					public void mouseClicked(MouseEvent e){
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(tabPanel);
-						frame.getContentPane().add(welcomePanel);
-						frame.repaint();
-						frame.revalidate();
-					}	
-				});
-				couponPanel.add(backLabel);
-				
-				JButton useButton = new JButton("Use");
-				useButton.setBounds(10, 170, 70, 30);
-				couponPanel.add(useButton);
+			couponLabel.setBounds(450, 80, 100, 30);
+			couponLabel.setForeground(Color.WHITE);
+			couponLabel.addMouseListener(new MouseAdapter() {
+    			public void mouseClicked(MouseEvent e) {
+        			frame.getContentPane().removeAll();
+        			frame.getContentPane().add(couponPanel);
+        			frame.repaint();
+        			frame.revalidate();
+
+        JLabel backLabel = new JLabel("Back");
+    	    backLabel.setBounds(10, 10, 100, 40);
+        	backLabel.addMouseListener(new MouseAdapter() {
+            	public void mouseClicked(MouseEvent e) {
+                	frame.getContentPane().removeAll();
+                	frame.getContentPane().add(tabPanel);
+	                frame.getContentPane().add(welcomePanel);
+    	            frame.repaint();
+        	        frame.revalidate();
             }
         });
-        violetPanel.add(couponLabel);
+        couponPanel.add(backLabel);
 
-		JLabel creditScoreLabel = new JLabel("Credit Score Boost");
-		creditScoreLabel.setBounds(450, 120, 200, 30);
-		creditScoreLabel.setForeground(Color.WHITE);
-		violetPanel.add(creditScoreLabel);
+        JButton useButton = new JButton("Use");
+        useButton.setBounds(10, 170, 70, 30);
+        couponPanel.add(useButton);
+    }
+});
+
+couponLabel.addMouseMotionListener(new MouseMotionAdapter() {
+    public void mouseMoved(MouseEvent e) {
+        couponLabel.setForeground(Color.YELLOW);
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        // Optional: Handle mouse dragging if needed
+    }
+});
+
+couponLabel.addMouseListener(new MouseAdapter() {
+    public void mouseExited(MouseEvent e) {
+        couponLabel.setForeground(Color.WHITE);
+    }
+});
+
+violetPanel.add(couponLabel);
+
 
 		JLabel premiumUserLabel = new JLabel("Premium User");
-		premiumUserLabel.setBounds(450, 160, 200, 30);
+		premiumUserLabel.setBounds(450, 110, 200, 30);
 		premiumUserLabel.setForeground(Color.WHITE);
+		premiumUserLabel.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(welcomePanel);
+				frame.repaint();
+				frame.revalidate();
+			}
+
+		public void mouseEntered(MouseEvent e) {
+
+			premiumUserLabel.setForeground(Color.YELLOW);	
+		}
+
+		public void mouseExited(MouseEvent e) {
+
+			premiumUserLabel.setForeground(Color.WHITE);
+		}
+
+	});
 		violetPanel.add(premiumUserLabel);
+
+
+
+			JLabel notificationLabel = new JLabel("notification");
+			notificationLabel.setBounds(750,10,100,40);
+			notificationLabel.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					frame.getContentPane().removeAll();
+					frame.getContentPane().add(welcomePanel);
+					frame.repaint();
+					frame.revalidate();
+				 }
+
+    public void mouseEntered(MouseEvent e) {
+       
+        notificationLabel.setForeground(Color.YELLOW); 
+    }
+
+    public void mouseExited(MouseEvent e) {
+
+        notificationLabel.setForeground(Color.BLACK);
+    }
+});
+			
+				welcomePanel.add(notificationLabel);
 
 
 
@@ -331,47 +439,63 @@ class DashboardView{
 							frame.repaint();
 							frame.revalidate();
 							
-							JButton viewTransactionButton = new JButton("View Transaction");
-							viewTransactionButton.setBounds(100, 100, 150, 30);
-							viewTransactionButton.addActionListener(new ActionListener(){
-								public void actionPerformed(ActionEvent e){
-									JPanel transactionPanel = new JPanel();
-									transactionPanel.setBounds(50,50, 400,400);
-									transactionPanel.setBackground(Color.GREEN);
-									transactionPanel.setLayout(null);
-									
-									frame.getContentPane().removeAll();
-									frame.getContentPane().add(transactionPanel);
-									frame.repaint();
-									frame.revalidate();
-									
-									JButton backButton = new JButton("Back");
-									backButton.setBounds(10,10,100,30);
-									backButton.addActionListener(new ActionListener(){
-										public void actionPerformed(ActionEvent e){
-											frame.getContentPane().removeAll();
-											frame.getContentPane().add(adminPanel);
-											frame.repaint();
-											frame.revalidate();
-										}	
-									});
-									transactionPanel.add(backButton);
-								}	
-							});
-							adminPanel.add(viewTransactionButton);
-							
-							JButton backButton = new JButton("Back");
-							backButton.setBounds(10,10, 100, 30);
-							backButton.addActionListener(new ActionListener(){
-								public void actionPerformed(ActionEvent e){
-									frame.getContentPane().removeAll();
-									frame.getContentPane().add(mePanel);
-									frame.getContentPane().add(tabPanel);
-									frame.repaint();
-									frame.revalidate();
-								}	
-							});
-							adminPanel.add(backButton);
+						JButton viewTransactionButton = new JButton("View Transaction");
+						viewTransactionButton.setBounds(100, 100, 150, 30);
+						viewTransactionButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								JPanel transactionPanel = new JPanel();
+								transactionPanel.setBounds(50, 50, 400, 400);
+								transactionPanel.setBackground(Color.GREEN);
+								transactionPanel.setLayout(new BorderLayout());  // Use BorderLayout
+
+								JTextArea requestsTextArea = new JTextArea();
+								for (String request : pendingRequests) {
+									requestsTextArea.append(request + "\n");
+								}
+								JScrollPane scrollPane = new JScrollPane(requestsTextArea);
+
+								JButton approveButton = new JButton("Approve");
+								approveButton.setBounds(100, 100, 100, 100);
+								transactionPanel.add(approveButton);
+								JButton rejectButton = new JButton("Reject");
+								rejectButton.setBounds(100, 100, 100, 100);
+								transactionPanel.add(rejectButton);
+
+								approveButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										// Perform actions when approve button is clicked
+										// For example, remove the approved request from pendingRequests
+										// Update UI accordingly
+										pendingRequests.clear();
+										requestsTextArea.setText("");
+										JOptionPane.showMessageDialog(frame, "All Requests Approved!");
+									}
+								});
+
+								rejectButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										// Perform actions when reject button is clicked
+										// For example, remove the rejected request from pendingRequests
+										// Update UI accordingly
+										pendingRequests.clear();
+										requestsTextArea.setText("");
+										JOptionPane.showMessageDialog(frame, "All Requests Rejected!");
+									}
+								});
+
+								transactionPanel.add(scrollPane, BorderLayout.CENTER);
+								transactionPanel.add(approveButton, BorderLayout.SOUTH);
+								transactionPanel.add(rejectButton, BorderLayout.SOUTH);
+
+								frame.getContentPane().removeAll();
+								frame.getContentPane().add(transactionPanel);
+								frame.repaint();
+								frame.revalidate();
+							}
+						});
+						adminPanel.add(viewTransactionButton);
+
+
 						}
 						else{
 							JOptionPane.showMessageDialog(frame, "Invalid Password");
