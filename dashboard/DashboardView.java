@@ -7,346 +7,334 @@ import java.awt.geom.Ellipse2D;
 import java.io.*;
 import java.util.ArrayList;
 
+class DashboardView {
+    private ArrayList < String > pendingRequests;
+    private JPanel tabPanel;
 
+    public DashboardView(JFrame frame, JPanel loginPanel) {
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setBounds(0, 0, 897, 516);
+        welcomePanel.setBackground(new Color(50, 129, 186));
+        welcomePanel.setLayout(null);
 
-class DashboardView{
-		private ArrayList<String> pendingRequests;
-		private JPanel tabPanel;
-		
-		
-		public DashboardView(JFrame frame, JPanel loginPanel){
-		JPanel welcomePanel = new JPanel();
-		welcomePanel.setBounds(0, 0, 897, 516);
-		welcomePanel.setBackground(new Color(50, 129, 186));
-		welcomePanel.setLayout(null);
+        pendingRequests = new ArrayList < > ();
 
-		pendingRequests = new ArrayList<>();
-
-		tabPanel = new JPanel();
+        tabPanel = new JPanel();
         tabPanel.setBounds(0, 470, 897, 516);
         tabPanel.setBackground(Color.WHITE);
         tabPanel.setLayout(null);
         welcomePanel.add(tabPanel);
-		
-		frame.getContentPane().removeAll();
-		frame.getContentPane().add(welcomePanel);
-		frame.getContentPane().add(tabPanel);
-		frame.repaint();
-		frame.revalidate();
-		
-		JLabel loaningAppLabel = new JLabel("LOANING APP");
-		loaningAppLabel.setBounds(10,10, 300,40);
-		loaningAppLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		welcomePanel.add(loaningAppLabel);
 
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(welcomePanel);
+        frame.getContentPane().add(tabPanel);
+        frame.repaint();
+        frame.revalidate();
 
+        JLabel loaningAppLabel = new JLabel("LOANING APP");
+        loaningAppLabel.setBounds(10, 10, 300, 40);
+        loaningAppLabel.setFont(new Font("Arial", Font.BOLD, 25));
+        welcomePanel.add(loaningAppLabel);
 
+        JPanel violetPanel = new JPanel();
+        violetPanel.setBounds(100, 109, 700, 300);
+        violetPanel.setBackground(new Color(73, 30, 192));
+        violetPanel.setLayout(null);
+        welcomePanel.add(violetPanel);
 
-		JPanel violetPanel = new JPanel();
-		violetPanel.setBounds(100, 109, 700, 300);
-		violetPanel.setBackground(new Color(73, 30, 192));
-		violetPanel.setLayout(null);
-		welcomePanel.add(violetPanel);
+        // Inside the borrowButton.addActionListener block
+        JButton borrowButton = new JButton("Borrow Now");
+        borrowButton.setBounds(85, 200, 200, 30);
+        borrowButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JPanel borrowPanel = new JPanel();
+                borrowPanel.setBounds(0, 0, 897, 516);
+                borrowPanel.setBackground(Color.BLACK);
+                borrowPanel.setLayout(null);
 
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(borrowPanel);
+                frame.repaint();
+                frame.revalidate();
 
+                JLabel backLabel = new JLabel("Back");
+                backLabel.setBounds(10, 10, 100, 40);
+                backLabel.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(welcomePanel);
+                        frame.repaint();
+                        frame.revalidate();
+                    }
+                });
+                borrowPanel.add(backLabel);
 
-		// Inside the borrowButton.addActionListener block
-		JButton borrowButton = new JButton("Borrow Now");
-		borrowButton.setBounds(85, 200, 200, 30);
-		borrowButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPanel borrowPanel = new JPanel();
-				borrowPanel.setBounds(0, 0, 897, 516);
-				borrowPanel.setBackground(Color.BLACK);
-				borrowPanel.setLayout(null);
+                JButton exitButton = new JButton("X");
+                exitButton.setBounds(847, 10, 40, 20); // Adjust the position and size as needed
+                exitButton.setFont(new Font("Arial", Font.BOLD, 12)); // Adjust font as needed
 
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(borrowPanel);
-				frame.repaint();
-				frame.revalidate();
+                // Adjusting the text inside the button by setting margins
+                Insets margin = new Insets(2, 2, 2, 2); // Adjust margins as needed
+                exitButton.setMargin(margin);
 
-				JLabel backLabel = new JLabel("Back");
-				backLabel.setBounds(10, 10, 100, 40);
-				backLabel.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(welcomePanel);
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				borrowPanel.add(backLabel);
+                exitButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        System.exit(0); // Exit the application
+                    }
+                });
+                welcomePanel.add(exitButton);
 
-				JButton exitButton = new JButton("X");
-				exitButton.setBounds(847, 10, 40, 20); // Adjust the position and size as needed
-				exitButton.setFont(new Font("Arial", Font.BOLD, 12)); // Adjust font as needed
+                JTextField loanAmountField = new JTextField("Loan Amount");
+                loanAmountField.setBounds(10, 50, 150, 30);
+                loanAmountField.addFocusListener(new FocusAdapter() {
+                    public void focusGained(FocusEvent e) {
+                        loanAmountField.setText("");
+                    }
+                });
+                borrowPanel.add(loanAmountField);
 
-				// Adjusting the text inside the button by setting margins
-				Insets margin = new Insets(2, 2, 2, 2); // Adjust margins as needed
-				exitButton.setMargin(margin);
+                JTextField fullNameField = new JTextField("Full Name");
+                fullNameField.setBounds(10, 90, 150, 30);
+                fullNameField.addFocusListener(new FocusAdapter() {
+                    public void focusGained(FocusEvent e) {
+                        fullNameField.setText("");
+                    }
+                });
+                borrowPanel.add(fullNameField);
 
-				exitButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						System.exit(0); // Exit the application
-					}
-				});
-				welcomePanel.add(exitButton);
+                JTextField numberField = new JTextField("Phone Number");
+                numberField.setBounds(10, 130, 150, 30);
+                numberField.addFocusListener(new FocusAdapter() {
+                    public void focusGained(FocusEvent e) {
+                        numberField.setText("");
+                    }
+                });
+                borrowPanel.add(numberField);
 
-				JTextField loanAmountField = new JTextField("Loan Amount");
-				loanAmountField.setBounds(10, 50, 150, 30);
-				loanAmountField.addFocusListener(new FocusAdapter() {
-					public void focusGained(FocusEvent e) {
-						loanAmountField.setText("");
-					}
-				});
-				borrowPanel.add(loanAmountField);
+                String[] purposeOfLoanChoice = {
+                    "Purpose of Loan",
+                    "Business Startup",
+                    "Medical",
+                    "Loans",
+                    "Others"
+                };
+                JComboBox < String > loanPurpose = new JComboBox < > (purposeOfLoanChoice);
+                loanPurpose.setBounds(10, 170, 150, 30);
+                borrowPanel.add(loanPurpose);
 
-				JTextField fullNameField = new JTextField("Full Name");
-				fullNameField.setBounds(10, 90, 150, 30);
-				fullNameField.addFocusListener(new FocusAdapter() {
-					public void focusGained(FocusEvent e) {
-						fullNameField.setText("");
-					}
-				});
-				borrowPanel.add(fullNameField);
+                String[] professionChoice = {
+                    "Profession",
+                    "OFW",
+                    "Unemployed",
+                    "Government Employee",
+                    "Self-employed",
+                    "Others"
+                };
+                JComboBox < String > profession = new JComboBox < > (professionChoice);
+                profession.setBounds(10, 210, 150, 30);
+                borrowPanel.add(profession);
 
-				JTextField numberField = new JTextField("Phone Number");
-				numberField.setBounds(10, 130, 150, 30);
-				numberField.addFocusListener(new FocusAdapter() {
-					public void focusGained(FocusEvent e) {
-						numberField.setText("");
-					}
-				});
-				borrowPanel.add(numberField);
+                // Add JComboBox for Monthly Income
+                String[] incomeChoices = {
+                    "Monthly Income",
+                    "Less than ₱10,000",
+                    "₱10,000 - ₱20,000",
+                    "₱20,000 - ₱30,000",
+                    "₱30,000 - ₱50,000",
+                    "More than ₱50,000"
+                };
+                JComboBox < String > monthlyIncome = new JComboBox < > (incomeChoices);
+                monthlyIncome.setBounds(10, 250, 150, 30);
+                borrowPanel.add(monthlyIncome);
 
-				String[] purposeOfLoanChoice = {"Purpose of Loan", "Business Startup", "Medical", "Loans", "Others"};
-				JComboBox<String> loanPurpose = new JComboBox<>(purposeOfLoanChoice);
-				loanPurpose.setBounds(10, 170, 150, 30);
-				borrowPanel.add(loanPurpose);
+                JButton continueButton = new JButton("Submit");
+                continueButton.setBounds(10, 290, 150, 30);
+                continueButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        continueButton.setEnabled(false);
+                        // Validate if any field is empty
+                        if (loanAmountField.getText().isEmpty() || fullNameField.getText().isEmpty() ||
+                            numberField.getText().isEmpty() || loanPurpose.getSelectedIndex() == 0 ||
+                            profession.getSelectedIndex() == 0 || monthlyIncome.getSelectedIndex() == 0) {
+                            JOptionPane.showMessageDialog(frame, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            // Proceed with processing the information
+                            try {
+                                double loanAmount = Double.parseDouble(loanAmountField.getText());
+                                // Append information to the masterlist.txt file
+                                String selectedPurpose = (String) loanPurpose.getSelectedItem();
+                                String selectedProfession = (String) profession.getSelectedItem();
+                                String selectedIncome = (String) monthlyIncome.getSelectedItem();
 
-				String[] professionChoice = {"Profession", "OFW", "Unemployed", "Government Employee", "Self-employed", "Others"};
-				JComboBox<String> profession = new JComboBox<>(professionChoice);
-				profession.setBounds(10, 210, 150, 30);
-				borrowPanel.add(profession);
+                                FileWriter fileWriter = new FileWriter("masterlist.txt", true); // Append to the file
+                                // Arrange user information in a single line with separators
+                                String userInformation = fullNameField.getText() + "/" +
+                                    numberField.getText() + "/" +
+                                    selectedPurpose + "/" +
+                                    selectedProfession + "/" +
+                                    selectedIncome + "/" +
+                                    loanAmount + "\n";
+                                fileWriter.write(userInformation);
+                                fileWriter.close();
 
-				// Add JComboBox for Monthly Income
-				String[] incomeChoices = {"Monthly Income", "Less than ₱10,000", "₱10,000 - ₱20,000", "₱20,000 - ₱30,000", "₱30,000 - ₱50,000", "More than ₱50,000"};
-				JComboBox<String> monthlyIncome = new JComboBox<>(incomeChoices);
-				monthlyIncome.setBounds(10, 250, 150, 30);
-				borrowPanel.add(monthlyIncome);
+                                // Show a confirmation message
+                                JOptionPane.showMessageDialog(frame, "Your information has been sent to our management. Please wait for approval.", "Submission Successful", JOptionPane.INFORMATION_MESSAGE);
 
-				JButton continueButton = new JButton("Submit");
-				continueButton.setBounds(10, 290, 150, 30);
-				continueButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						continueButton.setEnabled(false);
-						// Validate if any field is empty
-						if (loanAmountField.getText().isEmpty() || fullNameField.getText().isEmpty() ||
-								numberField.getText().isEmpty() || loanPurpose.getSelectedIndex() == 0 ||
-								profession.getSelectedIndex() == 0 || monthlyIncome.getSelectedIndex() == 0) {
-							JOptionPane.showMessageDialog(frame, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
-						} else {
-							// Proceed with processing the information
-							try {
-								double loanAmount = Double.parseDouble(loanAmountField.getText());
-								// Append information to the masterlist.txt file
-								String selectedPurpose = (String) loanPurpose.getSelectedItem();
-								String selectedProfession = (String) profession.getSelectedItem();
-								String selectedIncome = (String) monthlyIncome.getSelectedItem();
+                                // Clear the fields after submission
+                                loanAmountField.setText("");
+                                fullNameField.setText("");
+                                numberField.setText("");
+                                loanPurpose.setSelectedIndex(0);
+                                profession.setSelectedIndex(0);
+                                monthlyIncome.setSelectedIndex(0);
 
-								FileWriter fileWriter = new FileWriter("masterlist.txt", true); // Append to the file
-								// Arrange user information in a single line with separators
-								String userInformation = fullNameField.getText() + "/" +
-														numberField.getText() + "/" +
-														selectedPurpose + "/" +
-														selectedProfession + "/" +
-														selectedIncome + "/" +
-														loanAmount + "\n";
-								fileWriter.write(userInformation);
-								fileWriter.close();
+                                // Add the user's request to the pendingRequests list
+                                String requestInfo = "Full Name: " + fullNameField.getText() + ", Loan Amount: " + loanAmount;
+                                pendingRequests.add(requestInfo);
 
-								// Show a confirmation message
-								JOptionPane.showMessageDialog(frame, "Your information has been sent to our management. Please wait for approval.", "Submission Successful", JOptionPane.INFORMATION_MESSAGE);
+                                // Go back to the home page
+                                frame.getContentPane().removeAll();
+                                frame.getContentPane().add(welcomePanel);
+                                frame.getContentPane().add(tabPanel);
+                                frame.repaint();
+                                frame.revalidate();
 
-								// Clear the fields after submission
-								loanAmountField.setText("");
-								fullNameField.setText("");
-								numberField.setText("");
-								loanPurpose.setSelectedIndex(0);
-								profession.setSelectedIndex(0);
-								monthlyIncome.setSelectedIndex(0);
+                            } catch (NumberFormatException ex) {
+                                JOptionPane.showMessageDialog(frame, "Please enter a valid number for the loan amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                                JOptionPane.showMessageDialog(frame, "Error saving information");
+                            }
+                        }
+                    }
+                });
 
-								// Add the user's request to the pendingRequests list
-								String requestInfo = "Full Name: " + fullNameField.getText() + ", Loan Amount: " + loanAmount;
-								pendingRequests.add(requestInfo);
-
-								// Go back to the home page
-								frame.getContentPane().removeAll();
-								frame.getContentPane().add(welcomePanel);
-								frame.getContentPane().add(tabPanel);
-								frame.repaint();
-								frame.revalidate();
-
-							} catch (NumberFormatException ex) {
-								JOptionPane.showMessageDialog(frame, "Please enter a valid number for the loan amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
-							} catch (IOException ex) {
-								ex.printStackTrace();
-								JOptionPane.showMessageDialog(frame, "Error saving information");
-							}
-						}
-					}
-				});
-
-				borrowPanel.add(continueButton);
-			}
-		});
-		violetPanel.add(borrowButton);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		JLabel amountLabel = new JLabel("Loan Amount(₱)");
-		amountLabel.setBounds(150, 50, 100, 30);
-		amountLabel.setForeground(Color.WHITE);
-		violetPanel.add(amountLabel);
-		
-		JLabel loanArea = new JLabel(" 20,000");
-		loanArea.setBounds(150 ,100, 100, 30);
-		loanArea.setForeground(Color.WHITE);
-		loanArea.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
-		violetPanel.add(loanArea);
-
-		JLabel totalLabel = new JLabel("Total Amount(₱)");
-		totalLabel.setBounds(150, 150, 100, 30);
-		totalLabel.setForeground(Color.WHITE);
-		violetPanel.add(totalLabel);
-
-		JLabel commentLabel = new JLabel("Amount will be increased by repeat borrowing");
-		commentLabel.setBounds(60, 250, 300, 30);
-		commentLabel.setForeground(Color.GRAY);
-		violetPanel.add(commentLabel);
-
-
-		JLabel specialOfferLabel = new JLabel("Special Offer");
-		specialOfferLabel.setBounds(450, 50, 200, 30);
-		specialOfferLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 15));
-		specialOfferLabel.setForeground(Color.WHITE);
-		violetPanel.add(specialOfferLabel);
-
-		
-				
-		JPanel couponPanel = new JPanel();
-		couponPanel.setBounds(0, 0, 897,516);
-		couponPanel.setBackground(Color.BLACK);
-		couponPanel.setLayout(null);
-		
-		
-		
-		JPanel tabPanel = new JPanel();
-		tabPanel.setBounds(0, 470, 897, 516);
-		tabPanel.setBackground(Color.WHITE);
-		tabPanel.setLayout(null);
-		welcomePanel.add(tabPanel);
-
-		JLabel couponLabel = new JLabel("Coupon Offer");
-			couponLabel.setBounds(450, 80, 100, 30);
-			couponLabel.setForeground(Color.WHITE);
-			couponLabel.addMouseListener(new MouseAdapter() {
-    			public void mouseClicked(MouseEvent e) {
-        			frame.getContentPane().removeAll();
-        			frame.getContentPane().add(couponPanel);
-        			frame.repaint();
-        			frame.revalidate();
-
-        JLabel backLabel = new JLabel("Back");
-    	    backLabel.setBounds(10, 10, 100, 40);
-        	backLabel.addMouseListener(new MouseAdapter() {
-            	public void mouseClicked(MouseEvent e) {
-                	frame.getContentPane().removeAll();
-                	frame.getContentPane().add(tabPanel);
-	                frame.getContentPane().add(welcomePanel);
-    	            frame.repaint();
-        	        frame.revalidate();
+                borrowPanel.add(continueButton);
             }
         });
-        couponPanel.add(backLabel);
+        violetPanel.add(borrowButton);
 
-        JButton useButton = new JButton("Use");
-        useButton.setBounds(10, 170, 70, 30);
-        couponPanel.add(useButton);
-    }
-});
+        JLabel amountLabel = new JLabel("Loan Amount(₱)");
+        amountLabel.setBounds(150, 50, 100, 30);
+        amountLabel.setForeground(Color.WHITE);
+        violetPanel.add(amountLabel);
 
+        JLabel loanArea = new JLabel(" 20,000");
+        loanArea.setBounds(150, 100, 100, 30);
+        loanArea.setForeground(Color.WHITE);
+        loanArea.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
+        violetPanel.add(loanArea);
 
+        JLabel totalLabel = new JLabel("Total Amount(₱)");
+        totalLabel.setBounds(150, 150, 100, 30);
+        totalLabel.setForeground(Color.WHITE);
+        violetPanel.add(totalLabel);
 
+        JLabel commentLabel = new JLabel("Amount will be increased by repeat borrowing");
+        commentLabel.setBounds(60, 250, 300, 30);
+        commentLabel.setForeground(Color.GRAY);
+        violetPanel.add(commentLabel);
 
-		couponLabel.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseMoved(MouseEvent e) {
-				couponLabel.setForeground(Color.YELLOW);
-			}
+        JLabel specialOfferLabel = new JLabel("Special Offer");
+        specialOfferLabel.setBounds(450, 50, 200, 30);
+        specialOfferLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 15));
+        specialOfferLabel.setForeground(Color.WHITE);
+        violetPanel.add(specialOfferLabel);
 
-			public void mouseDragged(MouseEvent e) {
-				// Optional: Handle mouse dragging if needed
-			}
-		});
+        JPanel couponPanel = new JPanel();
+        couponPanel.setBounds(0, 0, 897, 516);
+        couponPanel.setBackground(Color.BLACK);
+        couponPanel.setLayout(null);
 
-		couponLabel.addMouseListener(new MouseAdapter() {
-			public void mouseExited(MouseEvent e) {
-				couponLabel.setForeground(Color.WHITE);
-			}
-		});
+        JPanel tabPanel = new JPanel();
+        tabPanel.setBounds(0, 470, 897, 516);
+        tabPanel.setBackground(Color.WHITE);
+        tabPanel.setLayout(null);
+        welcomePanel.add(tabPanel);
 
-		violetPanel.add(couponLabel);
+        JLabel couponLabel = new JLabel("Coupon Offer");
+        couponLabel.setBounds(450, 80, 100, 30);
+        couponLabel.setForeground(Color.WHITE);
+        couponLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(couponPanel);
+                frame.repaint();
+                frame.revalidate();
 
+                JLabel backLabel = new JLabel("Back");
+                backLabel.setBounds(10, 10, 100, 40);
+                backLabel.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(tabPanel);
+                        frame.getContentPane().add(welcomePanel);
+                        frame.repaint();
+                        frame.revalidate();
+                    }
+                });
+                couponPanel.add(backLabel);
 
-		JLabel premiumUserLabel = new JLabel("Premium User");
-		premiumUserLabel.setBounds(450, 110, 200, 30);
-		premiumUserLabel.setForeground(Color.WHITE);
-		premiumUserLabel.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(welcomePanel);
-				frame.repaint();
-				frame.revalidate();
-			}
+                JButton useButton = new JButton("Use");
+                useButton.setBounds(10, 170, 70, 30);
+                couponPanel.add(useButton);
+            }
+        });
 
-		public void mouseEntered(MouseEvent e) {
+        couponLabel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
+                couponLabel.setForeground(Color.YELLOW);
+            }
 
-			premiumUserLabel.setForeground(Color.YELLOW);	
-		}
+            public void mouseDragged(MouseEvent e) {
+                // Optional: Handle mouse dragging if needed
+            }
+        });
 
-		public void mouseExited(MouseEvent e) {
+        couponLabel.addMouseListener(new MouseAdapter() {
+            public void mouseExited(MouseEvent e) {
+                couponLabel.setForeground(Color.WHITE);
+            }
+        });
 
-			premiumUserLabel.setForeground(Color.WHITE);
-		}
+        violetPanel.add(couponLabel);
 
-	});
-		violetPanel.add(premiumUserLabel);
-		
-		
-			JPanel subscriptionPanel = new JPanel();
-			subscriptionPanel.setBounds(0, 0, 897, 516);
-			subscriptionPanel.setBackground(Color.WHITE);
-			subscriptionPanel.setLayout(null);
+        JLabel premiumUserLabel = new JLabel("Premium User");
+        premiumUserLabel.setBounds(450, 110, 200, 30);
+        premiumUserLabel.setForeground(Color.WHITE);
+        premiumUserLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(welcomePanel);
+                frame.repaint();
+                frame.revalidate();
+            }
 
-			JPanel yellowPanel = new JPanel();
-			yellowPanel.setBounds(0, 0, 442, 516);
-			yellowPanel.setBackground(Color.YELLOW);
-			yellowPanel.setLayout(null);
-			subscriptionPanel.add(yellowPanel);
+            public void mouseEntered(MouseEvent e) {
 
-// Add subscription details to the subscription panel
+                premiumUserLabel.setForeground(Color.YELLOW);
+            }
+
+            public void mouseExited(MouseEvent e) {
+
+                premiumUserLabel.setForeground(Color.WHITE);
+            }
+
+        });
+        violetPanel.add(premiumUserLabel);
+
+        JPanel subscriptionPanel = new JPanel();
+        subscriptionPanel.setBounds(0, 0, 897, 516);
+        subscriptionPanel.setBackground(Color.WHITE);
+        subscriptionPanel.setLayout(null);
+
+        JPanel yellowPanel = new JPanel();
+        yellowPanel.setBounds(0, 0, 442, 516);
+        yellowPanel.setBackground(Color.YELLOW);
+        yellowPanel.setLayout(null);
+        subscriptionPanel.add(yellowPanel);
+
+        // Add subscription details to the subscription panel
         JLabel subscriptionLabel = new JLabel("Available Subscriptions:");
         subscriptionLabel.setFont(new Font("CALIBRE", Font.BOLD, 25));
         subscriptionLabel.setBounds(30, 30, 300, 30);
@@ -401,14 +389,14 @@ class DashboardView{
         });
         yellowPanel.add(subscribeButton);
 
-		        // Back button to go back to the home page
+        // Back button to go back to the home page
         JButton backButton = new JButton("Back");
         backButton.setBounds(50, 260, 150, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Navigate back to the home page
                 frame.getContentPane().removeAll();
-				frame.getContentPane().add(tabPanel);
+                frame.getContentPane().add(tabPanel);
                 frame.getContentPane().add(welcomePanel);
                 frame.repaint();
                 frame.revalidate();
@@ -416,25 +404,22 @@ class DashboardView{
         });
         yellowPanel.add(backButton);
 
+        // You can add multiple subscription options here
+        JLabel oneMonthSubscriptionLabel = new JLabel("1 Month Subscription: ₱999");
+        oneMonthSubscriptionLabel.setBounds(50, 80, 200, 30);
+        yellowPanel.add(oneMonthSubscriptionLabel);
 
+        JLabel threeMonthsSubscriptionLabel = new JLabel("3 Months Subscription: ₱2,499");
+        threeMonthsSubscriptionLabel.setBounds(50, 110, 200, 30);
+        yellowPanel.add(threeMonthsSubscriptionLabel);
 
-			// You can add multiple subscription options here
-			JLabel oneMonthSubscriptionLabel = new JLabel("1 Month Subscription: ₱999");
-			oneMonthSubscriptionLabel.setBounds(50, 80, 200, 30);
-			yellowPanel.add(oneMonthSubscriptionLabel);
+        JLabel sixMonthsSubscriptionLabel = new JLabel("6 Months Subscription: ₱4,499");
+        sixMonthsSubscriptionLabel.setBounds(50, 140, 200, 30);
+        yellowPanel.add(sixMonthsSubscriptionLabel);
 
-			JLabel threeMonthsSubscriptionLabel = new JLabel("3 Months Subscription: ₱2,499");
-			threeMonthsSubscriptionLabel.setBounds(50, 110, 200, 30);
-			yellowPanel.add(threeMonthsSubscriptionLabel);
-
-			JLabel sixMonthsSubscriptionLabel = new JLabel("6 Months Subscription: ₱4,499");
-			sixMonthsSubscriptionLabel.setBounds(50, 140, 200, 30);
-			yellowPanel.add(sixMonthsSubscriptionLabel);
-
-			JLabel oneYearSubscriptionLabel = new JLabel("1 Year Subscription: ₱8,999");
-			oneYearSubscriptionLabel.setBounds(50, 170, 200, 30);
-			yellowPanel.add(oneYearSubscriptionLabel);
-
+        JLabel oneYearSubscriptionLabel = new JLabel("1 Year Subscription: ₱8,999");
+        oneYearSubscriptionLabel.setBounds(50, 170, 200, 30);
+        yellowPanel.add(oneYearSubscriptionLabel);
 
         JLabel benefitsPremiumLabel = new JLabel("Benefits of Premium Account:");
         benefitsPremiumLabel.setFont(new Font("CALIBRE", Font.BOLD, 25));
@@ -477,7 +462,7 @@ class DashboardView{
         exclusiveLoanProductsText.setBounds(475, 250, 700, 30);
         subscriptionPanel.add(exclusiveLoanProductsText);
 
-		JLabel flexibleRepaymentTermsLabel = new JLabel("Flexible Repayment Terms:");
+        JLabel flexibleRepaymentTermsLabel = new JLabel("Flexible Repayment Terms:");
         flexibleRepaymentTermsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
         flexibleRepaymentTermsLabel.setBounds(470, 280, 200, 30);
         subscriptionPanel.add(flexibleRepaymentTermsLabel);
@@ -495,7 +480,7 @@ class DashboardView{
         financialEducationText.setBounds(475, 350, 700, 30);
         subscriptionPanel.add(financialEducationText);
 
-		JLabel specialPromotionsLabel = new JLabel("Special Promotions and Rewards:");
+        JLabel specialPromotionsLabel = new JLabel("Special Promotions and Rewards:");
         specialPromotionsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
         specialPromotionsLabel.setBounds(470, 380, 250, 30);
         subscriptionPanel.add(specialPromotionsLabel);
@@ -512,279 +497,257 @@ class DashboardView{
         JLabel financialHealthCheckupsText = new JLabel("• Premium users may receive periodic financial health assessments or consultations to ensure that their financial goals align with their borrowing activities.");
         financialHealthCheckupsText.setBounds(475, 450, 700, 30);
         subscriptionPanel.add(financialHealthCheckupsText);
-			
 
-			// Add other subscription options as needed
+        // Add other subscription options as needed
 
-			frame.getContentPane().add(subscriptionPanel);
-			frame.repaint();
-			frame.revalidate();
+        frame.getContentPane().add(subscriptionPanel);
+        frame.repaint();
+        frame.revalidate();
 
-			premiumUserLabel.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					frame.getContentPane().removeAll();
-					frame.getContentPane().add(subscriptionPanel);
-					frame.repaint();
-					frame.revalidate();
-				}
+        premiumUserLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(subscriptionPanel);
+                frame.repaint();
+                frame.revalidate();
+            }
 
-				public void mouseEntered(MouseEvent e) {
-					premiumUserLabel.setForeground(Color.YELLOW);
-				}
+            public void mouseEntered(MouseEvent e) {
+                premiumUserLabel.setForeground(Color.YELLOW);
+            }
 
-				public void mouseExited(MouseEvent e) {
-					premiumUserLabel.setForeground(Color.WHITE);
-				}
-			});
+            public void mouseExited(MouseEvent e) {
+                premiumUserLabel.setForeground(Color.WHITE);
+            }
+        });
 
+        JLabel notificationLabel = new JLabel("notification");
+        notificationLabel.setBounds(750, 10, 100, 40);
+        notificationLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(welcomePanel);
+                frame.repaint();
+                frame.revalidate();
+            }
 
+            public void mouseEntered(MouseEvent e) {
 
-			JLabel notificationLabel = new JLabel("notification");
-			notificationLabel.setBounds(750,10,100,40);
-			notificationLabel.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					frame.getContentPane().removeAll();
-					frame.getContentPane().add(welcomePanel);
-					frame.repaint();
-					frame.revalidate();
-				 }
+                notificationLabel.setForeground(Color.YELLOW);
+            }
 
-    public void mouseEntered(MouseEvent e) {
-       
-        notificationLabel.setForeground(Color.YELLOW); 
+            public void mouseExited(MouseEvent e) {
+
+                notificationLabel.setForeground(Color.BLACK);
+            }
+        });
+
+        welcomePanel.add(notificationLabel);
+
+        JLabel homeTabLabel = new JLabel("Home");
+        homeTabLabel.setBounds(50, 7, 100, 40);
+        homeTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
+        homeTabLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(tabPanel);
+                frame.getContentPane().add(welcomePanel);
+                frame.repaint();
+                frame.revalidate();
+            }
+        });
+        tabPanel.add(homeTabLabel);
+
+        JLabel meTabLabel = new JLabel("Me");
+        meTabLabel.setBounds(800, 7, 100, 40);
+        meTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
+        meTabLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JPanel mePanel = new JPanel() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        super.paintComponent(g);
+                        Graphics2D g2d = (Graphics2D) g.create();
+                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        Shape circle = new Ellipse2D.Double(10, 50, 100, 100); // Adjusted position and size
+                        g2d.setColor(Color.BLUE);
+                        g2d.fill(circle);
+                        g2d.dispose();
+                    }
+                };
+                mePanel.setBounds(0, 0, 897, 470);
+                mePanel.setLayout(null);
+
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(mePanel);
+                frame.getContentPane().add(tabPanel);
+                frame.repaint();
+                frame.revalidate();
+
+                JPanel bluePanel = new JPanel();
+                bluePanel.setBounds(0, 160, 897, 516);
+                bluePanel.setBackground(Color.BLUE);
+                bluePanel.setLayout(null);
+                mePanel.add(bluePanel);
+
+                JLabel adminLabel = new JLabel("Are you admin?");
+                adminLabel.setBounds(760, 10, 200, 30);
+                adminLabel.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+
+                        JPasswordField passwordField = new JPasswordField();
+                        Object[] message = {
+                            "Enter password:",
+                            passwordField
+                        };
+
+                        int option = JOptionPane.showConfirmDialog(frame, message, "Enter Password", JOptionPane.OK_CANCEL_OPTION);
+
+                        if (option == JOptionPane.OK_OPTION && new String(passwordField.getPassword()).equals("P@ssword!")) {
+                            JPanel adminPanel = new JPanel();
+                            adminPanel.setBounds(0, 0, 897, 516);
+                            adminPanel.setBackground(Color.WHITE);
+                            adminPanel.setLayout(null);
+
+                            frame.getContentPane().removeAll();
+                            frame.getContentPane().add(adminPanel);
+                            frame.repaint();
+                            frame.revalidate();
+
+                            JButton viewTransactionButton = new JButton("View Transaction");
+                            viewTransactionButton.setBounds(100, 100, 150, 30);
+                            viewTransactionButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    JPanel transactionPanel = new JPanel();
+                                    transactionPanel.setBounds(50, 50, 400, 400);
+                                    transactionPanel.setBackground(Color.GREEN);
+                                    transactionPanel.setLayout(new BorderLayout()); // Use BorderLayout
+
+                                    JTextArea requestsTextArea = new JTextArea();
+                                    try {
+                                        // Read content from masterlist.txt
+                                        BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
+                                        String line;
+                                        while ((line = reader.readLine()) != null) {
+                                            requestsTextArea.append(line + "\n");
+                                        }
+                                        reader.close();
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                        JOptionPane.showMessageDialog(frame, "No Transaction");
+                                    }
+
+                                    JScrollPane scrollPane = new JScrollPane(requestsTextArea);
+                                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Add a vertical scrollbar
+
+                                    requestsTextArea.setEditable(false);
+
+                                    JButton approveButton = new JButton("Approve");
+                                    JButton rejectButton = new JButton("Reject");
+
+                                    approveButton.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            // Perform actions when approve button is clicked
+                                            // For example, remove the approved request from pendingRequests
+                                            // Update UI accordingly
+                                            pendingRequests.clear();
+                                            requestsTextArea.setText("");
+                                            if (pendingRequests.isEmpty()) {
+                                                requestsTextArea.setText("No transactions at the moment.");
+                                            } else {
+                                                // Display the pending requests
+                                                for (String request: pendingRequests) {
+                                                    requestsTextArea.append(request + "\n");
+                                                }
+                                            }
+                                            JOptionPane.showMessageDialog(frame, "All Requests Approved!");
+                                        }
+                                    });
+
+                                    rejectButton.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            // Perform actions when reject button is clicked
+                                            // For example, remove the rejected request from pendingRequests
+                                            // Update UI accordingly
+                                            pendingRequests.clear();
+                                            requestsTextArea.setText("");
+                                            if (pendingRequests.isEmpty()) {
+                                                requestsTextArea.setText("No transactions at the moment.");
+                                            } else {
+                                                // Display the pending requests
+                                                for (String request: pendingRequests) {
+                                                    requestsTextArea.append(request + "\n");
+                                                }
+                                            }
+                                            JOptionPane.showMessageDialog(frame, "All Requests Rejected!");
+                                        }
+                                    });
+
+                                    // Add buttons to the top of the panel
+                                    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+                                    buttonPanel.add(approveButton);
+                                    buttonPanel.add(rejectButton);
+
+                                    transactionPanel.add(buttonPanel, BorderLayout.NORTH);
+                                    transactionPanel.add(scrollPane, BorderLayout.CENTER);
+
+                                    frame.getContentPane().removeAll();
+                                    frame.getContentPane().add(transactionPanel);
+                                    frame.repaint();
+                                    frame.revalidate();
+
+                                    JButton backButton = new JButton("Back");
+                                    backButton.setBounds(10, 10, 100, 30);
+                                    backButton.addActionListener(new ActionListener() {
+                                        public void actionPerformed(ActionEvent e) {
+                                            frame.getContentPane().removeAll();
+                                            frame.getContentPane().add(adminPanel);
+                                            frame.repaint();
+                                            frame.revalidate();
+                                        }
+                                    });
+                                    transactionPanel.add(backButton);
+
+                                }
+                            });
+
+                            adminPanel.add(viewTransactionButton);
+
+                            JButton backButton = new JButton("Back");
+                            backButton.setBounds(10, 10, 100, 30);
+                            backButton.addActionListener(new ActionListener() {
+                                public void actionPerformed(ActionEvent e) {
+                                    frame.getContentPane().removeAll();
+                                    frame.getContentPane().add(tabPanel);
+                                    frame.getContentPane().add(mePanel);
+                                    frame.repaint();
+                                    frame.revalidate();
+                                }
+                            });
+                            adminPanel.add(backButton);
+
+                        } else {
+                            JOptionPane.showMessageDialog(frame, "Invalid Password");
+                        }
+                    }
+                });
+                mePanel.add(adminLabel);
+
+                JButton logoutButton = new JButton("Logout");
+                logoutButton.setBounds(10, 50, 100, 30);
+                logoutButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.getContentPane().add(loginPanel);
+                        frame.repaint();
+                        frame.revalidate();
+                    }
+                });
+                bluePanel.add(logoutButton);
+            }
+        });
+        tabPanel.add(meTabLabel);
+
     }
-
-    public void mouseExited(MouseEvent e) {
-
-        notificationLabel.setForeground(Color.BLACK);
-    }
-});
-			
-				welcomePanel.add(notificationLabel);
-
-
-
-
-		
-		JLabel homeTabLabel = new JLabel("Home");
-		homeTabLabel.setBounds(50, 7, 100, 40);
-		homeTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		homeTabLabel.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent e) {
-				
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(tabPanel);
-				frame.getContentPane().add(welcomePanel);
-				frame.repaint();
-				frame.revalidate();
-		    }
-		});
-		tabPanel.add(homeTabLabel);
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
-		JLabel meTabLabel = new JLabel("Me");
-		meTabLabel.setBounds(800, 7, 100, 40);
-		meTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		meTabLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				JPanel mePanel = new JPanel() {
-					@Override
-					protected void paintComponent(Graphics g) {
-						super.paintComponent(g);
-						Graphics2D g2d = (Graphics2D) g.create();
-						g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-						Shape circle = new Ellipse2D.Double(10, 50, 100, 100); // Adjusted position and size
-						g2d.setColor(Color.BLUE);
-						g2d.fill(circle);
-						g2d.dispose();
-					}
-				};
-				mePanel.setBounds(0, 0, 897, 470);
-				mePanel.setLayout(null);
-
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(mePanel);
-				frame.getContentPane().add(tabPanel);
-				frame.repaint();
-				frame.revalidate();
-				
-				JPanel bluePanel = new JPanel();
-				bluePanel.setBounds(0, 160, 897, 516);
-				bluePanel.setBackground(Color.BLUE);
-				bluePanel.setLayout(null);
-				mePanel.add(bluePanel);
-				
-				JLabel adminLabel = new JLabel("Are you admin?");
-				adminLabel.setBounds(760, 10, 200, 30);
-				adminLabel.addMouseListener(new MouseAdapter(){
-					public void mouseClicked(MouseEvent e){
-						
-						JPasswordField passwordField = new JPasswordField();
-						Object[] message = {"Enter password:", passwordField};
-
-						int option = JOptionPane.showConfirmDialog(frame, message, "Enter Password", JOptionPane.OK_CANCEL_OPTION);
-						
-						if (option == JOptionPane.OK_OPTION && new String(passwordField.getPassword()).equals("P@ssword!")) {
-							JPanel adminPanel = new JPanel();
-							adminPanel.setBounds(0,0,897,516);
-							adminPanel.setBackground(Color.WHITE);
-							adminPanel.setLayout(null);
-							
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(adminPanel);
-							frame.repaint();
-							frame.revalidate();
-							
-						JButton viewTransactionButton = new JButton("View Transaction");
-						viewTransactionButton.setBounds(100, 100, 150, 30);
-						viewTransactionButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							JPanel transactionPanel = new JPanel();
-							transactionPanel.setBounds(50, 50, 400, 400);
-							transactionPanel.setBackground(Color.GREEN);
-							transactionPanel.setLayout(new BorderLayout());  // Use BorderLayout
-
-							 JTextArea requestsTextArea = new JTextArea();
-								try {
-									// Read content from masterlist.txt
-									BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
-									String line;
-									while ((line = reader.readLine()) != null) {
-										requestsTextArea.append(line + "\n");
-									}
-									reader.close();
-								} catch (IOException ex) {
-									ex.printStackTrace();
-									JOptionPane.showMessageDialog(frame, "No Transaction");
-								}
-
-								JScrollPane scrollPane = new JScrollPane(requestsTextArea);
-								scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Add a vertical scrollbar
-
-								requestsTextArea.setEditable(false);
-
-							JButton approveButton = new JButton("Approve");
-							JButton rejectButton = new JButton("Reject");
-
-							approveButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									// Perform actions when approve button is clicked
-									// For example, remove the approved request from pendingRequests
-									// Update UI accordingly
-									pendingRequests.clear();
-									requestsTextArea.setText("");
-									if (pendingRequests.isEmpty()) {
-										requestsTextArea.setText("No transactions at the moment.");
-									} else {
-										// Display the pending requests
-										for (String request : pendingRequests) {
-											requestsTextArea.append(request + "\n");
-										}
-									}
-									JOptionPane.showMessageDialog(frame, "All Requests Approved!");
-								}
-							});
-
-							rejectButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									// Perform actions when reject button is clicked
-									// For example, remove the rejected request from pendingRequests
-									// Update UI accordingly
-									pendingRequests.clear();
-									requestsTextArea.setText("");
-									if (pendingRequests.isEmpty()) {
-										requestsTextArea.setText("No transactions at the moment.");
-									} else {
-										// Display the pending requests
-										for (String request : pendingRequests) {
-											requestsTextArea.append(request + "\n");
-										}
-									}
-									JOptionPane.showMessageDialog(frame, "All Requests Rejected!");
-								}
-							});
-
-
-							// Add buttons to the top of the panel
-							JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-							buttonPanel.add(approveButton);
-							buttonPanel.add(rejectButton);
-
-							transactionPanel.add(buttonPanel, BorderLayout.NORTH);
-							transactionPanel.add(scrollPane, BorderLayout.CENTER);
-
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(transactionPanel);
-							frame.repaint();
-							frame.revalidate();
-							
-							JButton backButton = new JButton("Back");
-							backButton.setBounds(10,10,100,30);
-							backButton.addActionListener(new ActionListener(){
-								public void actionPerformed(ActionEvent e){
-									frame.getContentPane().removeAll();
-									frame.getContentPane().add(adminPanel);
-									frame.repaint();
-									frame.revalidate();
-								}	
-							});
-							transactionPanel.add(backButton);
-
-						}
-					});
-
-					adminPanel.add(viewTransactionButton);
-					
-					
-					JButton backButton = new JButton("Back");
-					backButton.setBounds(10,10,100,30);
-					backButton.addActionListener(new ActionListener(){
-						public void actionPerformed(ActionEvent e){
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(tabPanel);
-							frame.getContentPane().add(mePanel);
-							frame.repaint();
-							frame.revalidate();
-						}	
-					});
-					adminPanel.add(backButton);
-
-
-						}
-						else{
-							JOptionPane.showMessageDialog(frame, "Invalid Password");
-						}
-					}	
-				});
-				mePanel.add(adminLabel);
-
-				JButton logoutButton = new JButton("Logout");
-				logoutButton.setBounds(10, 50, 100, 30);
-				logoutButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(loginPanel);
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				bluePanel.add(logoutButton);
-			}
-		});
-		tabPanel.add(meTabLabel);
-
-		
-	}
 }
