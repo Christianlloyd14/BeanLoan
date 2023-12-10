@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
+import java.io.*;
 
 
 
@@ -35,49 +36,132 @@ class DashboardView{
 
 
 
+		// Inside the borrowButton.addActionListener block
 		JButton borrowButton = new JButton("Borrow Now");
 		borrowButton.setBounds(85, 200, 200, 30);
-		borrowButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
+		borrowButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				JPanel borrowPanel = new JPanel();
-				borrowPanel.setBounds(0,0, 897,516);
+				borrowPanel.setBounds(0, 0, 897, 516);
 				borrowPanel.setBackground(Color.BLACK);
 				borrowPanel.setLayout(null);
-				
+
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(borrowPanel);
 				frame.repaint();
 				frame.revalidate();
-				
-				
+
 				JLabel backLabel = new JLabel("Back");
-				backLabel.setBounds(10,10,100,40);
-				backLabel.addMouseListener(new MouseAdapter(){
-					public void mouseClicked(MouseEvent e){
+				backLabel.setBounds(10, 10, 100, 40);
+				backLabel.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
 						frame.getContentPane().removeAll();
 						frame.getContentPane().add(welcomePanel);
 						frame.repaint();
 						frame.revalidate();
-					}	
+					}
 				});
 				borrowPanel.add(backLabel);
-				
+
+				JTextField loanAmountField = new JTextField("Loan Amount");
+				loanAmountField.setBounds(10, 50, 150, 30);
+				loanAmountField.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						loanAmountField.setText("");
+					}
+				});
+				borrowPanel.add(loanAmountField);
+
+				JTextField fullNameField = new JTextField("Full Name");
+				fullNameField.setBounds(10, 90, 150, 30);
+				fullNameField.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						fullNameField.setText("");
+					}
+				});
+				borrowPanel.add(fullNameField);
+
+				JTextField numberField = new JTextField("Phone Number");
+				numberField.setBounds(10, 130, 150, 30);
+				numberField.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						numberField.setText("");
+					}
+				});
+				borrowPanel.add(numberField);
+
 				String[] purposeOfLoanChoice = {"Purpose of Loan", "Business Startup", "Medical", "Loans", "Others"};
 				JComboBox<String> loanPurpose = new JComboBox<>(purposeOfLoanChoice);
-				loanPurpose.setBounds(10, 50, 150, 30);
+				loanPurpose.setBounds(10, 170, 150, 30);
 				borrowPanel.add(loanPurpose);
-				
+
 				String[] professionChoice = {"Profession", "OFW", "Unemployed", "Government Employee", "Self-employed", "Others"};
 				JComboBox<String> profession = new JComboBox<>(professionChoice);
-				profession.setBounds(10, 90, 150, 30);
+				profession.setBounds(10, 210, 150, 30);
 				borrowPanel.add(profession);
-				
-			
 
+				// Add JComboBox for Monthly Income
+				String[] incomeChoices = {"Monthly Income", "Less than ₱10,000", "₱10,000 - ₱20,000", "₱20,000 - ₱30,000", "₱30,000 - ₱50,000", "More than ₱50,000"};
+				JComboBox<String> monthlyIncome = new JComboBox<>(incomeChoices);
+				monthlyIncome.setBounds(10, 250, 150, 30);
+				borrowPanel.add(monthlyIncome);
 
-			}	
+				JButton continueButton = new JButton("Continue");
+				continueButton.setBounds(10, 290, 150, 30);
+				continueButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						// Validate if any field is empty
+						if (loanAmountField.getText().isEmpty() || fullNameField.getText().isEmpty() ||
+								numberField.getText().isEmpty() || loanPurpose.getSelectedIndex() == 0 ||
+								profession.getSelectedIndex() == 0 || monthlyIncome.getSelectedIndex() == 0) {
+							JOptionPane.showMessageDialog(frame, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+						} else {
+							// Proceed with processing the information
+							try {
+								double loanAmount = Double.parseDouble(loanAmountField.getText());
+								// Save information to a file named after the user's full name
+								String fullName = fullNameField.getText();
+								String number = numberField.getText();
+								String selectedPurpose = (String) loanPurpose.getSelectedItem();
+								String selectedProfession = (String) profession.getSelectedItem();
+								String selectedIncome = (String) monthlyIncome.getSelectedItem();
+
+								FileWriter fileWriter = new FileWriter(fullName + "_" + number + ".txt");
+								fileWriter.write("Loan Amount: " + loanAmount + "\n");
+								fileWriter.write("Full Name: " + fullName + "\n");
+								fileWriter.write("Phone Number: " + number + "\n");
+								fileWriter.write("Purpose of Loan: " + selectedPurpose + "\n");
+								fileWriter.write("Profession: " + selectedProfession + "\n");
+								fileWriter.write("Monthly Income: " + selectedIncome + "\n");
+								fileWriter.close();
+								JOptionPane.showMessageDialog(frame, "Information saved successfully!");
+							} catch (NumberFormatException ex) {
+								JOptionPane.showMessageDialog(frame, "Please enter a valid number for the loan amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
+							} catch (IOException ex) {
+								ex.printStackTrace();
+								JOptionPane.showMessageDialog(frame, "Error saving information");
+							}
+						}
+					}
+				});
+				borrowPanel.add(continueButton);
+			}
 		});
 		violetPanel.add(borrowButton);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		JLabel amountLabel = new JLabel("Loan Amount(₱)");
 		amountLabel.setBounds(150, 50, 100, 30);
@@ -181,79 +265,18 @@ class DashboardView{
 		});
 		tabPanel.add(homeTabLabel);
 		
-		JLabel billTabLabel = new JLabel("Bill");
-		billTabLabel.setBounds(430, 7, 100, 40);
-		billTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
-		billTabLabel.addMouseListener(new MouseAdapter() {
-		    public void mouseClicked(MouseEvent e) {
-				
-				JPanel billPanel = new JPanel();
-				billPanel.setBounds(0,0, 897,470);
-				billPanel.setBackground(Color.BLUE);
-				billPanel.setLayout(null);
-				
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(billPanel);
-				frame.getContentPane().add(tabPanel);
-				frame.repaint();
-				frame.revalidate();
-				
-				JLabel billLabel = new JLabel("Bill");
-				billLabel.setBounds(430, 10, 300, 40);
-				billLabel.setFont(new Font("Arial", Font.BOLD, 25));
-				billPanel.add(billLabel);
-				
-				JPanel greenPanel = new JPanel();
-				greenPanel.setBounds(0,85, 897, 470);
-				greenPanel.setBackground(Color.GREEN);
-				billPanel.add(greenPanel);
-				
-
-				JLabel currentLabel = new JLabel("Current");
-				currentLabel.setBounds(50, 50, 100, 40);
-				currentLabel.setFont(new Font("Arial", Font.BOLD, 25));
-				currentLabel.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						greenPanel.removeAll();
-
-						JLabel noLoansLabel = new JLabel("No Loans");
-						noLoansLabel.setBounds(420, 100, 100, 40);
-						greenPanel.add(noLoansLabel);
-						
-						JButton borrowNowButton = new JButton("Borrow Now");
-						borrowNowButton.setBounds(390, 250, 100, 30);
-						greenPanel.add(borrowNowButton);
-
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				billPanel.add(currentLabel);
-
-				JLabel historyLabel = new JLabel("History");
-				historyLabel.setBounds(750, 50, 100, 40);
-				historyLabel.setFont(new Font("Arial", Font.BOLD, 25));
-				historyLabel.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						greenPanel.removeAll();
-
-						JLabel noHistoryLabel = new JLabel("No History");
-						noHistoryLabel.setBounds(420, 100, 100, 40);
-						greenPanel.add(noHistoryLabel);
-						
-						JButton borrowNowButton = new JButton("Borrow Now");
-						borrowNowButton.setBounds(390, 250, 100, 30);
-						greenPanel.add(borrowNowButton);
-
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				billPanel.add(historyLabel);
-				
-		    }
-		});
-		tabPanel.add(billTabLabel);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 		JLabel meTabLabel = new JLabel("Me");
 		meTabLabel.setBounds(800, 7, 100, 40);
@@ -307,6 +330,35 @@ class DashboardView{
 							frame.getContentPane().add(adminPanel);
 							frame.repaint();
 							frame.revalidate();
+							
+							JButton viewTransactionButton = new JButton("View Transaction");
+							viewTransactionButton.setBounds(100, 100, 150, 30);
+							viewTransactionButton.addActionListener(new ActionListener(){
+								public void actionPerformed(ActionEvent e){
+									JPanel transactionPanel = new JPanel();
+									transactionPanel.setBounds(50,50, 400,400);
+									transactionPanel.setBackground(Color.GREEN);
+									transactionPanel.setLayout(null);
+									
+									frame.getContentPane().removeAll();
+									frame.getContentPane().add(transactionPanel);
+									frame.repaint();
+									frame.revalidate();
+									
+									JButton backButton = new JButton("Back");
+									backButton.setBounds(10,10,100,30);
+									backButton.addActionListener(new ActionListener(){
+										public void actionPerformed(ActionEvent e){
+											frame.getContentPane().removeAll();
+											frame.getContentPane().add(adminPanel);
+											frame.repaint();
+											frame.revalidate();
+										}	
+									});
+									transactionPanel.add(backButton);
+								}	
+							});
+							adminPanel.add(viewTransactionButton);
 							
 							JButton backButton = new JButton("Back");
 							backButton.setBounds(10,10, 100, 30);
