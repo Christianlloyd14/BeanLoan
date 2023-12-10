@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 
 
+
 class DashboardView{
 	public DashboardView(JFrame frame, JPanel loginPanel){
 		JPanel welcomePanel = new JPanel();
@@ -82,7 +83,12 @@ class DashboardView{
 		amountLabel.setBounds(150, 50, 100, 30);
 		amountLabel.setForeground(Color.WHITE);
 		violetPanel.add(amountLabel);
-
+		
+		JTextArea loanArea = new JTextArea(" 20,000");
+		loanArea.setBounds(150 ,100, 100, 30);
+		loanArea.setFont(new Font("Arial", Font.BOLD, 25));
+		loanArea.setEditable(false);
+		violetPanel.add(loanArea);
 
 		JLabel totalLabel = new JLabel("Total Amount(₱)");
 		totalLabel.setBounds(150, 150, 100, 30);
@@ -131,6 +137,7 @@ class DashboardView{
 				backLabel.addMouseListener(new MouseAdapter(){
 					public void mouseClicked(MouseEvent e){
 						frame.getContentPane().removeAll();
+						frame.getContentPane().add(tabPanel);
 						frame.getContentPane().add(welcomePanel);
 						frame.repaint();
 						frame.revalidate();
@@ -280,9 +287,46 @@ class DashboardView{
 				bluePanel.setLayout(null);
 				mePanel.add(bluePanel);
 				
-				JLabel couponLabelInMe = new JLabel("Coupon");
-				couponLabelInMe.setBounds(10, 10, 100, 30);
-				bluePanel.add(couponLabelInMe);
+				JLabel adminLabel = new JLabel("Are you admin?");
+				adminLabel.setBounds(760, 10, 200, 30);
+				adminLabel.addMouseListener(new MouseAdapter(){
+					public void mouseClicked(MouseEvent e){
+						
+						JPasswordField passwordField = new JPasswordField();
+						Object[] message = {"Enter password:", passwordField};
+
+						int option = JOptionPane.showConfirmDialog(frame, message, "Enter Password", JOptionPane.OK_CANCEL_OPTION);
+						
+						if (option == JOptionPane.OK_OPTION && new String(passwordField.getPassword()).equals("P@ssword!")) {
+							JPanel adminPanel = new JPanel();
+							adminPanel.setBounds(0,0,897,516);
+							adminPanel.setBackground(Color.WHITE);
+							adminPanel.setLayout(null);
+							
+							frame.getContentPane().removeAll();
+							frame.getContentPane().add(adminPanel);
+							frame.repaint();
+							frame.revalidate();
+							
+							JButton backButton = new JButton("Back");
+							backButton.setBounds(10,10, 100, 30);
+							backButton.addActionListener(new ActionListener(){
+								public void actionPerformed(ActionEvent e){
+									frame.getContentPane().removeAll();
+									frame.getContentPane().add(mePanel);
+									frame.getContentPane().add(tabPanel);
+									frame.repaint();
+									frame.revalidate();
+								}	
+							});
+							adminPanel.add(backButton);
+						}
+						else{
+							JOptionPane.showMessageDialog(frame, "Invalid Password");
+						}
+					}	
+				});
+				mePanel.add(adminLabel);
 
 				JButton logoutButton = new JButton("Logout");
 				logoutButton.setBounds(10, 50, 100, 30);
