@@ -49,14 +49,28 @@ public class LoginView {
         applyCircularMask(img);
 
         loginPanel.add(img);
-        
+
+        JButton exitButton = new JButton("X");
+        exitButton.setBounds(847, 10, 40, 20); // Adjust the position and size as needed
+        exitButton.setFont(new Font("Arial", Font.BOLD, 12)); // Adjust font as needed
+
+        // Adjusting the text inside the button by setting margins
+        Insets margin = new Insets(2, 2, 2, 2); // Adjust margins as needed
+        exitButton.setMargin(margin);
+
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0); // Exit the application
+            }
+        });
+        loginPanel.add(exitButton);
+
         JTextField usernameField = new JTextField("Username");
         usernameField.setBounds(469, 218, 332, 46);
         usernameField.setForeground(Color.GRAY);
         
-        // Create a rounded border for the JTextField
-        Border roundedBorder = new RoundedBorder(10); // Adjust the corner radius as needed
-        usernameField.setBorder(roundedBorder);
+        // Set the border to null to remove it
+        usernameField.setBorder(null);
 
         usernameField.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
