@@ -1,21 +1,25 @@
+package book.system.register;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class RegisterView {
     private JFrame frame;
 
     public RegisterView(JFrame frame, JPanel loginPanel) {
         this.frame = frame;
-        
+
         JPanel registerPanel = new JPanel();
         registerPanel.setBounds(0, 0, 897, 516);
         registerPanel.setBackground(new Color(50, 129, 186));
         registerPanel.setLayout(null);
-        
+
         JPanel bluePanel = new JPanel();
         bluePanel.setBounds(0, 0, 312, 516);
         bluePanel.setBackground(new Color(23, 53, 99));
@@ -28,7 +32,7 @@ public class RegisterView {
         int newWidth = bluePanel.getWidth();
         int newHeight = bluePanel.getHeight() / 2;
 
-        // Resize the image
+        
         Image img = pictureIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(img);
 
@@ -78,6 +82,23 @@ public class RegisterView {
         passField.setBounds(460, 250, 350, 30);
         registerPanel.add(passField);
 
+        JCheckBox showPassCheckBox = new JCheckBox("Show Password");
+        showPassCheckBox.setBounds(745, 290, 120, 25);
+        showPassCheckBox.setBackground(new Color(50, 129, 186));
+        showPassCheckBox.setForeground(Color.WHITE);
+        showPassCheckBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerPanel.add(showPassCheckBox);
+
+        showPassCheckBox.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (showPassCheckBox.isSelected()) {
+                    passField.setEchoChar((char) 0); 
+                } else {
+                    passField.setEchoChar('\u2022'); 
+                }
+            }
+        });
+
         JLabel picture = new JLabel();
         picture.setIcon(new ImageIcon("name.png"));
         Dimension size = picture.getPreferredSize();
@@ -107,7 +128,7 @@ public class RegisterView {
             }
         });
         registerPanel.add(cancelButton);
-        
+
         JLabel termsLabel = new JLabel("Terms and Privacy");
         termsLabel.setBounds(583, 370, 150, 30);
         termsLabel.setForeground(Color.WHITE);
@@ -115,28 +136,28 @@ public class RegisterView {
         termsLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 showTermsWindow(
-                    "Terms and Privacy Information for Loaning System\n\n" +
-                    "1. User Agreement:\n" +
-                    "   By using our loaning system, you agree to abide by the terms and conditions outlined in this agreement.\n\n" +
-                    "2. Eligibility:\n" +
-                    "   To use the loaning system, you must be at least 18 years old and have the legal capacity to enter into a contract.\n\n" +
-                    "3. Loan Approval:\n" +
-                    "   Loan approval is subject to eligibility criteria, credit assessment, and our internal policies. We reserve the right to deny a loan application without providing a reason.\n\n" +
-                    "4. Interest Rates and Fees:\n" +
-                    "   The interest rates and fees associated with loans are clearly communicated during the application process. It is the user's responsibility to review and understand the associated costs.\n\n" +
-                    "5. Repayment Terms:\n" +
-                    "   Users are required to repay the loan amount according to the agreed-upon schedule. Late payments may result in additional fees.\n\n" +
-                    "6. Privacy Policy:\n" +
-                    "   We are committed to protecting your privacy. Personal information collected during the loan application process is used solely for the purpose of processing the loan and will not be shared with third parties without your consent.\n\n" +
-                    "7. Security Measures:\n" +
-                    "   We implement industry-standard security measures to protect your personal and financial information. However, users are advised to take necessary precautions, such as maintaining secure login credentials.\n\n" +
-                    "8. Termination of Account:\n" +
-                    "   We reserve the right to terminate user accounts for any violation of the terms and conditions or suspicious activities.\n\n" +
-                    "9. Changes to Terms:\n" +
-                    "   We may update our terms and privacy policies periodically. Users will be notified of any changes, and continued use of the loaning system implies acceptance of the updated terms.\n\n" +
-                    "10. Contact Information:\n" +
-                    "    For questions or concerns regarding our terms and privacy policies, please contact our customer support at [your contact information].\n\n" +
-                    "By clicking \"Agree\" or using our loaning system, you acknowledge that you have read, understood, and agree to the terms and privacy information outlined above."
+                        "Terms and Privacy Information for Loaning System\n\n" +
+                                "1. User Agreement:\n" +
+                                "   By using our loaning system, you agree to abide by the terms and conditions outlined in this agreement.\n\n" +
+                                "2. Eligibility:\n" +
+                                "   To use the loaning system, you must be at least 18 years old and have the legal capacity to enter into a contract.\n\n" +
+                                "3. Loan Approval:\n" +
+                                "   Loan approval is subject to eligibility criteria, credit assessment, and our internal policies. We reserve the right to deny a loan application without providing a reason.\n\n" +
+                                "4. Interest Rates and Fees:\n" +
+                                "   The interest rates and fees associated with loans are clearly communicated during the application process. It is the user's responsibility to review and understand the associated costs.\n\n" +
+                                "5. Repayment Terms:\n" +
+                                "   Users are required to repay the loan amount according to the agreed-upon schedule. Late payments may result in additional fees.\n\n" +
+                                "6. Privacy Policy:\n" +
+                                "   We are committed to protecting your privacy. Personal information collected during the loan application process is used solely for the purpose of processing the loan and will not be shared with third parties without your consent.\n\n" +
+                                "7. Security Measures:\n" +
+                                "   We implement industry-standard security measures to protect your personal and financial information. However, users are advised to take necessary precautions, such as maintaining secure login credentials.\n\n" +
+                                "8. Termination of Account:\n" +
+                                "   We reserve the right to terminate user accounts for any violation of the terms and conditions or suspicious activities.\n\n" +
+                                "9. Changes to Terms:\n" +
+                                "   We may update our terms and privacy policies periodically. Users will be notified of any changes, and continued use of the loaning system implies acceptance of the updated terms.\n\n" +
+                                "10. Contact Information:\n" +
+                                "    For questions or concerns regarding our terms and privacy policies, please contact our customer support at [your contact information].\n\n" +
+                                "By clicking \"Agree\" or using our loaning system, you acknowledge that you have read, understood, and agree to the terms and privacy information outlined above."
                 );
             }
         });
@@ -185,7 +206,8 @@ public class RegisterView {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Registration Form");
-        frame.setUndecorated(true);
+        frame.setUndecorated(true); 
+        frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel loginPanel = new JPanel();
 
