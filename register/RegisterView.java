@@ -20,36 +20,41 @@ public class RegisterView {
         registerPanel.setBackground(new Color(50, 129, 186));
         registerPanel.setLayout(null);
 
-        JPanel bluePanel = new JPanel();
+        JPanel bluePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bluePanel.setBounds(0, 0, 312, 516);
         bluePanel.setBackground(new Color(23, 53, 99));
-        bluePanel.setLayout(null);
         registerPanel.add(bluePanel);
 
         ImageIcon pictureIcon = new ImageIcon("cite.jpg");
-        ImageIcon secondPictureIcon = new ImageIcon("bean.png");
 
         int newWidth = bluePanel.getWidth();
         int newHeight = bluePanel.getHeight() / 2;
 
-        
         Image img = pictureIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(img);
 
-        Image secondImg = secondPictureIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-        ImageIcon resizedSecondIcon = new ImageIcon(secondImg);
-
         JLabel logoLabel1 = new JLabel(resizedIcon);
-        logoLabel1.setBounds(0, 0, newWidth, newHeight);
+        logoLabel1.setPreferredSize(new Dimension(newWidth, newHeight));
         bluePanel.add(logoLabel1);
 
-        JLabel logoLabel2 = new JLabel(resizedSecondIcon);
-        logoLabel2.setBounds(0, newHeight, newWidth, newHeight);
-        bluePanel.add(logoLabel2);
+        JLabel textLabel1 = new JLabel("Let's get you set up!");
+        Font customFont = new Font("Times New Roman", Font.PLAIN, 36);
+        textLabel1.setFont(customFont);
+        textLabel1.setForeground(Color.WHITE);
+        textLabel1.setHorizontalAlignment(JLabel.CENTER);
+        textLabel1.setBounds(10, 220, 250, 230);
+        bluePanel.add(textLabel1);
 
+        JLabel textLabel2 = new JLabel("It should only take a couple of minutes");
+        textLabel2.setForeground(Color.WHITE);
+        textLabel2.setHorizontalAlignment(JLabel.CENTER);
+        textLabel1.setBounds(10, 220, 300, 200);
+        bluePanel.add(textLabel2);
+
+    
         frame.getContentPane().removeAll();
         frame.getContentPane().add(registerPanel);
-        frame.setSize(897, 535);
+        frame.setSize(897, 516);
         frame.repaint();
         frame.revalidate();
 
