@@ -406,26 +406,35 @@ class DashboardView {
         subscriptionButtonGroup.add(sixMonthsSubscriptionRadio);
         subscriptionButtonGroup.add(oneYearSubscriptionRadio);
 
+        JLabel userStatusLabel = new JLabel();
+        userStatusLabel.setBounds(120, 130, 500, 30);
+        userStatusLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        
+        
         JButton subscribeButton = new JButton("Subscribe");
         subscribeButton.setBounds(50, 220, 150, 30);
         subscribeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Check which subscription is selected
                 if (oneMonthSubscriptionRadio.isSelected()) {
                     // Handle 1 Month Subscription
                     JOptionPane.showMessageDialog(frame, "Subscribed to 1 Month Subscription");
+                    userStatusLabel.setText("VIP User");
                 } else if (threeMonthsSubscriptionRadio.isSelected()) {
                     // Handle 3 Months Subscription
                     JOptionPane.showMessageDialog(frame, "Subscribed to 3 Months Subscription");
+                    userStatusLabel.setText("VIP User");
                 } else if (sixMonthsSubscriptionRadio.isSelected()) {
                     // Handle 6 Months Subscription
                     JOptionPane.showMessageDialog(frame, "Subscribed to 6 Months Subscription");
+                    userStatusLabel.setText("VIP User");
                 } else if (oneYearSubscriptionRadio.isSelected()) {
                     // Handle 1 Year Subscription
                     JOptionPane.showMessageDialog(frame, "Subscribed to 1 Year Subscription");
+                    userStatusLabel.setText("VIP User");
                 } else {
                     // No subscription selected
                     JOptionPane.showMessageDialog(frame, "Please select a subscription");
+                    userStatusLabel.setText("Regular User");
                 }
             }
         });
@@ -614,6 +623,7 @@ class DashboardView {
 				welcomeUserLabel.setBounds(120, 90, 500, 40);
 				welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 30));
 				mePanel.add(welcomeUserLabel);
+                mePanel.add(userStatusLabel);
 
                 JLabel settingsLabel = new JLabel("Settings");
                 settingsLabel.setBounds(765, 100, 100, 30);
