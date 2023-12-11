@@ -20,19 +20,30 @@ public class RegisterView {
         bluePanel.setLayout(null);
         registerPanel.add(bluePanel);
 
-        ImageIcon pictureIcon = new ImageIcon("Testing.png");
+        ImageIcon pictureIcon = new ImageIcon("cite.jpg");
+        ImageIcon secondPictureIcon = new ImageIcon("bean.png");
 
-        JLabel logoLabel1 = new JLabel(pictureIcon);
-        logoLabel1.setBounds(10, 10, pictureIcon.getIconWidth(), pictureIcon.getIconHeight());
+        int newWidth = bluePanel.getWidth();
+        int newHeight = bluePanel.getHeight() / 2;
+
+        // Resize the image
+        Image img = pictureIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(img);
+
+        Image secondImg = secondPictureIcon.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        ImageIcon resizedSecondIcon = new ImageIcon(secondImg);
+
+        JLabel logoLabel1 = new JLabel(resizedIcon);
+        logoLabel1.setBounds(0, 0, newWidth, newHeight);
         bluePanel.add(logoLabel1);
 
-        JLabel logoLabel2 = new JLabel(pictureIcon);
-        logoLabel2.setBounds(280, 80, 10, 10);
+        JLabel logoLabel2 = new JLabel(resizedSecondIcon);
+        logoLabel2.setBounds(0, newHeight, newWidth, newHeight);
         bluePanel.add(logoLabel2);
 
         frame.getContentPane().removeAll();
         frame.getContentPane().add(registerPanel);
-        frame.setSize(897, 516);
+        frame.setSize(897, 535);
         frame.repaint();
         frame.revalidate();
 
