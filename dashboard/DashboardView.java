@@ -63,6 +63,7 @@ class DashboardView {
                     public void mouseClicked(MouseEvent e) {
                         frame.getContentPane().removeAll();
                         frame.getContentPane().add(welcomePanel);
+                        frame.getContentPane().add(tabPanel);
                         frame.repaint();
                         frame.revalidate();
                     }
@@ -255,20 +256,16 @@ class DashboardView {
             }
         });
         violetPanel.add(borrowButton);
+		
 
-        JLabel amountLabel = new JLabel("Loan Amount(₱)");
-        amountLabel.setBounds(150, 50, 100, 30);
-        amountLabel.setForeground(Color.WHITE);
-        violetPanel.add(amountLabel);
-
-        JLabel loanArea = new JLabel(" 20,000");
-        loanArea.setBounds(150, 100, 100, 30);
+        JLabel loanArea = new JLabel("Borrow up to 20,000");
+        loanArea.setBounds(70, 80, 400, 30);
         loanArea.setForeground(Color.WHITE);
         loanArea.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
         violetPanel.add(loanArea);
 
-        JLabel totalLabel = new JLabel("Total Amount(₱)");
-        totalLabel.setBounds(150, 150, 100, 30);
+        JLabel totalLabel = new JLabel("So what are you waiting for?");
+        totalLabel.setBounds(110, 150, 500, 30);
         totalLabel.setForeground(Color.WHITE);
         violetPanel.add(totalLabel);
 
@@ -294,34 +291,53 @@ class DashboardView {
         tabPanel.setLayout(null);
         welcomePanel.add(tabPanel);
 
-        JLabel couponLabel = new JLabel("Coupon Offer");
-        couponLabel.setBounds(450, 80, 100, 30);
-        couponLabel.setForeground(Color.WHITE);
-        couponLabel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                frame.getContentPane().removeAll();
-                frame.getContentPane().add(couponPanel);
-                frame.repaint();
-                frame.revalidate();
+		JLabel couponLabel = new JLabel("Coupon Offer");
+		couponLabel.setBounds(450, 80, 100, 30);
+		couponLabel.setForeground(Color.WHITE);
+		couponLabel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(couponPanel);
+				frame.repaint();
+				frame.revalidate();
 
-                JLabel backLabel = new JLabel("Back");
-                backLabel.setBounds(10, 10, 100, 40);
-                backLabel.addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(MouseEvent e) {
-                        frame.getContentPane().removeAll();
-                        frame.getContentPane().add(tabPanel);
-                        frame.getContentPane().add(welcomePanel);
-                        frame.repaint();
-                        frame.revalidate();
-                    }
-                });
-                couponPanel.add(backLabel);
+				JLabel backLabel = new JLabel("Back");
+				backLabel.setBounds(10, 10, 100, 40);
+				backLabel.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(tabPanel);
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}
+				});
+				couponPanel.add(backLabel);
 
-                JButton useButton = new JButton("Use");
-                useButton.setBounds(10, 170, 70, 30);
-                couponPanel.add(useButton);
-            }
-        });
+				JPanel voucherPanel = new JPanel();
+				voucherPanel.setBounds(10, 100, 200, 100);
+				voucherPanel.setBackground(Color.GRAY);
+				voucherPanel.setLayout(null);
+				couponPanel.add(voucherPanel);
+				
+				JLabel couponLabel = new JLabel("20% off");
+				couponLabel.setBounds(5, 55, 100, 30);
+				voucherPanel.add(couponLabel);
+
+				JButton useButton = new JButton("Use");
+				useButton.setBounds(10, 10, 70, 30);
+				useButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(frame, "Obtained 20% off voucher");
+						voucherPanel.setVisible(false);
+						frame.revalidate(); // Revalidate the container
+						frame.repaint();    // Repaint the container
+					}
+				});
+				voucherPanel.add(useButton);
+
+			}
+		});
 
         couponLabel.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
@@ -340,6 +356,20 @@ class DashboardView {
         });
 
         violetPanel.add(couponLabel);
+		
+		
+        JPanel subscriptionPanel = new JPanel();
+        subscriptionPanel.setBounds(0, 0, 897, 516);
+        subscriptionPanel.setBackground(Color.WHITE);
+        subscriptionPanel.setLayout(null);
+		
+		JPanel yellowPanel = new JPanel();
+        yellowPanel.setBounds(0, 0, 442, 516);
+        yellowPanel.setBackground(Color.YELLOW);
+        yellowPanel.setLayout(null);
+		subscriptionPanel.add(yellowPanel);
+
+        
 
         JLabel premiumUserLabel = new JLabel("Premium User");
         premiumUserLabel.setBounds(450, 110, 200, 30);
@@ -347,7 +377,7 @@ class DashboardView {
         premiumUserLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 frame.getContentPane().removeAll();
-                frame.getContentPane().add(welcomePanel);
+                frame.getContentPane().add(subscriptionPanel);
                 frame.repaint();
                 frame.revalidate();
             }
@@ -365,16 +395,6 @@ class DashboardView {
         });
         violetPanel.add(premiumUserLabel);
 
-        JPanel subscriptionPanel = new JPanel();
-        subscriptionPanel.setBounds(0, 0, 897, 516);
-        subscriptionPanel.setBackground(Color.WHITE);
-        subscriptionPanel.setLayout(null);
-
-        JPanel yellowPanel = new JPanel();
-        yellowPanel.setBounds(0, 0, 442, 516);
-        yellowPanel.setBackground(Color.YELLOW);
-        yellowPanel.setLayout(null);
-        subscriptionPanel.add(yellowPanel);
 
         // Add subscription details to the subscription panel
         JLabel subscriptionLabel = new JLabel("Available Subscriptions:");
@@ -409,8 +429,7 @@ class DashboardView {
         JLabel userStatusLabel = new JLabel();
         userStatusLabel.setBounds(120, 130, 500, 30);
         userStatusLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-        
-        
+
         JButton subscribeButton = new JButton("Subscribe");
         subscribeButton.setBounds(50, 220, 150, 30);
         subscribeButton.addActionListener(new ActionListener() {
@@ -439,6 +458,8 @@ class DashboardView {
             }
         });
         yellowPanel.add(subscribeButton);
+
+
 
         // Back button to go back to the home page
         JButton backButton = new JButton("Back");
@@ -549,11 +570,6 @@ class DashboardView {
         financialHealthCheckupsText.setBounds(475, 450, 700, 30);
         subscriptionPanel.add(financialHealthCheckupsText);
 
-        // Add other subscription options as needed
-
-        frame.getContentPane().add(subscriptionPanel);
-        frame.repaint();
-        frame.revalidate();
 
         premiumUserLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -587,7 +603,7 @@ class DashboardView {
         });
         tabPanel.add(homeTabLabel);
 
-        JLabel meTabLabel = new JLabel("Me");
+         JLabel meTabLabel = new JLabel("Me");
         meTabLabel.setBounds(800, 7, 100, 40);
         meTabLabel.setFont(new Font("Arial", Font.BOLD, 25));
         meTabLabel.addMouseListener(new MouseAdapter() {
@@ -633,7 +649,7 @@ class DashboardView {
 
                         JPanel settingsPanel = new JPanel();
                         settingsPanel.setBounds(0, 0, 897, 516);
-                        settingsPanel.setBackground(Color.BLUE);
+                        settingsPanel.setBackground(new Color(50, 129, 186));
                         settingsPanel.setLayout(null);
 
                         frame.getContentPane().removeAll();
@@ -793,7 +809,7 @@ class DashboardView {
                                                 public void mouseClicked(MouseEvent e) {
                                                     JPanel notificationPanel = new JPanel();
                                                     notificationPanel.setBounds(0, 0, 897, 516);
-                                                    notificationPanel.setBackground(Color.GREEN);
+                                                    notificationPanel.setBackground(new Color(50, 129, 186));
                                                     notificationPanel.setLayout(null);
 
                                                     frame.getContentPane().removeAll();
