@@ -17,8 +17,8 @@ public class UserController{
 		UserModel.ifUserExist(frame, loginPanel,usernameField, passwordField);
 	}
 	
-	public static void displayWelcomeView(JFrame frame, JPanel loginPanel){
-		LoginController.displayWelcomeView(frame, loginPanel);
+	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username){
+		LoginController.displayWelcomeView(frame, loginPanel, username);
 	}
 	
 	public static void toCreateUser(JFrame frame, JTextField nameField, JTextField userField, JPasswordField passField, JPanel loginPanel){

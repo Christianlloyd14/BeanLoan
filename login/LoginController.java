@@ -1,4 +1,4 @@
-	package book.system.login;
+package book.system.login;
 
 import javax.swing.*;
 import book.system.user.UserController;
@@ -18,12 +18,11 @@ public class LoginController{
 		UserController.ifUserExist(frame, loginPanel, usernameField, passwordField);
 	}
 	
-	public static void displayWelcomeView(JFrame frame, JPanel loginPanel){
-		new DashboardController(frame, loginPanel);
+	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username){
+		new DashboardController(frame, loginPanel, username);
 	}
 	
 	public static void displayRegisterView(JFrame frame, JPanel loginPanel){
 		new RegisterController(frame, loginPanel);
 	}
-	
 }

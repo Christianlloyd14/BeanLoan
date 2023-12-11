@@ -23,7 +23,6 @@ public class UserModel {
             return;
         }
 
-        // Check if the username or name already exists
         if (userExists(username) || nameExists(name)) {
             JOptionPane.showMessageDialog(frame, "Username or name already exists. Please choose a different one.");
             return;
@@ -66,7 +65,7 @@ public class UserModel {
         String password = new String(passwordField.getPassword());
 
         if (readUser(username, password)) {
-            UserController.displayWelcomeView(frame, loginPanel);
+            UserController.displayWelcomeView(frame, loginPanel, username);
             usernameField.setText("");
             passwordField.setText("");
         } else {
@@ -74,17 +73,14 @@ public class UserModel {
         }
     }
 
-    // Check if the given username already exists in the file
     private static boolean userExists(String username) {
         return userOrNameExists(username, 1);
     }
 
-    // Check if the given name already exists in the file
     private static boolean nameExists(String name) {
         return userOrNameExists(name, 0);
     }
 
-    // Check if the given username or name already exists in the file
     private static boolean userOrNameExists(String value, int index) {
         try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
             String line;
