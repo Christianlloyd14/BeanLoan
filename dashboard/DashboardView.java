@@ -11,7 +11,7 @@ class DashboardView {
     private ArrayList < String > pendingRequests;
     private JPanel tabPanel;
 
-    public DashboardView(JFrame frame, JPanel loginPanel) {
+    public DashboardView(JFrame frame, JPanel loginPanel, String username) {
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBounds(0, 0, 897, 516);
         welcomePanel.setBackground(new Color(50, 129, 186));
@@ -609,6 +609,11 @@ class DashboardView {
                 bluePanel.setBackground(Color.BLUE);
                 bluePanel.setLayout(null);
                 mePanel.add(bluePanel);
+				
+				JLabel welcomeUserLabel = new JLabel("Welcome " + username + "!");
+				welcomeUserLabel.setBounds(120, 90, 500, 40);
+				welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 30));
+				mePanel.add(welcomeUserLabel);
 
                 JLabel settingsLabel = new JLabel("Settings");
                 settingsLabel.setBounds(765, 100, 100, 30);
@@ -802,6 +807,16 @@ class DashboardView {
                                                         }
                                                     });
                                                     notificationPanel.add(backButton);
+													
+													JButton clearButton = new JButton("Clear");
+													clearButton.setBounds(10, 200, 100, 30);
+													clearButton.addActionListener(new ActionListener(){
+														public void actionPerformed(ActionEvent e){
+															notificationText.setText("");
+														}	
+													});
+													notificationPanel.add(clearButton);
+													
                                                 }
                                             });
                                             welcomePanel.add(notificationLabel);
