@@ -223,8 +223,8 @@ class DashboardView {
                                         backButton.addActionListener(new ActionListener() {
                                             public void actionPerformed(ActionEvent e) {
                                                 frame.getContentPane().removeAll();
-                                                frame.getContentPane().add(tabPanel);
                                                 frame.getContentPane().add(welcomePanel);
+                                                frame.getContentPane().add(tabPanel);
                                                 frame.repaint();
                                                 frame.revalidate();
                                             }
@@ -234,12 +234,6 @@ class DashboardView {
                                 });
                                 welcomePanel.add(notificationLabel);
 
-                                // Go back to the home page
-                                frame.getContentPane().removeAll();
-                                frame.getContentPane().add(welcomePanel);
-                                frame.getContentPane().add(tabPanel);
-                                frame.repaint();
-                                frame.revalidate();
 
                             } catch (NumberFormatException ex) {
                                 JOptionPane.showMessageDialog(frame, "Please enter a valid number for the loan amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -826,8 +820,8 @@ class DashboardView {
                                                     backButton.addActionListener(new ActionListener() {
                                                         public void actionPerformed(ActionEvent e) {
                                                             frame.getContentPane().removeAll();
-                                                            frame.getContentPane().add(tabPanel);
                                                             frame.getContentPane().add(welcomePanel);
+                                                            frame.getContentPane().add(tabPanel);
                                                             frame.repaint();
                                                             frame.revalidate();
                                                         }
