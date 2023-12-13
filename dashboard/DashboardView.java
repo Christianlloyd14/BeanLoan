@@ -166,14 +166,14 @@ class DashboardView {
 		
 		
 		JLabel userStatusLabel = new JLabel();
-		userStatusLabel.setBounds(10,10,100,30);
+		userStatusLabel.setBounds(110,120,100,30);
 		
         JLabel premiumUserLabel = new JLabel("Premium User");
         premiumUserLabel.setBounds(450, 110, 200, 30);
         premiumUserLabel.setForeground(Color.WHITE);
         premiumUserLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-				new PremiumView(frame, welcomePanel, tabPanel);
+				new PremiumView(frame, welcomePanel, tabPanel, userStatusLabel);
             }
 
             public void mouseEntered(MouseEvent e) {

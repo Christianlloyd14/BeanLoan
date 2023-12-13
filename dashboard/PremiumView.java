@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.awt.*;
 
 public class PremiumView{
-	PremiumView(JFrame frame, JPanel welcomePanel, JPanel tabPanel){
+	PremiumView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JLabel userStatusLabel){
 		JPanel subscriptionPanel = new JPanel();
 		subscriptionPanel.setBounds(0, 0, 897, 516);
 		subscriptionPanel.setBackground(Color.WHITE);
@@ -129,10 +129,6 @@ public class PremiumView{
 		subscriptionButtonGroup.add(threeMonthsSubscriptionRadio);
 		subscriptionButtonGroup.add(sixMonthsSubscriptionRadio);
 		subscriptionButtonGroup.add(oneYearSubscriptionRadio);
-
-		JLabel userStatusLabel = new JLabel();
-		userStatusLabel.setBounds(120, 130, 500, 30);
-		userStatusLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
 		JButton subscribeButton = new JButton("Subscribe");
 		subscribeButton.setBounds(50, 220, 150, 30);
