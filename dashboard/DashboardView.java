@@ -46,6 +46,19 @@ class DashboardView {
 		});
 		welcomePanel.add(exitButton);
 		
+		JButton tabButton = new JButton("Show Tab");
+		tabButton.setBounds(400, 480, 100, 30);
+		tabButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(tabPanel);
+				frame.getContentPane().add(welcomePanel);
+				frame.repaint();
+				frame.revalidate();
+			}	
+		});
+		welcomePanel.add(tabButton);
+		
 		
 		JLabel welcomeUserLabel = new JLabel("Welcome " + username + "!");
 		welcomeUserLabel.setBounds(10, 10, 500, 40);

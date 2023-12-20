@@ -5,13 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
+
 
 public class MeView{
-    private ArrayList < String > pendingRequests;
 	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel){
-		
-        pendingRequests = new ArrayList < > ();
 		
 		JPanel mePanel = new JPanel() {
 			@Override
@@ -49,23 +46,76 @@ public class MeView{
 		mePanel.add(userStatusLabel);
 
 		JLabel settingsLabel = new JLabel("Settings");
-		settingsLabel.setBounds(765, 100, 100, 30);
+		settingsLabel.setBounds(830, 20, 100, 30);
 		settingsLabel.setForeground(Color.BLACK);
 		settingsLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
 				JPanel settingsPanel = new JPanel();
-				settingsPanel.setBounds(0, 0, 897, 516);
-				settingsPanel.setBackground(new Color(50, 129, 186));
+				settingsPanel.setBounds(290, 50, 300, 400);
+				settingsPanel.setBackground(Color.YELLOW);
 				settingsPanel.setLayout(null);
 
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(settingsPanel);
+				frame.getContentPane().add(tabPanel);
+				frame.getContentPane().add(mePanel);
 				frame.repaint();
 				frame.revalidate();
-
+				
+				JLabel welcomeUserLabel = new JLabel("Have a nice day " + username + "!");
+				welcomeUserLabel.setBounds(40, 40, 500, 30);
+				welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 25));
+				settingsPanel.add(welcomeUserLabel);
+				
+				
+				JButton backButton = new JButton("Back");
+				backButton.setBounds(50, 150, 200, 30);
+				backButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(tabPanel);
+						frame.getContentPane().add(mePanel);
+						frame.repaint();
+						frame.revalidate();
+					}	
+				});
+				settingsPanel.add(backButton);
+				
+				JButton optionButton = new JButton("Option");
+				optionButton.setBounds(50, 190, 200, 30);
+				optionButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						new AdminView(frame, tabPanel, welcomePanel, mePanel);
+					}	
+				});
+				settingsPanel.add(optionButton);
+				
+				JButton logoutButton = new JButton("Logout");
+				logoutButton.setBounds(50, 230, 200, 30);
+				logoutButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int result = JOptionPane.showConfirmDialog(frame, "Do you really want to logout?", "Confirmation", JOptionPane.YES_NO_OPTION);
+						if(result == JOptionPane.YES_OPTION){
+							frame.getContentPane().removeAll();
+							frame.getContentPane().add(loginPanel);
+							frame.repaint();
+							frame.revalidate();
+						}
+					}
+				});
+				settingsPanel.add(logoutButton);
+				
+				
+				JLabel customerSupLabel = new JLabel("Customer Support");
+				customerSupLabel.setBounds(10, 350, 100, 30);
+				customerSupLabel.setForeground(Color.BLACK);
+				customerSupLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+				settingsPanel.add(customerSupLabel);
+				
+				
 				JLabel aboutUsLabel = new JLabel("About Us");
-				aboutUsLabel.setBounds(10, 70, 100, 30);
+				aboutUsLabel.setBounds(240, 350, 100, 30);
 				aboutUsLabel.setForeground(Color.BLACK);
 				aboutUsLabel.setFont(new Font("Arial", Font.ITALIC, 12));
 				aboutUsLabel.addMouseListener(new MouseAdapter() {
@@ -94,28 +144,9 @@ public class MeView{
 						frame.revalidate();
 					}
 				});
-
-				JLabel customerSupLabel = new JLabel("Customer Support");
-				customerSupLabel.setBounds(10, 100, 100, 30);
-				customerSupLabel.setForeground(Color.BLACK);
-				customerSupLabel.setFont(new Font("Arial", Font.ITALIC, 12));
-
 				settingsPanel.add(aboutUsLabel);
-				settingsPanel.add(customerSupLabel);
-
-				JLabel backLabel1 = new JLabel("Back");
-				backLabel1.setBounds(10, 10, 100, 40);
-				backLabel1.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(tabPanel);
-						frame.getContentPane().add(mePanel);
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				settingsPanel.add(backLabel1);
-
+				
+				
 			}
 		});
 
@@ -134,188 +165,6 @@ public class MeView{
 			}
 		});
 		mePanel.add(settingsLabel);
-		
-
-		JLabel adminLabel = new JLabel("Are you admin?");
-		adminLabel.setBounds(760, 10, 200, 30);
-		adminLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-
-				JPasswordField passwordField = new JPasswordField();
-				Object[] message = {
-					"Enter password:",
-					passwordField
-				};
-
-				int option = JOptionPane.showConfirmDialog(frame, message, "Enter Password", JOptionPane.OK_CANCEL_OPTION);
-
-				if (option == JOptionPane.OK_OPTION && new String(passwordField.getPassword()).equals("P@ssword!")) {
-					JPanel adminPanel = new JPanel();
-					adminPanel.setBounds(0, 0, 897, 516);
-					adminPanel.setBackground(new Color(50, 129, 186));
-					adminPanel.setLayout(null);
-
-					frame.getContentPane().removeAll();
-					frame.getContentPane().add(adminPanel);
-					frame.repaint();
-					frame.revalidate();
-
-					JButton viewTransactionButton = new JButton("View Transaction");
-					viewTransactionButton.setBounds(100, 100, 150, 30);
-					viewTransactionButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							JPanel transactionPanel = new JPanel();
-							transactionPanel.setBounds(50, 50, 400, 400);
-							transactionPanel.setBackground(new Color(50, 129, 186));
-							transactionPanel.setLayout(new BorderLayout()); // Use BorderLayout
-
-							JTextArea requestsTextArea = new JTextArea();
-							try {
-								// Read content from masterlist.txt
-								BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
-								String line;
-								while ((line = reader.readLine()) != null) {
-									requestsTextArea.append(line + "\n");
-								}
-								reader.close();
-							} catch (IOException ex) {
-								ex.printStackTrace();
-								JOptionPane.showMessageDialog(frame, "No Transaction");
-							}
-
-							JScrollPane scrollPane = new JScrollPane(requestsTextArea);
-							scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // Add a vertical scrollbar
-
-							requestsTextArea.setEditable(false);
-
-							JButton rejectButton = new JButton("Reject");
-
-							JButton approveButton = new JButton("Approve");
-							approveButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									// Perform actions when approve button is clicked
-									// For example, remove the approved request from pendingRequests
-									// Update UI accordingly
-									pendingRequests.clear();
-									requestsTextArea.setText("");
-									if (pendingRequests.isEmpty()) {
-										requestsTextArea.setText("No transactions at the moment.");
-									} else {
-										// Display the pending requests
-										for (String request: pendingRequests) {
-											requestsTextArea.append(request + "\n");
-										}
-									}
-									JOptionPane.showMessageDialog(frame, "All Requests Approved!");
-
-									// Notify the user in the notificationLabel
-									JLabel notificationLabel = new JLabel("Notification");
-									notificationLabel.setBounds(750, 10, 100, 40);
-									notificationLabel.addMouseListener(new MouseAdapter() {
-										public void mouseClicked(MouseEvent e) {
-											JPanel notificationPanel = new JPanel();
-											notificationPanel.setBounds(0, 0, 897, 516);
-											notificationPanel.setBackground(new Color(50, 129, 186));
-											notificationPanel.setLayout(null);
-
-											frame.getContentPane().removeAll();
-											frame.getContentPane().add(notificationPanel);
-											frame.repaint();
-											frame.revalidate();
-
-											JLabel notificationText = new JLabel("Your request has been approved!");
-											notificationText.setBounds(10, 100, 400, 30);
-											notificationPanel.add(notificationText);
-
-											JButton backButton = new JButton("Back");
-											backButton.setBounds(10, 10, 100, 30);
-											backButton.addActionListener(new ActionListener() {
-												public void actionPerformed(ActionEvent e) {
-													frame.getContentPane().removeAll();
-													frame.getContentPane().add(welcomePanel);
-													frame.repaint();
-													frame.revalidate();
-												}
-											});
-											notificationPanel.add(backButton);
-											
-											JButton clearButton = new JButton("Clear");
-											clearButton.setBounds(10, 200, 100, 30);
-											clearButton.addActionListener(new ActionListener(){
-												public void actionPerformed(ActionEvent e){
-													notificationText.setText("");
-												}	
-											});
-											notificationPanel.add(clearButton);
-											
-										}
-									});
-									welcomePanel.add(notificationLabel);
-								}
-							});
-
-							// Add buttons to the top of the panel
-							JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-							buttonPanel.add(approveButton);
-							buttonPanel.add(rejectButton);
-
-							transactionPanel.add(buttonPanel, BorderLayout.NORTH);
-							transactionPanel.add(scrollPane, BorderLayout.CENTER);
-
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(transactionPanel);
-							frame.repaint();
-							frame.revalidate();
-
-							JButton backButton = new JButton("Back");
-							backButton.setBounds(10, 10, 100, 30);
-							backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-							backButton.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									frame.getContentPane().removeAll();
-									frame.getContentPane().add(adminPanel);
-									frame.repaint();
-									frame.revalidate();
-								}
-							});
-							transactionPanel.add(backButton);
-
-						}
-					});
-
-					adminPanel.add(viewTransactionButton);
-
-					JButton backButton = new JButton("Back");
-					backButton.setBounds(10, 10, 100, 30);
-					backButton.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							frame.getContentPane().removeAll();
-							frame.getContentPane().add(tabPanel);
-							frame.getContentPane().add(mePanel);
-							frame.repaint();
-							frame.revalidate();
-						}
-					});
-					adminPanel.add(backButton);
-
-				} else {
-					JOptionPane.showMessageDialog(frame, "Invalid Password");
-				}
-			}
-		});
-		mePanel.add(adminLabel);
-
-		JButton logoutButton = new JButton("Logout");
-		logoutButton.setBounds(765, 250, 100, 30);
-		logoutButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(loginPanel);
-				frame.repaint();
-				frame.revalidate();
-			}
-		});
-		bluePanel.add(logoutButton);
 		
 		
 	}
