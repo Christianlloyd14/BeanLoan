@@ -11,24 +11,35 @@ public class MeView{
 	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel){
 		
 		JPanel mePanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				Shape circle = new Ellipse2D.Double(10, 50, 100, 100); // Adjusted position and size
-				g2d.setColor(Color.BLUE);
-				g2d.fill(circle);
-				g2d.dispose();
-			}
-		};
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Shape circle = new Ellipse2D.Double(10, 50, 100, 100);
+                g2d.setColor(new Color(73, 30, 192));
+                g2d.fill(circle);
+
+                // Add the first letter of the username inside the circle
+                g2d.setColor(Color.WHITE); // Set text color to white
+                g2d.setFont(new Font("Arial", Font.BOLD, 50)); // Adjust font and size
+                FontMetrics fm = g2d.getFontMetrics();
+                String firstLetter = username.substring(0, 1).toUpperCase(); // Get the first letter and convert to uppercase
+                int x = (int) (circle.getBounds2D().getCenterX() - fm.stringWidth(firstLetter) / 2);
+                int y = (int) (circle.getBounds2D().getCenterY() + fm.getAscent() / 2);
+                g2d.drawString(firstLetter, x, y);
+
+                g2d.dispose();
+            }
+        };
 		mePanel.setBounds(0, 0, 897, 470);
+		mePanel.setBackground(new Color(50, 129, 186));
 		mePanel.setLayout(null);
 		
 		
 		JPanel bluePanel = new JPanel();
 		bluePanel.setBounds(0, 160, 897, 516);
-		bluePanel.setBackground(new Color(50, 129, 186));
+		bluePanel.setBackground(new Color(73, 30, 192));
 		bluePanel.setLayout(null);
 		mePanel.add(bluePanel);
 		
@@ -42,6 +53,7 @@ public class MeView{
 		JLabel welcomeUserLabel = new JLabel(username);
 		welcomeUserLabel.setBounds(120, 90, 500, 40);
 		welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 30));
+		welcomeUserLabel.setForeground(Color.WHITE);
 		mePanel.add(welcomeUserLabel);
 		mePanel.add(userStatusLabel);
 
@@ -53,7 +65,7 @@ public class MeView{
 
 				JPanel settingsPanel = new JPanel();
 				settingsPanel.setBounds(290, 50, 300, 400);
-				settingsPanel.setBackground(Color.YELLOW);
+				settingsPanel.setBackground(Color.WHITE);
 				settingsPanel.setLayout(null);
 
 				frame.getContentPane().removeAll();

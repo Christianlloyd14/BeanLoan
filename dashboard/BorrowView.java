@@ -15,13 +15,19 @@ public class BorrowView {
 
         JPanel bluePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         bluePanel.setBounds(0, 0, 312, 516);
-        bluePanel.setBackground(new Color(23, 53, 99));
+        bluePanel.setBackground(new Color(50, 129, 186));
         borrowPanel.add(bluePanel);
 
         JLabel titleLabel = new JLabel("Please fill in the form");
         titleLabel.setBounds(350, 100, 400, 30);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 25));
+		titleLabel.setForeground(Color.WHITE);
         borrowPanel.add(titleLabel);
+		
+		JLabel amountLabel = new JLabel("you can only borrow up to 20,000");
+		amountLabel.setBounds(630, 150, 500, 30);
+		amountLabel.setForeground(Color.WHITE);
+		borrowPanel.add(amountLabel);
 
         JTextField loanAmountField = new JTextField("Loan Amount");
 		loanAmountField.setBounds(350, 150, 250, 30);
@@ -31,6 +37,11 @@ public class BorrowView {
 			}
 		});
 		borrowPanel.add(loanAmountField);
+		
+		JLabel yearsLabel = new JLabel("limit of 20 years");
+		yearsLabel.setBounds(630, 185, 400, 30);
+		yearsLabel.setForeground(Color.WHITE);
+		borrowPanel.add(yearsLabel);
 
 		JTextField yearsField = new JTextField("Input how many years");
 		yearsField.setBounds(350, 185, 250, 30);
@@ -40,6 +51,11 @@ public class BorrowView {
 			}
 		});
 		borrowPanel.add(yearsField);
+		
+		JLabel fullnameLabel = new JLabel("Firstname, Surname, Middlename");
+		fullnameLabel.setBounds(630, 220, 500, 30);
+		fullnameLabel.setForeground(Color.WHITE);
+		borrowPanel.add(fullnameLabel);
 
 		JTextField fullNameField = new JTextField("Full Name");
 		fullNameField.setBounds(350, 220, 250, 30);
@@ -49,6 +65,11 @@ public class BorrowView {
 			}
 		});
 		borrowPanel.add(fullNameField);
+		
+		JLabel numberLabel = new JLabel("XXXX-XXX-XXXX");
+		numberLabel.setBounds(630, 255, 300, 30);
+		numberLabel.setForeground(Color.WHITE);
+		borrowPanel.add(numberLabel);
 
 		JTextField numberField = new JTextField("Phone Number");
 		numberField.setBounds(350, 255, 250, 30);

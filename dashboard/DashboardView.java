@@ -8,6 +8,8 @@ import java.io.*;
 class DashboardView {
 
     public DashboardView(JFrame frame, JPanel loginPanel, String username) {
+		
+		JOptionPane.showMessageDialog(frame, "Welcome " + username + "!");
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBounds(0, 0, 897, 516);
         welcomePanel.setBackground(new Color(50, 129, 186));
@@ -59,11 +61,6 @@ class DashboardView {
 		});
 		welcomePanel.add(tabButton);
 		
-		
-		JLabel welcomeUserLabel = new JLabel("Welcome " + username + "!");
-		welcomeUserLabel.setBounds(10, 10, 500, 40);
-		welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 30));
-		welcomePanel.add(welcomeUserLabel);
 
         JButton borrowButton = new JButton("Borrow Now");
 		borrowButton.setBounds(85, 200, 200, 30);
@@ -72,7 +69,7 @@ class DashboardView {
 				JButton backButton = new JButton("Back");
 				JPanel borrowPanel = new JPanel();
 				borrowPanel.setBounds(0, 0, 897, 516);
-				borrowPanel.setBackground(new Color(50, 129, 186));
+				borrowPanel.setBackground(new Color(73, 30, 192));
 				borrowPanel.setLayout(null);
 				
 				
@@ -106,7 +103,7 @@ class DashboardView {
 
         JLabel commentLabel = new JLabel("Amount will be increased by repeat borrowing");
         commentLabel.setBounds(60, 250, 300, 30);
-        commentLabel.setForeground(Color.GRAY);
+        commentLabel.setForeground(Color.WHITE);
         violetPanel.add(commentLabel);
 
         JLabel specialOfferLabel = new JLabel("Special Offer:");
@@ -146,12 +143,13 @@ class DashboardView {
 
 				JPanel voucherPanel = new JPanel();
 				voucherPanel.setBounds(10, 100, 200, 100);
-				voucherPanel.setBackground(Color.GRAY);
+				voucherPanel.setBackground(new Color(73, 30, 192));
 				voucherPanel.setLayout(null);
 				couponPanel.add(voucherPanel);
 				
 				JLabel couponLabel = new JLabel("20% off");
 				couponLabel.setBounds(5, 55, 100, 30);
+				couponLabel.setForeground(Color.WHITE);
 				voucherPanel.add(couponLabel);
 
 				JButton useButton = new JButton("Use");
@@ -180,6 +178,7 @@ class DashboardView {
 		
 		JLabel userStatusLabel = new JLabel();
 		userStatusLabel.setBounds(110,120,100,30);
+		userStatusLabel.setForeground(new Color(212,175,55));
 		
         JLabel premiumUserLabel = new JLabel("Premium User");
         premiumUserLabel.setBounds(450, 110, 200, 30);
