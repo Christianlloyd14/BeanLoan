@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
+import javax.swing.text.*;
+
 
 public class BorrowView {
     // Constructor for BorrowView
@@ -31,12 +33,22 @@ public class BorrowView {
 
         JTextField loanAmountField = new JTextField("Loan Amount");
 		loanAmountField.setBounds(350, 150, 250, 30);
+		loanAmountField.setDocument(new PlainDocument() {
+			public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+				if (str == null) return;
+
+				if ((getLength() + str.length()) <= 5 && str.matches("\\d+")) {
+					super.insertString(offset, str, attr);
+				}
+			}
+		});
 		loanAmountField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				loanAmountField.setText("");
 			}
 		});
 		borrowPanel.add(loanAmountField);
+
 		
 		JLabel yearsLabel = new JLabel("limit of 20 years");
 		yearsLabel.setBounds(630, 185, 400, 30);
@@ -45,6 +57,15 @@ public class BorrowView {
 
 		JTextField yearsField = new JTextField("Input how many years");
 		yearsField.setBounds(350, 185, 250, 30);
+		yearsField.setDocument(new PlainDocument() {
+			public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+				if (str == null) return;
+
+				if ((getLength() + str.length()) <= 2 && str.matches("\\d+")) {
+					super.insertString(offset, str, attr);
+				}
+			}
+		});
 		yearsField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				yearsField.setText("");
@@ -73,6 +94,15 @@ public class BorrowView {
 
 		JTextField numberField = new JTextField("Phone Number");
 		numberField.setBounds(350, 255, 250, 30);
+		numberField.setDocument(new PlainDocument() {
+			public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+				if (str == null) return;
+
+				if ((getLength() + str.length()) <= 11 && str.matches("\\d+")) {
+					super.insertString(offset, str, attr);
+				}
+			}
+		});
 		numberField.addFocusListener(new FocusAdapter() {
 			public void focusGained(FocusEvent e) {
 				numberField.setText("");
@@ -125,6 +155,13 @@ public class BorrowView {
                 try {
                     double loanAmount = Double.parseDouble(loanAmountField.getText());
 
+					// Validate if the loan amount is within the allowed range (up to 20,000)
+					if (loanAmount > 20000) {
+						JOptionPane.showMessageDialog(frame, "Loan amount cannot exceed 20,000.", "Input Error", JOptionPane.ERROR_MESSAGE);
+						continueButton.setEnabled(true);
+						return;
+					}
+					
                     // Validate if any field is empty
                     if (loanAmountField.getText().isEmpty() || fullNameField.getText().isEmpty() ||
                             numberField.getText().isEmpty() || loanPurpose.getSelectedIndex() == 0 ||

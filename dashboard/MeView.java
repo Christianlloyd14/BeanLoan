@@ -59,7 +59,7 @@ public class MeView{
 
 		JLabel settingsLabel = new JLabel("Settings");
 		settingsLabel.setBounds(830, 20, 100, 30);
-		settingsLabel.setForeground(Color.BLACK);
+		settingsLabel.setForeground(Color.WHITE);
 		settingsLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 
