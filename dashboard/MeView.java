@@ -37,10 +37,38 @@ public class MeView{
 		mePanel.setLayout(null);
 		
 		
-		JPanel bluePanel = new JPanel();
-		bluePanel.setBounds(0, 160, 897, 516);
-		bluePanel.setBackground(new Color(73, 30, 192));
-		bluePanel.setLayout(null);
+		
+        JPanel bluePanel = new JPanel();
+        bluePanel.setBounds(0, 160, 897, 300);
+        bluePanel.setBackground(new Color(73, 30, 192));
+        bluePanel.setLayout(new BorderLayout()); // Use BorderLayout for bluePanel
+
+        // Create a JTabbedPane
+        JTabbedPane tabbedPane = new JTabbedPane();
+
+        // Tab 1: Current Money
+        JPanel currentMoneyPanel = new JPanel();
+        currentMoneyPanel.setBackground(Color.WHITE);
+        // Add components and functionality for the "Current Money" tab
+        tabbedPane.addTab("Current Money", null, currentMoneyPanel, "View current money details");
+		
+		JLabel balanceLabel = new JLabel("Balance: ");
+		balanceLabel.setBounds(10,10, 100, 30);
+		currentMoneyPanel.add(balanceLabel);
+		
+        // Tab 2: Notification
+        JPanel notificationPanel = new JPanel();
+        notificationPanel.setBackground(Color.WHITE);
+        // Add components and functionality for the "Notification" tab
+        tabbedPane.addTab("Notification", null, notificationPanel, "View notifications");
+		
+		JLabel pendingLabel = new JLabel("You have no notification");
+		pendingLabel.setBounds(10,10, 100, 30);
+		notificationPanel.add(pendingLabel);
+		
+		
+        // Add the JTabbedPane to the bluePanel
+        bluePanel.add(tabbedPane, BorderLayout.CENTER);
 		mePanel.add(bluePanel);
 		
 		frame.getContentPane().removeAll();
@@ -56,7 +84,8 @@ public class MeView{
 		welcomeUserLabel.setForeground(Color.WHITE);
 		mePanel.add(welcomeUserLabel);
 		mePanel.add(userStatusLabel);
-
+		
+		
 		JLabel settingsLabel = new JLabel("Settings");
 		settingsLabel.setBounds(830, 20, 100, 30);
 		settingsLabel.setForeground(Color.WHITE);
@@ -65,7 +94,7 @@ public class MeView{
 
 				JPanel settingsPanel = new JPanel();
 				settingsPanel.setBounds(290, 50, 300, 400);
-				settingsPanel.setBackground(Color.WHITE);
+				settingsPanel.setBackground(new Color(59,89,152));
 				settingsPanel.setLayout(null);
 
 				frame.getContentPane().removeAll();
@@ -178,6 +207,12 @@ public class MeView{
 		});
 		mePanel.add(settingsLabel);
 		
-		
+	}
+	
+	public static void notificationprompt(JPanel notificationPanel, JLabel pendingLabel){
+		pendingLabel.setText("");
+		JButton notificationButton = new JButton("You have a pending request!");
+		notificationButton.setBounds(10,10,100,30);
+		notificationPanel.add(notificationButton);
 	}
 }

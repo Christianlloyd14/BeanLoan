@@ -8,8 +8,9 @@ import javax.swing.text.*;
 
 
 public class BorrowView {
-    // Constructor for BorrowView
-    BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {
+	
+    public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {
+		
         frame.getContentPane().removeAll();
         frame.getContentPane().add(borrowPanel);
         frame.repaint();
@@ -185,6 +186,7 @@ public class BorrowView {
                         // Proceed with processing the information
 
                         try {
+							
                             // Existing code for writing to the file
                             try (FileWriter fileWriter = new FileWriter("masterlist.txt", true)) {
                                 String userInformation = fullNameField.getText() + "/" +
@@ -211,6 +213,7 @@ public class BorrowView {
                             monthlyIncome.setSelectedIndex(0);
 
                             // Additional processing or confirmation dialog can go here...
+							//MeView.notificationprompt(notificationPanel, pendingLabel);
 
                         } catch (NumberFormatException ex) {
                             ex.printStackTrace();
