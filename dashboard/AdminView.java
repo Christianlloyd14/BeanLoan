@@ -63,10 +63,7 @@ public class AdminView {
 						}
 					});
 					transactionPanel.add(backButton);
-					
-					JButton deleteButton = new JButton("Delete");
-					deleteButton.setBounds(530, 50, 100, 30);
-					transactionPanel.add(deleteButton);
+				
 
 					// Read and display transaction data from the file
 					displayTransactionInformation(transactionPanel, frame);
@@ -138,6 +135,7 @@ public class AdminView {
 			}
 
 			reader.close();
+			
 
 			// Convert the ArrayList to a 2D array for JTable
 			String[][] userDataArray = new String[userDataList.size()][];
@@ -146,11 +144,18 @@ public class AdminView {
 			}
 
 			// Define column names for the JTable
-			String[] columnNames = {"Username", "Email", "Role"};
+			String[] columnNames = {"Name:Username:Password"};
 
-			// Create a DefaultTableModel for the JTable
-			DefaultTableModel tableModel = new DefaultTableModel(userDataArray, columnNames);
-
+			 // Create a DefaultTableModel for the JTable
+			DefaultTableModel tableModel = new DefaultTableModel(userDataArray, columnNames) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					// Make all cells not editable
+					return false;
+				}
+			};
+			
+			
 			// Create a JTable with the DefaultTableModel
 			JTable userTable = new JTable(tableModel);
 
@@ -182,7 +187,6 @@ public class AdminView {
 				}
 			});
 			usersPanel.add(deleteButton);
-
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -224,30 +228,113 @@ public class AdminView {
 			JOptionPane.showMessageDialog(frame, "Error updating user data file");
 		}
 	}
-
-
 	
 	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame) {
-		JTextArea transactionTextArea = new JTextArea();
-		transactionTextArea.setBounds(10, 50, 500, 400);
-		transactionTextArea.setEditable(false);
-
 		try {
+			// Read transaction data from the file and populate an ArrayList
 			BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
 			String line;
+			ArrayList<String> transactionDataList = new ArrayList<>();
 
 			while ((line = reader.readLine()) != null) {
-				transactionTextArea.append(line + "\n");
+				transactionDataList.add(line);
 			}
 
 			reader.close();
+
+			// Convert the ArrayList to a 2D array for JTable
+			String[][] transactionDataArray = new String[transactionDataList.size()][];
+			for (int i = 0; i < transactionDataList.size(); i++) {
+				transactionDataArray[i] = transactionDataList.get(i).split(",");
+			}
+
+			// Define column names for the JTable
+			String[] columnNames = {"Fullname/Contact/Purpose/Profession/Monthly Income/Loan Amount"};
+
+			// Create a DefaultTableModel for the JTable
+			DefaultTableModel tableModel = new DefaultTableModel(transactionDataArray, columnNames) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					// Make all cells not editable
+					return false;
+				}
+			};
+
+			// Create a JTable with the DefaultTableModel
+			JTable transactionTable = new JTable(tableModel);
+
+			// Add the JTable to a JScrollPane
+			JScrollPane scrollPane = new JScrollPane(transactionTable);
+			scrollPane.setBounds(10, 50, 500, 400);
+			transactionPanel.add(scrollPane);
+
+			// Add a Delete button (similar to the users' panel)
+			JButton deleteButton = new JButton("Delete");
+			deleteButton.setBounds(530, 50, 100, 30);
+			deleteButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = transactionTable.getSelectedRow();
+					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to delete this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						if (selectedRow != -1) {
+							// Remove the selected row from the DefaultTableModel
+							tableModel.removeRow(selectedRow);
+
+							// Update the file with the modified data, excluding the deleted row
+							updateTransactionDataFile(transactionDataArray, selectedRow, frame);
+						} else {
+							JOptionPane.showMessageDialog(frame, "Please select a row to delete.");
+						}
+
+					}
+
+				}
+			});
+			transactionPanel.add(deleteButton);
+			
+			JButton approveButton = new JButton("Approve");
+			approveButton.setBounds(530, 100, 100, 30);
+			transactionPanel.add(approveButton);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, "Error reading transaction data from file");
 		}
-
-		JScrollPane scrollPane = new JScrollPane(transactionTextArea);
-		scrollPane.setBounds(10, 50, 500, 400);
-		transactionPanel.add(scrollPane);
 	}
+
+	private void updateTransactionDataFile(String[][] transactionDataArray, int rowIndexToDelete, JFrame frame) {
+		try {
+			// Create a temporary file
+			File tempFile = new File("tempmasterlist.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+			for (int i = 0; i < transactionDataArray.length; i++) {
+				// Skip the row to be deleted
+				if (i == rowIndexToDelete) {
+					continue;
+				}
+
+				// Join the array elements with a comma and write to the temporary file
+				writer.write(String.join(",", transactionDataArray[i]));
+				writer.newLine();
+			}
+
+			writer.close();
+
+			// Delete the original file
+			File originalFile = new File("masterlist.txt");
+			if (originalFile.delete()) {
+				// Rename the temporary file to the original file
+				if (!tempFile.renameTo(originalFile)) {
+					JOptionPane.showMessageDialog(frame, "Error renaming temporary file");
+				}
+			} else {
+				JOptionPane.showMessageDialog(frame, "Error deleting original file");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame, "Error updating transaction data file");
+		}
+	}
+
 }
