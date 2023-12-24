@@ -5,11 +5,16 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
 import javax.swing.text.*;
+import book.system.dashboard.MeView;
+
 
 
 public class BorrowView {
-	
+	 private JPanel notificationPanel;
+	 
     public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {
+		this.notificationPanel = notificationPanel;
+		
 		
         frame.getContentPane().removeAll();
         frame.getContentPane().add(borrowPanel);
@@ -211,10 +216,9 @@ public class BorrowView {
                             loanPurpose.setSelectedIndex(0);
                             profession.setSelectedIndex(0);
                             monthlyIncome.setSelectedIndex(0);
-
-                            // Additional processing or confirmation dialog can go here...
-							//MeView.notificationprompt(notificationPanel, pendingLabel);
-
+							
+							MeView.notif(notificationPanel);
+							
                         } catch (NumberFormatException ex) {
                             ex.printStackTrace();
                             JOptionPane.showMessageDialog(frame, "Invalid loan amount. Please enter a numeric value.", "Error", JOptionPane.ERROR_MESSAGE);

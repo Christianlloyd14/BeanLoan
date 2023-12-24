@@ -8,6 +8,12 @@ import java.awt.geom.Ellipse2D;
 
 
 public class MeView{
+	private JPanel notificationPanel;
+	public static void notif(JPanel notificationPanel){
+		JButton hahaButton = new JButton("jahsdjahsduhasjidhjoashd");
+		hahaButton.setBounds(10,10,100,30);
+		notificationPanel.add(hahaButton);
+	}
 	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel){
 		
 		JPanel mePanel = new JPanel() {
@@ -57,7 +63,7 @@ public class MeView{
 		currentMoneyPanel.add(balanceLabel);
 		
         // Tab 2: Notification
-        JPanel notificationPanel = new JPanel();
+        notificationPanel = new JPanel();
         notificationPanel.setBackground(Color.WHITE);
         // Add components and functionality for the "Notification" tab
         tabbedPane.addTab("Notification", null, notificationPanel, "View notifications");
@@ -65,6 +71,7 @@ public class MeView{
 		JLabel pendingLabel = new JLabel("You have no notification");
 		pendingLabel.setBounds(10,10, 100, 30);
 		notificationPanel.add(pendingLabel);
+		
 		
 		
         // Add the JTabbedPane to the bluePanel
@@ -190,29 +197,10 @@ public class MeView{
 				
 			}
 		});
-
-		settingsLabel.addMouseMotionListener(new MouseMotionAdapter() {
-			public void mouseMoved(MouseEvent e) {
-				settingsLabel.setForeground(Color.BLACK);
-			}
-
-			public void mouseDragged(MouseEvent e) {
-				// Optional: Handle mouse dragging if needed
-			}
-		});
-		settingsLabel.addMouseListener(new MouseAdapter() {
-			public void mouseExited(MouseEvent e) {
-				settingsLabel.setForeground(Color.BLACK);
-			}
-		});
 		mePanel.add(settingsLabel);
 		
 	}
 	
-	public static void notificationprompt(JPanel notificationPanel, JLabel pendingLabel){
-		pendingLabel.setText("");
-		JButton notificationButton = new JButton("You have a pending request!");
-		notificationButton.setBounds(10,10,100,30);
-		notificationPanel.add(notificationButton);
-	}
+	
+
 }
