@@ -8,13 +8,9 @@ import java.awt.geom.Ellipse2D;
 
 
 public class MeView{
-	private JPanel notificationPanel;
-	public static void notif(JPanel notificationPanel){
-		JButton hahaButton = new JButton("jahsdjahsduhasjidhjoashd");
-		hahaButton.setBounds(10,10,100,30);
-		notificationPanel.add(hahaButton);
-	}
+	
 	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel){
+	
 		
 		JPanel mePanel = new JPanel() {
             @Override
@@ -45,37 +41,8 @@ public class MeView{
 		
 		
         JPanel bluePanel = new JPanel();
-        bluePanel.setBounds(0, 160, 897, 300);
+        bluePanel.setBounds(0, 170, 897, 300);
         bluePanel.setBackground(new Color(73, 30, 192));
-        bluePanel.setLayout(new BorderLayout()); // Use BorderLayout for bluePanel
-
-        // Create a JTabbedPane
-        JTabbedPane tabbedPane = new JTabbedPane();
-
-        // Tab 1: Current Money
-        JPanel currentMoneyPanel = new JPanel();
-        currentMoneyPanel.setBackground(Color.WHITE);
-        // Add components and functionality for the "Current Money" tab
-        tabbedPane.addTab("Current Money", null, currentMoneyPanel, "View current money details");
-		
-		JLabel balanceLabel = new JLabel("Balance: ");
-		balanceLabel.setBounds(10,10, 100, 30);
-		currentMoneyPanel.add(balanceLabel);
-		
-        // Tab 2: Notification
-        notificationPanel = new JPanel();
-        notificationPanel.setBackground(Color.WHITE);
-        // Add components and functionality for the "Notification" tab
-        tabbedPane.addTab("Notification", null, notificationPanel, "View notifications");
-		
-		JLabel pendingLabel = new JLabel("You have no notification");
-		pendingLabel.setBounds(10,10, 100, 30);
-		notificationPanel.add(pendingLabel);
-		
-		
-		
-        // Add the JTabbedPane to the bluePanel
-        bluePanel.add(tabbedPane, BorderLayout.CENTER);
 		mePanel.add(bluePanel);
 		
 		frame.getContentPane().removeAll();
@@ -91,6 +58,8 @@ public class MeView{
 		welcomeUserLabel.setForeground(Color.WHITE);
 		mePanel.add(welcomeUserLabel);
 		mePanel.add(userStatusLabel);
+		
+		
 		
 		
 		JLabel settingsLabel = new JLabel("Settings");
@@ -200,7 +169,4 @@ public class MeView{
 		mePanel.add(settingsLabel);
 		
 	}
-	
-	
-
 }

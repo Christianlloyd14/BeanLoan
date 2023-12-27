@@ -137,16 +137,16 @@ public class AdminView {
 			reader.close();
 			
 
+			// Define column names for the JTable
+			String[] columnNames = {"Name", "Username", "Password"};
+
 			// Convert the ArrayList to a 2D array for JTable
 			String[][] userDataArray = new String[userDataList.size()][];
 			for (int i = 0; i < userDataList.size(); i++) {
-				userDataArray[i] = userDataList.get(i).split(",");
+				userDataArray[i] = userDataList.get(i).split(":");
 			}
 
-			// Define column names for the JTable
-			String[] columnNames = {"Name:Username:Password"};
-
-			 // Create a DefaultTableModel for the JTable
+			// Create a DefaultTableModel for the JTable
 			DefaultTableModel tableModel = new DefaultTableModel(userDataArray, columnNames) {
 				@Override
 				public boolean isCellEditable(int row, int column) {
@@ -154,6 +154,7 @@ public class AdminView {
 					return false;
 				}
 			};
+
 			
 			
 			// Create a JTable with the DefaultTableModel
@@ -207,7 +208,7 @@ public class AdminView {
 				}
 
 				// Join the array elements with a comma and write to the temporary file
-				writer.write(String.join(",", userDataArray[i]));
+				writer.write(String.join(":", userDataArray[i]));
 				writer.newLine();
 			}
 
@@ -242,14 +243,14 @@ public class AdminView {
 
 			reader.close();
 
+			// Define column names for the JTable
+			String[] columnNames = {"Fullname", "Contact", "Years", "Purpose", "Profession", "Monthly Income", "Loan Amount"};
+
 			// Convert the ArrayList to a 2D array for JTable
 			String[][] transactionDataArray = new String[transactionDataList.size()][];
 			for (int i = 0; i < transactionDataList.size(); i++) {
-				transactionDataArray[i] = transactionDataList.get(i).split(",");
+				transactionDataArray[i] = transactionDataList.get(i).split("/");
 			}
-
-			// Define column names for the JTable
-			String[] columnNames = {"Fullname/Contact/Purpose/Profession/Monthly Income/Loan Amount"};
 
 			// Create a DefaultTableModel for the JTable
 			DefaultTableModel tableModel = new DefaultTableModel(transactionDataArray, columnNames) {
@@ -263,14 +264,24 @@ public class AdminView {
 			// Create a JTable with the DefaultTableModel
 			JTable transactionTable = new JTable(tableModel);
 
-			// Add the JTable to a JScrollPane
+			// Update column widths as needed
+			TableColumnModel columnModel = transactionTable.getColumnModel();
+			columnModel.getColumn(0).setPreferredWidth(100); // Fullname
+			columnModel.getColumn(1).setPreferredWidth(30); // Contact
+			columnModel.getColumn(2).setPreferredWidth(15);  // Years
+			columnModel.getColumn(3).setPreferredWidth(70); // Purpose
+			columnModel.getColumn(4).setPreferredWidth(70); // Profession
+			columnModel.getColumn(5).setPreferredWidth(70); // Monthly Income
+			columnModel.getColumn(6).setPreferredWidth(10); // Loan Amount
+
+			// Add the JTable to a JScrollPane with an extended width
 			JScrollPane scrollPane = new JScrollPane(transactionTable);
-			scrollPane.setBounds(10, 50, 500, 400);
+			scrollPane.setBounds(10, 50, 885, 400); // Extend the width
 			transactionPanel.add(scrollPane);
 
 			// Add a Delete button (similar to the users' panel)
 			JButton deleteButton = new JButton("Delete");
-			deleteButton.setBounds(530, 50, 100, 30);
+			deleteButton.setBounds(150, 10, 100, 30);
 			deleteButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					int selectedRow = transactionTable.getSelectedRow();
@@ -285,15 +296,13 @@ public class AdminView {
 						} else {
 							JOptionPane.showMessageDialog(frame, "Please select a row to delete.");
 						}
-
 					}
-
 				}
 			});
 			transactionPanel.add(deleteButton);
-			
+
 			JButton approveButton = new JButton("Approve");
-			approveButton.setBounds(530, 100, 100, 30);
+			approveButton.setBounds(270, 10, 100, 30);
 			transactionPanel.add(approveButton);
 
 		} catch (IOException e) {
@@ -301,6 +310,7 @@ public class AdminView {
 			JOptionPane.showMessageDialog(frame, "Error reading transaction data from file");
 		}
 	}
+
 
 	private void updateTransactionDataFile(String[][] transactionDataArray, int rowIndexToDelete, JFrame frame) {
 		try {
@@ -315,7 +325,7 @@ public class AdminView {
 				}
 
 				// Join the array elements with a comma and write to the temporary file
-				writer.write(String.join(",", transactionDataArray[i]));
+				writer.write(String.join("/", transactionDataArray[i]));
 				writer.newLine();
 			}
 

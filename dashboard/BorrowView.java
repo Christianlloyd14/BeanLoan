@@ -10,12 +10,8 @@ import book.system.dashboard.MeView;
 
 
 public class BorrowView {
-	 private JPanel notificationPanel;
-	 
-    public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {
-		this.notificationPanel = notificationPanel;
-		
-		
+	 private JLabel notificationLabel1;
+    public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {	
         frame.getContentPane().removeAll();
         frame.getContentPane().add(borrowPanel);
         frame.repaint();
@@ -25,6 +21,45 @@ public class BorrowView {
         bluePanel.setBounds(0, 0, 312, 516);
         bluePanel.setBackground(new Color(50, 129, 186));
         borrowPanel.add(bluePanel);
+		
+		JLabel notificationLabel1 = new JLabel("Notification");
+		notificationLabel1.setBounds(760, 10, 100, 30);
+		notificationLabel1.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				JPanel notificationPanel = new JPanel();
+				notificationPanel.setBounds(0,0, 897,516);
+				notificationPanel.setBackground(new Color(50, 129, 186));
+				notificationPanel.setLayout(null);
+				
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(notificationPanel);
+				frame.repaint();
+				frame.revalidate();
+				
+				JLabel emptyLabel = new JLabel("You have 0 notification");
+				emptyLabel.setBounds(100, 100, 200, 30);
+				emptyLabel.setForeground(Color.WHITE);
+				notificationPanel.add(emptyLabel);
+				
+				
+				
+				
+				
+				JButton backButton = new JButton("Back");
+				backButton.setBounds(10, 10, 100, 30);
+				backButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}
+				});
+				notificationPanel.add(backButton);
+			}	
+		});
+		welcomePanel.add(notificationLabel1);
+		
 
         JLabel titleLabel = new JLabel("Please fill in the form");
         titleLabel.setBounds(350, 100, 400, 30);
@@ -79,7 +114,7 @@ public class BorrowView {
 		});
 		borrowPanel.add(yearsField);
 		
-		JLabel fullnameLabel = new JLabel("Firstname, Surname, Middlename");
+		JLabel fullnameLabel = new JLabel("Lastname, Firstname, M.I");
 		fullnameLabel.setBounds(630, 220, 500, 30);
 		fullnameLabel.setForeground(Color.WHITE);
 		borrowPanel.add(fullnameLabel);
@@ -217,7 +252,8 @@ public class BorrowView {
                             profession.setSelectedIndex(0);
                             monthlyIncome.setSelectedIndex(0);
 							
-							MeView.notif(notificationPanel);
+							notificationPrompt(frame, welcomePanel, notificationLabel1);
+							
 							
                         } catch (NumberFormatException ex) {
                             ex.printStackTrace();
@@ -241,4 +277,42 @@ public class BorrowView {
 
         borrowPanel.add(continueButton);
     }
-}
+	
+	public static void notificationPrompt(JFrame frame, JPanel welcomePanel, JLabel notificationLabel1){
+		
+		
+		JLabel notificationLabel = new JLabel("Notification");
+		notificationLabel.setBounds(760, 10, 100, 30);
+		notificationLabel.setForeground(Color.RED);
+		notificationLabel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				JPanel notificationPanel = new JPanel();
+				notificationPanel.setBounds(0, 0, 897, 516);
+				notificationPanel.setBackground(new Color(50, 129, 186));
+				notificationPanel.setLayout(null);
+
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(notificationPanel);
+				frame.repaint();
+				frame.revalidate();
+
+				JButton backButton = new JButton("Back");
+				backButton.setBounds(10, 10, 100, 30);
+				backButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}
+				});
+				notificationPanel.add(backButton);
+
+				
+			}
+		});
+		welcomePanel.add(notificationLabel);
+		
+
+		}
+	}

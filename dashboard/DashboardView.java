@@ -6,9 +6,8 @@ import java.awt.event.*;
 import java.io.*;
 
 class DashboardView {
-
     public DashboardView(JFrame frame, JPanel loginPanel, String username) {
-		
+
 		JOptionPane.showMessageDialog(frame, "Welcome " + username + "!");
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBounds(0, 0, 897, 516);
@@ -34,6 +33,7 @@ class DashboardView {
         frame.getContentPane().add(welcomePanel);
         frame.repaint();
         frame.revalidate();
+		
         
 		
 		JButton exitButton = new JButton("X");
@@ -231,5 +231,9 @@ class DashboardView {
         tabPanel.add(meTabLabel);
 
     }
+	
+	public static void removeNotification(JLabel notificationLabel1){
+		notificationLabel1.setText("");
+	}
 
 }
