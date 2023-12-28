@@ -22,45 +22,6 @@ public class BorrowView {
         bluePanel.setBackground(new Color(50, 129, 186));
         borrowPanel.add(bluePanel);
 		
-		JLabel notificationLabel1 = new JLabel("Notification");
-		notificationLabel1.setBounds(760, 10, 100, 30);
-		notificationLabel1.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e){
-				JPanel notificationPanel = new JPanel();
-				notificationPanel.setBounds(0,0, 897,516);
-				notificationPanel.setBackground(new Color(50, 129, 186));
-				notificationPanel.setLayout(null);
-				
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(notificationPanel);
-				frame.repaint();
-				frame.revalidate();
-				
-				JLabel emptyLabel = new JLabel("You have 0 notification");
-				emptyLabel.setBounds(100, 100, 200, 30);
-				emptyLabel.setForeground(Color.WHITE);
-				notificationPanel.add(emptyLabel);
-				
-				
-				
-				
-				
-				JButton backButton = new JButton("Back");
-				backButton.setBounds(10, 10, 100, 30);
-				backButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(welcomePanel);
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				notificationPanel.add(backButton);
-			}	
-		});
-		welcomePanel.add(notificationLabel1);
-		
-
         JLabel titleLabel = new JLabel("Please fill in the form");
         titleLabel.setBounds(350, 100, 400, 30);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 25));
@@ -251,8 +212,6 @@ public class BorrowView {
                             loanPurpose.setSelectedIndex(0);
                             profession.setSelectedIndex(0);
                             monthlyIncome.setSelectedIndex(0);
-							
-							notificationPrompt(frame, welcomePanel, notificationLabel1);
 							
 							
                         } catch (NumberFormatException ex) {

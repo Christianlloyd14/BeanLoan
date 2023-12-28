@@ -67,11 +67,13 @@ public class MeView{
 		settingsLabel.setForeground(Color.WHITE);
 		settingsLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-
+				
 				JPanel settingsPanel = new JPanel();
 				settingsPanel.setBounds(290, 50, 300, 400);
-				settingsPanel.setBackground(new Color(59,89,152));
+				settingsPanel.setBackground(new Color(59, 89, 152));
 				settingsPanel.setLayout(null);
+				settingsPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Add this line to set a border
+
 
 				frame.getContentPane().removeAll();
 				frame.getContentPane().add(settingsPanel);
