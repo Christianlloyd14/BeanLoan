@@ -61,21 +61,45 @@ public class UserModel {
     }
 
     public static void ifUserExist(JFrame frame, JPanel loginPanel, JTextField usernameField, JPasswordField passwordField) {
-        String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
+		String username = usernameField.getText();
+		String password = new String(passwordField.getPassword());
 
-        if (readUser(username, password)) {
-            UserController.displayWelcomeView(frame, loginPanel, username);
-            usernameField.setText("");
-            passwordField.setText("");
-        } else {
-            JOptionPane.showMessageDialog(frame, "Invalid username or password");
-        }
-    }
+		if (readUser(username, password)) {
+			UserController.displayWelcomeView(frame, loginPanel, username);
+			usernameField.setText("");
+			passwordField.setText("");
+
+			String fileName = "Accounts/" + username + "-" + password + ".txt";
+			createFile(fileName, "User: " + username + "\nPassword: " + password);
+
+
+			
+		} else {
+			JOptionPane.showMessageDialog(frame, "Invalid username or password");
+		}
+	}
+
+	private static void createFile(String fileName, String content) {
+		File file = new File(fileName);
+		
+		if (file.exists()) {
+			return;
+		}
+
+		try (FileWriter fileWriter = new FileWriter(file)) {
+			fileWriter.write(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
     private static boolean userExists(String username) {
         return userOrNameExists(username, 1);
     }
+	
+	
 
     private static boolean nameExists(String name) {
         return userOrNameExists(name, 0);

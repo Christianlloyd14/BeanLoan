@@ -24,4 +24,6 @@ public class UserController{
 	public static void toCreateUser(JFrame frame, JTextField nameField, JTextField userField, JPasswordField passField, JPanel loginPanel){
 		UserModel.toCreateUser(frame, nameField, userField, passField, loginPanel);
 	}
+	
+	
 }
