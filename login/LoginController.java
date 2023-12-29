@@ -18,8 +18,8 @@ public class LoginController{
 		UserController.ifUserExist(frame, loginPanel, usernameField, passwordField);
 	}
 	
-	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username){
-		new DashboardController(frame, loginPanel, username);
+	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username, String password){
+		new DashboardController(frame, loginPanel, username, password);
 	}
 	
 	public static void displayRegisterView(JFrame frame, JPanel loginPanel){

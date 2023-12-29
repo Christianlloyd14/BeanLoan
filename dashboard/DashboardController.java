@@ -4,8 +4,8 @@ import javax.swing.*;
 
 public class DashboardController{
 	
-	public DashboardController(JFrame frame, JPanel loginPanel, String username){
-		new DashboardView(frame, loginPanel, username);
+	public DashboardController(JFrame frame, JPanel loginPanel, String username, String password){
+		new DashboardView(frame, loginPanel, username, password);
 	}
 	
 }

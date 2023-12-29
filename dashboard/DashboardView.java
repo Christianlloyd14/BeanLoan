@@ -4,9 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import book.system.user.UserModel;
 
 class DashboardView {
-    public DashboardView(JFrame frame, JPanel loginPanel, String username) {
+    public DashboardView(JFrame frame, JPanel loginPanel, String username, String password) {
 
 		JOptionPane.showMessageDialog(frame, "Welcome " + username + "!");
         JPanel welcomePanel = new JPanel();
@@ -34,7 +35,47 @@ class DashboardView {
         frame.repaint();
         frame.revalidate();
 		
-        
+		JLabel notificationLabel = new JLabel("Notification");
+		notificationLabel.setBounds(600, 10, 100, 30);
+		notificationLabel.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				JPanel notificationPanel = new JPanel();
+				notificationPanel.setBounds(0,0,897,516);
+				notificationPanel.setBackground(new Color(50, 129, 186));
+				notificationPanel.setLayout(null);
+				
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(notificationPanel);
+				frame.repaint();
+				frame.revalidate();	
+				
+				
+				
+				JTextArea notificationArea = new JTextArea();
+				notificationArea.setLineWrap(true);  // Enable line wrapping
+				notificationArea.setWrapStyleWord(true);  // Wrap at word boundaries
+				notificationArea.setBounds(10, 200, 400, 100);  // Adjust the size as needed
+				notificationArea.setEditable(false);  // Make it read-only
+				notificationPanel.add(notificationArea);
+
+				String notification = UserModel.getUserNotification(username, password);
+				notificationArea.setText(notification);
+
+
+				JButton backButton = new JButton("Back");
+				backButton.setBounds(10,10,100,30);
+				backButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(welcomePanel);
+						frame.repaint();
+						frame.revalidate();
+					}	
+				});
+				notificationPanel.add(backButton);
+			}	
+		});
+		welcomePanel.add(notificationLabel);
 		
 		JButton exitButton = new JButton("X");
 		exitButton.setBounds(847, 10, 40, 20);
@@ -231,9 +272,5 @@ class DashboardView {
         tabPanel.add(meTabLabel);
 
     }
-	
-	public static void removeNotification(JLabel notificationLabel1){
-		notificationLabel1.setText("");
-	}
 
 }

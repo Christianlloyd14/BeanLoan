@@ -204,10 +204,18 @@ public class AdminView {
 			for (int i = 0; i < userDataArray.length; i++) {
 				// Skip the row to be deleted
 				if (i == rowIndexToDelete) {
+					// Delete the corresponding user file in the "Accounts" directory
+					String username = userDataArray[i][1];
+					String password = userDataArray[i][2];
+					File userFile = new File("Accounts/" + username + "-" + password + ".txt");
+					if (userFile.exists()) {
+						userFile.delete();
+					}
+
 					continue;
 				}
 
-				// Join the array elements with a comma and write to the temporary file
+				// Join the array elements with a colon and write to the temporary file
 				writer.write(String.join(":", userDataArray[i]));
 				writer.newLine();
 			}
@@ -229,6 +237,7 @@ public class AdminView {
 			JOptionPane.showMessageDialog(frame, "Error updating user data file");
 		}
 	}
+
 	
 	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame) {
 		try {

@@ -17,13 +17,11 @@ public class UserController{
 		UserModel.ifUserExist(frame, loginPanel,usernameField, passwordField);
 	}
 	
-	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username){
-		LoginController.displayWelcomeView(frame, loginPanel, username);
+	public static void displayWelcomeView(JFrame frame, JPanel loginPanel, String username, String password){
+		LoginController.displayWelcomeView(frame, loginPanel, username, password);
 	}
 	
 	public static void toCreateUser(JFrame frame, JTextField nameField, JTextField userField, JPasswordField passField, JPanel loginPanel){
 		UserModel.toCreateUser(frame, nameField, userField, passField, loginPanel);
 	}
-	
-	
 }

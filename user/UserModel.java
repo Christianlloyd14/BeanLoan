@@ -5,72 +5,72 @@ import java.awt.*;
 import java.io.*;
 
 public class UserModel {
-    private JFrame frame;
-    private JPanel loginPanel;
+	private JFrame frame;
+	private JPanel loginPanel;
 
-    public UserModel(JFrame frame, JPanel loginPanel) {
-        this.frame = frame;
-        this.loginPanel = loginPanel;
-    }
+	public UserModel(JFrame frame, JPanel loginPanel) {
+		this.frame = frame;
+		this.loginPanel = loginPanel;
+	}
 
-    public static void toCreateUser(JFrame frame, JTextField nameField, JTextField userField, JPasswordField passField, JPanel loginPanel) {
-        String name = nameField.getText();
-        String username = userField.getText();
-        char[] password = passField.getPassword();
+	public static void toCreateUser(JFrame frame, JTextField nameField, JTextField userField, JPasswordField passField, JPanel loginPanel) {
+		String name = nameField.getText();
+		String username = userField.getText();
+		char[] password = passField.getPassword();
 
-        if (name.isEmpty() || username.isEmpty() || password.length == 0) {
-            JOptionPane.showMessageDialog(frame, "Please fill in all the fields");
-            return;
-        }
+		if (name.isEmpty() || username.isEmpty() || password.length == 0) {
+			JOptionPane.showMessageDialog(frame, "Please fill in all the fields");
+			return;
+		}
 
-        if (userExists(username) || nameExists(name)) {
-            JOptionPane.showMessageDialog(frame, "Username or name already exists. Please choose a different one.");
-            return;
-        }
+		if (userExists(username) || nameExists(name)) {
+			JOptionPane.showMessageDialog(frame, "Username or name already exists. Please choose a different one.");
+			return;
+		}
 
-        try (FileWriter fwrite = new FileWriter("users.dat", true)) {
-            fwrite.write(name + ":" + username + ":" + new String(password) + System.lineSeparator());
-            JOptionPane.showMessageDialog(frame, "Register successfully");
+		try (FileWriter fwrite = new FileWriter("users.dat", true)) {
+			fwrite.write(name + ":" + username + ":" + new String(password) + System.lineSeparator());
+			JOptionPane.showMessageDialog(frame, "Register successfully");
 
-            frame.getContentPane().removeAll();
-            frame.getContentPane().add(loginPanel);
-            frame.repaint();
-            frame.revalidate();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Failed to register");
-            e.printStackTrace();
-        }
-    }
+			frame.getContentPane().removeAll();
+			frame.getContentPane().add(loginPanel);
+			frame.repaint();
+			frame.revalidate();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(frame, "Failed to register");
+			e.printStackTrace();
+		}
+	}
 
-    public static boolean readUser(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                String savedUsername = parts[1].trim();
-                String savedPassword = parts[2].trim();
+	public static boolean readUser(String username, String password) {
+		try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split(":");
+				String savedUsername = parts[1].trim();
+				String savedPassword = parts[2].trim();
 
-                if (savedUsername.equals(username) && savedPassword.equals(password)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+				if (savedUsername.equals(username) && savedPassword.equals(password)) {
+					return true;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
-    public static void ifUserExist(JFrame frame, JPanel loginPanel, JTextField usernameField, JPasswordField passwordField) {
+	public static void ifUserExist(JFrame frame, JPanel loginPanel, JTextField usernameField, JPasswordField passwordField) {
 		String username = usernameField.getText();
 		String password = new String(passwordField.getPassword());
 
 		if (readUser(username, password)) {
-			UserController.displayWelcomeView(frame, loginPanel, username);
+			UserController.displayWelcomeView(frame, loginPanel, username, password);
 			usernameField.setText("");
 			passwordField.setText("");
 
 			String fileName = "Accounts/" + username + "-" + password + ".txt";
-			createFile(fileName, "User: " + username + "\nPassword: " + password);
+			createFile(fileName, "User: " + username + "\nPassword: " + password + "\nNo Notification");
 
 
 			
@@ -95,30 +95,56 @@ public class UserModel {
 
 
 
-    private static boolean userExists(String username) {
-        return userOrNameExists(username, 1);
-    }
+	private static boolean userExists(String username) {
+		return userOrNameExists(username, 1);
+	}
 	
 	
 
-    private static boolean nameExists(String name) {
-        return userOrNameExists(name, 0);
-    }
+	private static boolean nameExists(String name) {
+		return userOrNameExists(name, 0);
+	}
 
-    private static boolean userOrNameExists(String value, int index) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":");
-                String savedValue = parts[index].trim();
+	private static boolean userOrNameExists(String value, int index) {
+		try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split(":");
+				String savedValue = parts[index].trim();
 
-                if (savedValue.equals(value)) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+				if (savedValue.equals(value)) {
+					return true;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static String getUserNotification(String username, String password) {
+		String fileName = "Accounts/" + username + "-" + password + ".txt";
+		StringBuilder notification = new StringBuilder();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			String line;
+			boolean notificationStarted = false;
+			while ((line = reader.readLine()) != null) {
+				if (line.startsWith("No Notification")) {
+					notificationStarted = true;
+					notification.append(line).append("\n");
+				} else if (notificationStarted) {
+					// Assume that the notification part is after the line starting with "Notification:"
+					notification.append(line).append("\n");
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return notification.toString();
+	}
+
+
+
 }
