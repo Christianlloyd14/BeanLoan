@@ -10,8 +10,8 @@ import book.system.dashboard.MeView;
 
 
 public class BorrowView {
-	 private JLabel notificationLabel1;
-    public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel) {	
+	private JLabel notificationLabel1;
+    public BorrowView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JPanel borrowPanel, String username, String password) {	
         frame.getContentPane().removeAll();
         frame.getContentPane().add(borrowPanel);
         frame.repaint();
@@ -213,6 +213,8 @@ public class BorrowView {
                             profession.setSelectedIndex(0);
                             monthlyIncome.setSelectedIndex(0);
 							
+							notificationPrompt(username, password, frame);
+							
 							
                         } catch (NumberFormatException ex) {
                             ex.printStackTrace();
@@ -237,41 +239,43 @@ public class BorrowView {
         borrowPanel.add(continueButton);
     }
 	
-	public static void notificationPrompt(JFrame frame, JPanel welcomePanel, JLabel notificationLabel1){
-		
-		
-		JLabel notificationLabel = new JLabel("Notification");
-		notificationLabel.setBounds(760, 10, 100, 30);
-		notificationLabel.setForeground(Color.RED);
-		notificationLabel.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				JPanel notificationPanel = new JPanel();
-				notificationPanel.setBounds(0, 0, 897, 516);
-				notificationPanel.setBackground(new Color(50, 129, 186));
-				notificationPanel.setLayout(null);
+	private void notificationPrompt(String username, String password, JFrame frame) {
+        // Define the Accounts directory path
+        String accountsDirectory = "Accounts/";
 
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(notificationPanel);
-				frame.repaint();
-				frame.revalidate();
+        // Create the directory if it doesn't exist
+        File accountsDir = new File(accountsDirectory);
+        if (!accountsDir.exists()) {
+            accountsDir.mkdir();
+        }
 
-				JButton backButton = new JButton("Back");
-				backButton.setBounds(10, 10, 100, 30);
-				backButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						frame.getContentPane().removeAll();
-						frame.getContentPane().add(welcomePanel);
-						frame.repaint();
-						frame.revalidate();
-					}
-				});
-				notificationPanel.add(backButton);
+        // Define the path to the user-specific notification file
+        String notificationFilePath = accountsDirectory + username + "-" + password + ".txt";
 
-				
-			}
-		});
-		welcomePanel.add(notificationLabel);
-		
+        try {
+            // Read existing content from the file
+            StringBuilder content = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new FileReader(notificationFilePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append(System.lineSeparator());
+                }
+            }
 
-		}
-	}
+            // Append the new notification for the user
+            String newNotification = "You have a pending request\n";
+            content.append(newNotification);
+
+            // Write the updated content back to the file
+            try (FileWriter writer = new FileWriter(notificationFilePath)) {
+                writer.write(content.toString());
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error reading/writing to file", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+}

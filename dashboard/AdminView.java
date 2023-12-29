@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AdminView {
 
     private ArrayList < String > pendingRequests;
-    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel) {
+    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel, String username, String password) {
 
         pendingRequests = new ArrayList < > ();
 
@@ -66,7 +66,7 @@ public class AdminView {
 				
 
 					// Read and display transaction data from the file
-					displayTransactionInformation(transactionPanel, frame);
+					displayTransactionInformation(transactionPanel, frame, username, password);
 				}
 			});
 			adminPanel.add(viewTransactionButton);
@@ -239,7 +239,7 @@ public class AdminView {
 	}
 
 	
-	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame) {
+	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame, String username, String password) {
 		try {
 			// Read transaction data from the file and populate an ArrayList
 			BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
@@ -299,7 +299,8 @@ public class AdminView {
 						if (selectedRow != -1) {
 							// Remove the selected row from the DefaultTableModel
 							tableModel.removeRow(selectedRow);
-
+							
+							notifyUsers(username, password, frame);
 							// Update the file with the modified data, excluding the deleted row
 							updateTransactionDataFile(transactionDataArray, selectedRow, frame);
 						} else {
@@ -312,6 +313,26 @@ public class AdminView {
 
 			JButton approveButton = new JButton("Approve");
 			approveButton.setBounds(270, 10, 100, 30);
+			approveButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = transactionTable.getSelectedRow();
+					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to approve this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						if (selectedRow != -1) {
+							// Notify the user about the approved request
+							notifyUsers(username, password, frame, "Your loan request has been approved by the admin.\n");
+
+							// Remove the selected row from the DefaultTableModel
+							tableModel.removeRow(selectedRow);
+
+							// Update the file with the modified data, excluding the deleted row
+							updateTransactionDataFile(transactionDataArray, selectedRow, frame);
+						} else {
+							JOptionPane.showMessageDialog(frame, "Please select a row to approve.");
+						}
+					}
+				}
+			});
 			transactionPanel.add(approveButton);
 
 		} catch (IOException e) {
@@ -353,6 +374,43 @@ public class AdminView {
 		} catch (IOException e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(frame, "Error updating transaction data file");
+		}
+	}
+	
+	public static void notifyUsers(String username, String password, JFrame frame) {
+        // Define the Accounts directory path
+        String accountsDirectory = "Accounts/";
+
+        // Define the path to the user-specific notification file
+        String userNotificationFilePath = accountsDirectory + username + "-" + password + ".txt";
+
+        try (FileWriter writer = new FileWriter(userNotificationFilePath, true)) {
+            // Append the notification that the request is declined
+            String notification = "Your loan request has been declined by the admin.\n";
+            writer.write(notification);
+
+            JOptionPane.showMessageDialog(frame, "User notified about declined request.", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error notifying user", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+	
+	public static void notifyUsers(String username, String password, JFrame frame, String notificationMessage) {
+		// Define the Accounts directory path
+		String accountsDirectory = "Accounts/";
+
+		// Define the path to the user-specific notification file
+		String userNotificationFilePath = accountsDirectory + username + "-" + password + ".txt";
+
+		try (FileWriter writer = new FileWriter(userNotificationFilePath, true)) {
+			// Append the custom notification message
+			writer.write(notificationMessage);
+
+			JOptionPane.showMessageDialog(frame, "User notified.", "Notification", JOptionPane.INFORMATION_MESSAGE);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(frame, "Error notifying user", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

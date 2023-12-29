@@ -107,13 +107,13 @@ class DashboardView {
 		borrowButton.setBounds(85, 200, 200, 30);
 		borrowButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JButton backButton = new JButton("Back");
+				
 				JPanel borrowPanel = new JPanel();
 				borrowPanel.setBounds(0, 0, 897, 516);
 				borrowPanel.setBackground(new Color(73, 30, 192));
 				borrowPanel.setLayout(null);
 				
-				
+				JButton backButton = new JButton("Back");
 				backButton.setBounds(350, 450, 100, 30);
 				backButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -124,7 +124,7 @@ class DashboardView {
 					}
 				});
 				borrowPanel.add(backButton);
-				new BorrowView(frame, welcomePanel, tabPanel, borrowPanel);
+				new BorrowView(frame, welcomePanel, tabPanel, borrowPanel, username, password);
 			}
 		});
 		violetPanel.add(borrowButton);
@@ -266,7 +266,7 @@ class DashboardView {
 		meTabLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         meTabLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                new MeView(frame, loginPanel, welcomePanel, tabPanel, username, userStatusLabel);
+                new MeView(frame, loginPanel, welcomePanel, tabPanel, username, userStatusLabel, password);
             }
         });
         tabPanel.add(meTabLabel);

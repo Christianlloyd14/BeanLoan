@@ -9,7 +9,7 @@ import java.awt.geom.Ellipse2D;
 
 public class MeView{
 	
-	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel){
+	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel, String password){
 	
 		
 		JPanel mePanel = new JPanel() {
@@ -105,7 +105,7 @@ public class MeView{
 				optionButton.setBounds(50, 190, 200, 30);
 				optionButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						new AdminView(frame, tabPanel, welcomePanel, mePanel);
+						new AdminView(frame, tabPanel, welcomePanel, mePanel, username, password);
 					}	
 				});
 				settingsPanel.add(optionButton);
