@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.awt.geom.Ellipse2D;
+import book.system.user.UserModel;
 
 
 public class MeView{
@@ -60,7 +61,62 @@ public class MeView{
 		mePanel.add(userStatusLabel);
 		
 		
-		
+		JLabel notificationLabel = new JLabel("Notification");
+		notificationLabel.setBounds(600, 10, 100, 30);
+		notificationLabel.setForeground(Color.WHITE);
+		notificationLabel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				JPanel notificationPanel = new JPanel();
+				notificationPanel.setBounds(0, 0, 897, 516);
+				notificationPanel.setBackground(new Color(50, 129, 186));
+				notificationPanel.setLayout(null);
+
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(notificationPanel);
+				frame.repaint();
+				frame.revalidate();
+
+				DefaultListModel<String> listModel = new DefaultListModel<>();
+				JList<String> notificationList = new JList<>(listModel);
+				JScrollPane scrollPane = new JScrollPane(notificationList);
+				scrollPane.setBounds(10, 100, 400, 300);
+				notificationPanel.add(scrollPane);
+
+				// Populate the list model with notifications
+				String[] notifications = UserModel.getUserNotification(username, password).split("\n");
+				for (String notification : notifications) {
+					listModel.addElement(notification);
+				}
+
+				JButton deleteButton = new JButton("Delete");
+				deleteButton.setBounds(10, 420, 100, 30);
+				deleteButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int selectedIndex = notificationList.getSelectedIndex();
+						if (selectedIndex != -1) {
+							listModel.remove(selectedIndex);
+							// You may want to update the backend data here, depending on your application logic
+						}
+					}
+				});
+				notificationPanel.add(deleteButton);
+
+				JButton backButton = new JButton("Back");
+				backButton.setBounds(10, 10, 100, 30);
+				backButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(mePanel);
+						frame.getContentPane().add(tabPanel);
+						frame.repaint();
+						frame.revalidate();
+					}
+				});
+				notificationPanel.add(backButton);
+			}
+		});
+		mePanel.add(notificationLabel);
+
 		
 		JLabel settingsLabel = new JLabel("Settings");
 		settingsLabel.setBounds(830, 20, 100, 30);
