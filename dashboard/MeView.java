@@ -161,7 +161,7 @@ public class MeView{
 				optionButton.setBounds(50, 190, 200, 30);
 				optionButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						new AdminView(frame, tabPanel, welcomePanel, mePanel, username, password, loginPanel);
+						new AdminView(frame, tabPanel, welcomePanel, mePanel, username, password, loginPanel, bluePanel);
 					}	
 				});
 				settingsPanel.add(optionButton);

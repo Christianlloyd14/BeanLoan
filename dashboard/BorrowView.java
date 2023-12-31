@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.awt.*;
 import java.io.*;
 import javax.swing.text.*;
-import book.system.dashboard.MeView;
 
 
 
@@ -188,21 +187,23 @@ public class BorrowView {
 
                         try {
 							
-                            // Existing code for writing to the file
                             try (FileWriter fileWriter = new FileWriter("masterlist.txt", true)) {
-                                String userInformation = fullNameField.getText() + "/" +
-                                        numberField.getText() + "/" +
-                                        yearsField.getText() + "/" +
-                                        loanPurpose.getSelectedItem() + "/" +
-                                        profession.getSelectedItem() + "/" +
-                                        monthlyIncome.getSelectedItem() + "/" +
-                                        loanAmount + "\n";
-                                fileWriter.write(userInformation);
-                                JOptionPane.showMessageDialog(frame, "Information submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                                JOptionPane.showMessageDialog(frame, "Error writing to file", "Error", JOptionPane.ERROR_MESSAGE);
-                            }
+								String userInformation = username + "/" +
+										password + "/" +
+										fullNameField.getText() + "/" +
+										numberField.getText() + "/" +
+										yearsField.getText() + "/" +
+										loanPurpose.getSelectedItem() + "/" +
+										profession.getSelectedItem() + "/" +
+										monthlyIncome.getSelectedItem() + "/" +
+										loanAmount + "\n";
+								fileWriter.write(userInformation);
+								JOptionPane.showMessageDialog(frame, "Information submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+							} catch (IOException ex) {
+								ex.printStackTrace();
+								JOptionPane.showMessageDialog(frame, "Error writing to file", "Error", JOptionPane.ERROR_MESSAGE);
+							}
+
 
                             // Clear the fields after submission
                             loanAmountField.setText("");
@@ -263,7 +264,7 @@ public class BorrowView {
             }
 
             // Append the new notification for the user
-            String newNotification = "You have a pending request\n";
+            String newNotification = "\nYou have a pending request";
             content.append(newNotification);
 
             // Write the updated content back to the file

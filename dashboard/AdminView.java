@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AdminView {
 
     private ArrayList < String > pendingRequests;
-    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel, String username, String password, JPanel loginPanel) {
+    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel, String username, String password, JPanel loginPanel, JPanel bluePanel) {
 		
         pendingRequests = new ArrayList < > ();
 
@@ -66,7 +66,7 @@ public class AdminView {
 				
 
 					// Read and display transaction data from the file
-					displayTransactionInformation(transactionPanel, frame, username, password);
+					displayTransactionInformation(transactionPanel, frame, username, password, bluePanel);
 				}
 			});
 			adminPanel.add(viewTransactionButton);
@@ -245,7 +245,7 @@ public class AdminView {
 	}
 
 	
-	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame, String username, String password) {
+	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame, String username, String password, JPanel bluePanel) {
 		try {
 			// Read transaction data from the file and populate an ArrayList
 			BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
@@ -259,7 +259,7 @@ public class AdminView {
 			reader.close();
 
 			// Define column names for the JTable
-			String[] columnNames = {"Fullname", "Contact", "Years", "Purpose", "Profession", "Monthly Income", "Loan Amount"};
+			String[] columnNames = {"Username", "Password", "Fullname", "Contact", "Years", "Purpose", "Profession", "Monthly Income", "Loan Amount"};
 
 			// Convert the ArrayList to a 2D array for JTable
 			String[][] transactionDataArray = new String[transactionDataList.size()][];
@@ -281,20 +281,21 @@ public class AdminView {
 
 			// Update column widths as needed
 			TableColumnModel columnModel = transactionTable.getColumnModel();
-			columnModel.getColumn(0).setPreferredWidth(100); // Fullname
-			columnModel.getColumn(1).setPreferredWidth(30); // Contact
-			columnModel.getColumn(2).setPreferredWidth(15);  // Years
-			columnModel.getColumn(3).setPreferredWidth(70); // Purpose
-			columnModel.getColumn(4).setPreferredWidth(70); // Profession
-			columnModel.getColumn(5).setPreferredWidth(70); // Monthly Income
-			columnModel.getColumn(6).setPreferredWidth(10); // Loan Amount
+			columnModel.getColumn(0).setPreferredWidth(100); // Username
+			columnModel.getColumn(1).setPreferredWidth(30);  // Password
+			columnModel.getColumn(2).setPreferredWidth(100); // Fullname
+			columnModel.getColumn(3).setPreferredWidth(30);  // Contact
+			columnModel.getColumn(4).setPreferredWidth(15);  // Years
+			columnModel.getColumn(5).setPreferredWidth(70); // Purpose
+			columnModel.getColumn(6).setPreferredWidth(70); // Profession
+			columnModel.getColumn(7).setPreferredWidth(70); // Monthly Income
+			columnModel.getColumn(8).setPreferredWidth(10); // Loan Amount
 
 			// Add the JTable to a JScrollPane with an extended width
 			JScrollPane scrollPane = new JScrollPane(transactionTable);
 			scrollPane.setBounds(10, 50, 885, 400); // Extend the width
 			transactionPanel.add(scrollPane);
 
-			// Add a Delete button (similar to the users' panel)
 			JButton deleteButton = new JButton("Delete");
 			deleteButton.setBounds(150, 10, 100, 30);
 			deleteButton.addActionListener(new ActionListener() {
@@ -303,10 +304,16 @@ public class AdminView {
 					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to delete this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {
 						if (selectedRow != -1) {
+							// Get the username and password from the selected row
+							String deletedUsername = transactionDataArray[selectedRow][0];
+							String deletedPassword = transactionDataArray[selectedRow][1];
+
 							// Remove the selected row from the DefaultTableModel
 							tableModel.removeRow(selectedRow);
-							
-							notifyUsers(username, password, frame);
+
+							// Notify the user about the declined request
+							notifyUsers(deletedUsername, deletedPassword, frame);
+
 							// Update the file with the modified data, excluding the deleted row
 							updateTransactionDataFile(transactionDataArray, selectedRow, frame);
 						} else {
@@ -325,8 +332,12 @@ public class AdminView {
 					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to approve this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
 					if (result == JOptionPane.YES_OPTION) {
 						if (selectedRow != -1) {
+							// Get the username and password from the selected row
+							String approvedUsername = transactionDataArray[selectedRow][0];
+							String approvedPassword = transactionDataArray[selectedRow][1];
+
 							// Notify the user about the approved request
-							notifyUsers(username, password, frame, "Your loan request has been approved by the admin.\n");
+							notifyUsers(approvedUsername, approvedPassword, frame, "\nYour loan request has been approved by the admin.\n");
 
 							// Remove the selected row from the DefaultTableModel
 							tableModel.removeRow(selectedRow);
@@ -347,7 +358,6 @@ public class AdminView {
 		}
 	}
 
-
 	private void updateTransactionDataFile(String[][] transactionDataArray, int rowIndexToDelete, JFrame frame) {
 		try {
 			// Create a temporary file
@@ -360,7 +370,7 @@ public class AdminView {
 					continue;
 				}
 
-				// Join the array elements with a comma and write to the temporary file
+				// Join the array elements with a slash and write to the temporary file
 				writer.write(String.join("/", transactionDataArray[i]));
 				writer.newLine();
 			}
@@ -382,6 +392,7 @@ public class AdminView {
 			JOptionPane.showMessageDialog(frame, "Error updating transaction data file");
 		}
 	}
+
 	
 	public static void notifyUsers(String username, String password, JFrame frame) {
         // Define the Accounts directory path
@@ -392,7 +403,7 @@ public class AdminView {
 
         try (FileWriter writer = new FileWriter(userNotificationFilePath, true)) {
             // Append the notification that the request is declined
-            String notification = "Your loan request has been declined by the admin.\n";
+            String notification = "\nYour loan request has been declined by the admin.\n";
             writer.write(notification);
 
             JOptionPane.showMessageDialog(frame, "User notified about declined request.", "Notification", JOptionPane.INFORMATION_MESSAGE);
