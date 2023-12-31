@@ -125,6 +125,7 @@ public class AdminView {
 					
 					isValidUser(username, password, frame, loginPanel);
 					
+					MeView.displayBalance(username, password, bluePanel);
                 }
             });
             adminPanel.add(backButton);
