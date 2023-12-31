@@ -77,6 +77,7 @@ class DashboardView {
 				backButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						frame.getContentPane().removeAll();
+						frame.getContentPane().add(tabPanel);
 						frame.getContentPane().add(welcomePanel);
 						frame.repaint();
 						frame.revalidate();

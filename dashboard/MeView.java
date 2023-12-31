@@ -6,6 +6,10 @@ import java.awt.*;
 import java.io.*;
 import java.awt.geom.Ellipse2D;
 import book.system.user.UserModel;
+import java.nio.file.*;
+import java.util.List;
+import java.nio.charset.StandardCharsets;
+
 
 
 public class MeView{
@@ -60,6 +64,7 @@ public class MeView{
 		mePanel.add(welcomeUserLabel);
 		mePanel.add(userStatusLabel);
 		
+		displayAccountContent(username, password, bluePanel);
 		
 		JLabel notificationLabel = new JLabel("Notification");
 		notificationLabel.setBounds(600, 20, 100, 30);
@@ -227,4 +232,52 @@ public class MeView{
 		mePanel.add(settingsLabel);
 		
 	}
+	
+	private static final String ACCOUNTS_DIRECTORY = "Accounts";
+
+private void displayAccountContent(String username, String password, JPanel bluePanel) {
+    String fileName = username + "-" + password + ".txt";
+    Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
+
+    try {
+        // Read the third line from the file
+        String thirdLine = Files.lines(filePath, StandardCharsets.UTF_8)
+                .skip(2) // Skip the first two lines
+                .findFirst()
+                .orElse(null);
+
+        JTextArea accountTextArea = new JTextArea();
+        accountTextArea.setEditable(false);
+
+        // Display the third line if it exists, otherwise display an empty JTextArea
+        if (thirdLine != null) {
+            accountTextArea.setText(thirdLine);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(accountTextArea);
+        scrollPane.setBounds(10, 10, 877, 280);
+
+        // Set proper bounds for the JScrollPane and JTextArea
+        bluePanel.removeAll();
+        bluePanel.setLayout(null);  // Set layout to null for explicit bounds
+        scrollPane.setBounds(10, 10, 877, 280);
+        accountTextArea.setBounds(0, 0, 877, 280);
+
+        bluePanel.add(scrollPane);
+        bluePanel.repaint();
+        bluePanel.revalidate();
+
+    } catch (IOException e) {
+        // Handle file reading exception
+        e.printStackTrace();
+    }
+}
+
+
+
+
+
+
+
+	
 }
