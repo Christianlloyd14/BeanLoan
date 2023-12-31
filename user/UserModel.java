@@ -70,7 +70,7 @@ public class UserModel {
 			passwordField.setText("");
 
 			String fileName = "Accounts/" + username + "-" + password + ".txt";
-			createFile(fileName, "User: " + username + "\nPassword: " + password + "\nNo Notification");
+			createFile(fileName, "User: " + username + "\nPassword: " + password + "\nBalance: 0\nNo Notification");
 
 
 			
