@@ -62,7 +62,7 @@ public class MeView{
 		
 		
 		JLabel notificationLabel = new JLabel("Notification");
-		notificationLabel.setBounds(600, 10, 100, 30);
+		notificationLabel.setBounds(600, 20, 100, 30);
 		notificationLabel.setForeground(Color.WHITE);
 		notificationLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -161,7 +161,7 @@ public class MeView{
 				optionButton.setBounds(50, 190, 200, 30);
 				optionButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						new AdminView(frame, tabPanel, welcomePanel, mePanel, username, password);
+						new AdminView(frame, tabPanel, welcomePanel, mePanel, username, password, loginPanel);
 					}	
 				});
 				settingsPanel.add(optionButton);

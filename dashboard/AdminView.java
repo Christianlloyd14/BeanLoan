@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public class AdminView {
 
     private ArrayList < String > pendingRequests;
-    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel, String username, String password) {
-
+    public AdminView(JFrame frame, JPanel tabPanel, JPanel welcomePanel, JPanel mePanel, String username, String password, JPanel loginPanel) {
+		
         pendingRequests = new ArrayList < > ();
 
         JPasswordField passwordField = new JPasswordField();
@@ -101,6 +101,8 @@ public class AdminView {
 
                     // Read and display user data from the file
                     displayUserInformation(usersPanel, frame);
+					
+					
                 }
             });
             adminPanel.add(viewUsers);
@@ -114,6 +116,9 @@ public class AdminView {
                     frame.getContentPane().add(mePanel);
                     frame.repaint();
                     frame.revalidate();
+					
+					isValidUser(username, password, frame, loginPanel);
+					
                 }
             });
             adminPanel.add(backButton);
@@ -179,6 +184,7 @@ public class AdminView {
 
 						// Update the file with the modified data, excluding the deleted row
 						updateUserDataFile(userDataArray, selectedRow, frame);
+						
 					} else {
 						JOptionPane.showMessageDialog(frame, "Please select a row to delete.");
 					}
@@ -413,5 +419,33 @@ public class AdminView {
 			JOptionPane.showMessageDialog(frame, "Error notifying user", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	private boolean isValidUser(String username, String password, JFrame frame, JPanel loginPanel) {
+		// Define the Accounts directory path
+		String accountsDirectory = "Accounts/";
+
+		// Define the path to the user-specific file
+		String userFilePath = accountsDirectory + username + "-" + password + ".txt";
+
+		// Check if the file exists
+		File userFile = new File(userFilePath);
+
+		if (userFile.exists()) {
+			// The user is valid
+			return true;
+		} else {
+			// The account has been deleted
+			JOptionPane.showMessageDialog(frame, "Your account has been deleted by the admin.", "Account Deleted", JOptionPane.INFORMATION_MESSAGE);
+			
+			frame.getContentPane().removeAll();
+			frame.getContentPane().add(loginPanel);
+			frame.repaint();
+			frame.revalidate();
+			
+			return false;
+		}
+	}
+
+
 
 }
