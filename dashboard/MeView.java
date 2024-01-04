@@ -250,6 +250,10 @@ public class MeView{
 			JTextArea accountTextArea = new JTextArea();
 			accountTextArea.setEditable(false);
 
+			// Set the font size to 16 (you can adjust this value)
+			Font textAreaFont = new Font("Arial", Font.PLAIN, 16);
+			accountTextArea.setFont(textAreaFont);
+
 			// Display the third line if it exists, otherwise display an empty JTextArea
 			if (thirdLine != null) {
 				accountTextArea.setText(thirdLine);
@@ -261,7 +265,7 @@ public class MeView{
 			// Set proper bounds for the JScrollPane and JTextArea
 			bluePanel.removeAll();
 			bluePanel.setLayout(null);  // Set layout to null for explicit bounds
-			scrollPane.setBounds(10, 10, 877, 280);
+			scrollPane.setBounds(10, 10, 300, 280);
 			accountTextArea.setBounds(0, 0, 877, 280);
 
 			bluePanel.add(scrollPane);
@@ -274,11 +278,4 @@ public class MeView{
 		}
 	}
 
-
-
-
-
-
-
-	
 }

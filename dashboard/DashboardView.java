@@ -48,19 +48,6 @@ class DashboardView {
 		});
 		welcomePanel.add(exitButton);
 		
-		JButton tabButton = new JButton("Show Tab");
-		tabButton.setBounds(400, 480, 100, 30);
-		tabButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(tabPanel);
-				frame.getContentPane().add(welcomePanel);
-				frame.repaint();
-				frame.revalidate();
-			}	
-		});
-		welcomePanel.add(tabButton);
-		
 
         JButton borrowButton = new JButton("Borrow Now");
 		borrowButton.setBounds(85, 200, 200, 30);
@@ -230,6 +217,20 @@ class DashboardView {
             }
         });
         tabPanel.add(meTabLabel);
+		
+		
+		JButton tabButton = new JButton("Show Tab");
+		tabButton.setBounds(400, 480, 100, 30);
+		tabButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(tabPanel);
+				frame.getContentPane().add(welcomePanel);
+				frame.repaint();
+				frame.revalidate();
+			}	
+		});
+		welcomePanel.add(tabButton);
 
     }
 

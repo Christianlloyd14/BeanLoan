@@ -124,7 +124,6 @@ public class AdminView {
                     frame.revalidate();
 					
 					isValidUser(username, password, frame, loginPanel);
-					
 					MeView.displayBalance(username, password, bluePanel);
                 }
             });
@@ -183,7 +182,7 @@ public class AdminView {
 			deleteButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					int selectedRow = userTable.getSelectedRow();
-					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to delete this use?", "Confirmation", JOptionPane.YES_NO_OPTION);
+					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to delete this user?", "Confirmation", JOptionPane.YES_NO_OPTION);
 					if(result== JOptionPane.YES_OPTION){
 						if (selectedRow != -1) {
 						// Remove the selected row from the DefaultTableModel
@@ -224,14 +223,17 @@ public class AdminView {
 					if (userFile.exists()) {
 						userFile.delete();
 					}
-
 					continue;
 				}
+				
+				
 
 				// Join the array elements with a colon and write to the temporary file
 				writer.write(String.join(":", userDataArray[i]));
 				writer.newLine();
 			}
+			
+			
 
 			writer.close();
 
@@ -304,7 +306,8 @@ public class AdminView {
 			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 			transactionPanel.add(scrollPane);
-
+			
+		
 
 			JButton deleteButton = new JButton("Delete");
 			deleteButton.setBounds(150, 10, 100, 30);
@@ -335,45 +338,40 @@ public class AdminView {
 			transactionPanel.add(deleteButton);
 
 			JButton approveButton = new JButton("Approve");
-    approveButton.setBounds(270, 10, 100, 30);
-    approveButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = transactionTable.getSelectedRow();
-        int result = JOptionPane.showConfirmDialog(frame, "Do you really want to approve this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
-            if (selectedRow != -1) {
-                // Get the username, password, and loan amount from the selected row
-                String approvedUsername = transactionDataArray[selectedRow][0];
-                String approvedPassword = transactionDataArray[selectedRow][1];
-                String loanAmountStr = transactionDataArray[selectedRow][8];
+			approveButton.setBounds(270, 10, 100, 30);
+			approveButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					int selectedRow = transactionTable.getSelectedRow();
+					int result = JOptionPane.showConfirmDialog(frame, "Do you really want to approve this transaction?", "Confirmation", JOptionPane.YES_NO_OPTION);
+					if (result == JOptionPane.YES_OPTION) {
+						if (selectedRow != -1) {
+							// Get the username, password, and loan amount from the selected row
+							String approvedUsername = transactionDataArray[selectedRow][0];
+							String approvedPassword = transactionDataArray[selectedRow][1];
+							String loanAmountStr = transactionDataArray[selectedRow][8];
 
-                // Convert loan amount string to double
-                double loanAmount = Double.parseDouble(loanAmountStr);
+							// Convert loan amount string to double
+							double loanAmount = Double.parseDouble(loanAmountStr);
 
-                
+							// Notify the user about the approved request
+							notifyUsers(approvedUsername, approvedPassword, frame, "\nYour loan request has been approved by the admin.\n");
 
-                // Notify the user about the approved request
-                notifyUsers(approvedUsername, approvedPassword, frame, "\nYour loan request has been approved by the admin.\n");
+							// Remove the selected row from the DefaultTableModel
+							tableModel.removeRow(selectedRow);
 
-                // Remove the selected row from the DefaultTableModel
-                tableModel.removeRow(selectedRow);
+							// Update the file with the modified data, excluding the deleted row
+							updateTransactionDataFile(transactionDataArray, selectedRow, frame);
 
-                // Update the file with the modified data, excluding the deleted row
-                updateTransactionDataFile(transactionDataArray, selectedRow, frame);
-				
-				
-				// Update the user's balance based on the loan amount
-                updateBalance(approvedUsername, approvedPassword, selectedRow);
-            } else {
-                JOptionPane.showMessageDialog(frame, "Please select a row to approve.");
-            }
-        }
-    }
-});
+							// Update the user's balance based on the loan amount
+							updateBalance(approvedUsername, approvedPassword, selectedRow, transactionDataArray);
+						} else {
+							JOptionPane.showMessageDialog(frame, "Please select a row to approve.");
+						}
+					}
+				}
+			});
 
-
-
-    transactionPanel.add(approveButton);
+			transactionPanel.add(approveButton);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -480,7 +478,7 @@ public class AdminView {
 		}
 	}
 	
-private void updateBalance(String username, String password, int selectedRow) {
+	private void updateBalance(String username, String password, int selectedRow, String[][] transactionDataArray) {
     // Define the Accounts directory path
     String accountsDirectory = "Accounts/";
 
@@ -491,40 +489,46 @@ private void updateBalance(String username, String password, int selectedRow) {
     System.out.println("User file path: " + userFilePath);
 
     try {
-        // Read all lines from the masterlist.txt file
-        List<String> masterListLines = Files.readAllLines(Paths.get("masterlist.txt"), StandardCharsets.UTF_8);
+        // Read all lines from the user's file
+        List<String> userFileLines = Files.readAllLines(Paths.get(userFilePath), StandardCharsets.UTF_8);
 
-        // Check if the selected row exists
-        if (selectedRow >= 0 && selectedRow < masterListLines.size()) {
-            // Get the loan amount from the selected row
-            String loanAmountStr = masterListLines.get(selectedRow).split("/")[8];
+        // Check if there are at least three lines (assuming the balance is on the third line)
+        if (userFileLines.size() >= 3) {
+            // Get the current balance line
+            String balanceLine = userFileLines.get(2);
 
-            // Convert loan amount string to double
-            double loanAmount = Double.parseDouble(loanAmountStr);
+            // Extract the balance value (assuming the balance line starts with "Balance: ")
+            String[] balanceParts = balanceLine.split(": ");
+            if (balanceParts.length == 2) {
+                // Parse the current balance as a double
+                double currentBalance = Double.parseDouble(balanceParts[1]);
 
-            // Read all lines from the user's file
-            List<String> userFileLines = Files.readAllLines(Paths.get(userFilePath), StandardCharsets.UTF_8);
+                // Get the loan amount from the selected row
+                String loanAmountStr = transactionDataArray[selectedRow][8];
+                double loanAmount = Double.parseDouble(loanAmountStr);
 
-            // Check if there are at least three lines (assuming the balance is on the third line)
-            if (userFileLines.size() >= 3) {
-                // Update the balance by setting it to the loan amount
-                userFileLines.set(2, "Balance: " + loanAmount);
+                // Calculate the updated balance
+                double updatedBalance = currentBalance + loanAmount;
+
+                // Update the balance line
+                userFileLines.set(2, "Balance: " + updatedBalance);
 
                 // Write the modified lines back to the user's file
                 Files.write(Paths.get(userFilePath), userFileLines, StandardCharsets.UTF_8);
 
                 System.out.println("Balance updated successfully.");
             } else {
-                System.out.println("Error: User file does not have enough lines.");
+                System.out.println("Error: Balance line format is not as expected.");
             }
         } else {
-            System.out.println("Error: Selected row is not valid.");
+            System.out.println("Error: User file does not have enough lines.");
         }
     } catch (IOException | NumberFormatException e) {
         e.printStackTrace();
         System.out.println("Error updating balance.");
     }
 }
+
 
 
 
