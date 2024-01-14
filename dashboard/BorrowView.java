@@ -186,8 +186,8 @@ public class BorrowView {
                         // Proceed with processing the information
 
                         try {
-							
-                            try (FileWriter fileWriter = new FileWriter("masterlist.txt", true)) {
+							String databaseDirectory = "database/";
+                            try (FileWriter fileWriter = new FileWriter(databaseDirectory + "masterlist.txt", true)) {
 								String userInformation = username + "/" +
 										password + "/" +
 										fullNameField.getText() + "/" +
@@ -242,7 +242,7 @@ public class BorrowView {
 	
 	private void notificationPrompt(String username, String password, JFrame frame) {
         // Define the Accounts directory path
-        String accountsDirectory = "Accounts/";
+        String accountsDirectory = "database/";
 
         // Create the directory if it doesn't exist
         File accountsDir = new File(accountsDirectory);

@@ -164,16 +164,13 @@ class DashboardView {
 		
 		
 		
-		JLabel userStatusLabel = new JLabel();
-		userStatusLabel.setBounds(110,120,100,30);
-		userStatusLabel.setForeground(new Color(212,175,55));
 		
         JLabel premiumUserLabel = new JLabel("Premium User");
         premiumUserLabel.setBounds(450, 110, 200, 30);
         premiumUserLabel.setForeground(Color.WHITE);
         premiumUserLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-				new PremiumView(frame, welcomePanel, tabPanel, userStatusLabel);
+				new PremiumView(frame, welcomePanel, tabPanel, username, password);
             }
 
             public void mouseEntered(MouseEvent e) {
@@ -213,24 +210,11 @@ class DashboardView {
 		meTabLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         meTabLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                new MeView(frame, loginPanel, welcomePanel, tabPanel, username, userStatusLabel, password);
+                new MeView(frame, loginPanel, welcomePanel, tabPanel, username, password);
             }
         });
         tabPanel.add(meTabLabel);
 		
-		
-		JButton tabButton = new JButton("Show Tab");
-		tabButton.setBounds(400, 480, 100, 30);
-		tabButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				frame.getContentPane().removeAll();
-				frame.getContentPane().add(tabPanel);
-				frame.getContentPane().add(welcomePanel);
-				frame.repaint();
-				frame.revalidate();
-			}	
-		});
-		welcomePanel.add(tabButton);
 
     }
 

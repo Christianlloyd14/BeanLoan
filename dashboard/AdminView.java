@@ -136,8 +136,9 @@ public class AdminView {
 
 	private void displayUserInformation(JPanel usersPanel, JFrame frame) {
 		try {
+			String databaseDirectory = "database/";
 			// Read user data from the file and populate an ArrayList
-			BufferedReader reader = new BufferedReader(new FileReader("users.dat"));
+			BufferedReader reader = new BufferedReader(new FileReader(databaseDirectory + "users.dat"));
 			String line;
 			ArrayList<String> userDataList = new ArrayList<>();
 
@@ -209,8 +210,9 @@ public class AdminView {
 
 	private void updateUserDataFile(String[][] userDataArray, int rowIndexToDelete, JFrame frame) {
 		try {
+			String databaseDirectory = "database/";
 			// Create a temporary file
-			File tempFile = new File("tempUsers.dat");
+			File tempFile = new File(databaseDirectory + "tempUsers.dat");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 			for (int i = 0; i < userDataArray.length; i++) {
@@ -219,7 +221,7 @@ public class AdminView {
 					// Delete the corresponding user file in the "Accounts" directory
 					String username = userDataArray[i][1];
 					String password = userDataArray[i][2];
-					File userFile = new File("Accounts/" + username + "-" + password + ".txt");
+					File userFile = new File("database/" + username + "-" + password + ".txt");
 					if (userFile.exists()) {
 						userFile.delete();
 					}
@@ -238,7 +240,7 @@ public class AdminView {
 			writer.close();
 
 			// Delete the original file
-			File originalFile = new File("users.dat");
+			File originalFile = new File(databaseDirectory + "users.dat");
 			if (originalFile.delete()) {
 				// Rename the temporary file to the original file
 				if (!tempFile.renameTo(originalFile)) {
@@ -256,8 +258,9 @@ public class AdminView {
 	
 	private void displayTransactionInformation(JPanel transactionPanel, JFrame frame, String username, String password, JPanel bluePanel) {
 		try {
+			String databaseDirectory = "database/";
 			// Read transaction data from the file and populate an ArrayList
-			BufferedReader reader = new BufferedReader(new FileReader("masterlist.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(databaseDirectory + "masterlist.txt"));
 			String line;
 			ArrayList<String> transactionDataList = new ArrayList<>();
 
@@ -381,8 +384,9 @@ public class AdminView {
 
 	private void updateTransactionDataFile(String[][] transactionDataArray, int rowIndexToDelete, JFrame frame) {
 		try {
+			String databaseDirectory = "database/";
 			// Create a temporary file
-			File tempFile = new File("tempmasterlist.txt");
+			File tempFile = new File(databaseDirectory + "tempmasterlist.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
 			for (int i = 0; i < transactionDataArray.length; i++) {
@@ -399,7 +403,7 @@ public class AdminView {
 			writer.close();
 
 			// Delete the original file
-			File originalFile = new File("masterlist.txt");
+			File originalFile = new File(databaseDirectory + "masterlist.txt");
 			if (originalFile.delete()) {
 				// Rename the temporary file to the original file
 				if (!tempFile.renameTo(originalFile)) {
@@ -417,7 +421,7 @@ public class AdminView {
 	
 	public static void notifyUsers(String username, String password, JFrame frame) {
         // Define the Accounts directory path
-        String accountsDirectory = "Accounts/";
+        String accountsDirectory = "database/";
 
         // Define the path to the user-specific notification file
         String userNotificationFilePath = accountsDirectory + username + "-" + password + ".txt";
@@ -436,7 +440,7 @@ public class AdminView {
 	
 	public static void notifyUsers(String username, String password, JFrame frame, String notificationMessage) {
 		// Define the Accounts directory path
-		String accountsDirectory = "Accounts/";
+		String accountsDirectory = "database/";
 
 		// Define the path to the user-specific notification file
 		String userNotificationFilePath = accountsDirectory + username + "-" + password + ".txt";
@@ -454,7 +458,7 @@ public class AdminView {
 	
 	private boolean isValidUser(String username, String password, JFrame frame, JPanel loginPanel) {
 		// Define the Accounts directory path
-		String accountsDirectory = "Accounts/";
+		String accountsDirectory = "database/";
 
 		// Define the path to the user-specific file
 		String userFilePath = accountsDirectory + username + "-" + password + ".txt";
@@ -480,7 +484,7 @@ public class AdminView {
 	
 	private void updateBalance(String username, String password, int selectedRow, String[][] transactionDataArray) {
     // Define the Accounts directory path
-    String accountsDirectory = "Accounts/";
+    String accountsDirectory = "database/";
 
     // Define the path to the user-specific file
     String userFilePath = accountsDirectory + username + "-" + password + ".txt";

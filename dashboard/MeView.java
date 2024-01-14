@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class MeView{
 	
-	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, JLabel userStatusLabel, String password){
+	public MeView(JFrame frame, JPanel loginPanel, JPanel welcomePanel, JPanel tabPanel, String username, String password){
 	
 		
 		JPanel mePanel = new JPanel() {
@@ -62,7 +62,6 @@ public class MeView{
 		welcomeUserLabel.setFont(new Font("Arial", Font.BOLD, 30));
 		welcomeUserLabel.setForeground(Color.WHITE);
 		mePanel.add(welcomeUserLabel);
-		mePanel.add(userStatusLabel);
 		
 		displayBalance(username, password, bluePanel);
 		
@@ -95,7 +94,7 @@ public class MeView{
 				}
 
 				JButton deleteButton = new JButton("Delete");
-				deleteButton.setBounds(10, 420, 100, 30);
+				deleteButton.setBounds(420, 100, 100, 30);
 				deleteButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						int selectedIndex = notificationList.getSelectedIndex();
@@ -232,9 +231,11 @@ public class MeView{
 		});
 		mePanel.add(settingsLabel);
 		
+		displayVIPStatus(username, password, mePanel);
+		
 	}
 	
-	private static final String ACCOUNTS_DIRECTORY = "Accounts";
+	private static final String ACCOUNTS_DIRECTORY = "database";
 
 	public static void displayBalance(String username, String password, JPanel bluePanel) {
 		String fileName = username + "-" + password + ".txt";
@@ -265,7 +266,7 @@ public class MeView{
 			// Set proper bounds for the JScrollPane and JTextArea
 			bluePanel.removeAll();
 			bluePanel.setLayout(null);  // Set layout to null for explicit bounds
-			scrollPane.setBounds(10, 10, 300, 280);
+			scrollPane.setBounds(10, 10, 200, 30);
 			accountTextArea.setBounds(0, 0, 877, 280);
 
 			bluePanel.add(scrollPane);
@@ -277,5 +278,36 @@ public class MeView{
 			e.printStackTrace();
 		}
 	}
+	
+	 public static void displayVIPStatus(String username, String password, JPanel mePanel) {
+        String fileName = username + "-" + password + ".txt";
+        Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
+
+        try {
+            // Read the "Status:" line from the file
+            String statusLine = Files.lines(filePath, StandardCharsets.UTF_8)
+                    .skip(3) // Skip the first three lines to reach the "Status:" line
+                    .findFirst()
+                    .orElse("");
+
+            // Extract only the text after "Status:" (excluding "Status:")
+            String statusText = statusLine.replace("Status:", "").trim();
+
+            JLabel statusLabel = new JLabel(statusText);
+            statusLabel.setBounds(120, 130, 500, 30);
+            statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            statusLabel.setForeground(new Color(255,215,0));
+
+            // Add the status label to the mePanel instead of bluePanel
+            mePanel.add(statusLabel);
+            mePanel.repaint();
+            mePanel.revalidate();
+
+        } catch (IOException e) {
+            // Handle file reading exception
+            e.printStackTrace();
+        }
+    }
+
 
 }

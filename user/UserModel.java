@@ -27,8 +27,19 @@ public class UserModel {
 			JOptionPane.showMessageDialog(frame, "Username or name already exists. Please choose a different one.");
 			return;
 		}
-
-		try (FileWriter fwrite = new FileWriter("users.dat", true)) {
+		
+		String databaseDirectory = "database/";
+		
+		 // Create directory if it doesn't exist
+        File directory = new File(databaseDirectory);
+        if (!directory.exists()) {
+            if (!directory.mkdir()) {
+                JOptionPane.showMessageDialog(frame, "Failed to create the database directory");
+                return;
+            }
+        }
+		
+		try (FileWriter fwrite = new FileWriter(databaseDirectory + "users.dat", true)) {
 			fwrite.write(name + ":" + username + ":" + new String(password) + System.lineSeparator());
 			JOptionPane.showMessageDialog(frame, "Register successfully");
 
@@ -43,7 +54,8 @@ public class UserModel {
 	}
 
 	public static boolean readUser(String username, String password) {
-		try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
+		String databaseDirectory = "database/";
+		try (BufferedReader reader = new BufferedReader(new FileReader(databaseDirectory + "users.dat"))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] parts = line.split(":");
@@ -69,8 +81,8 @@ public class UserModel {
 			usernameField.setText("");
 			passwordField.setText("");
 
-			String fileName = "Accounts/" + username + "-" + password + ".txt";
-			createFile(fileName, "User: " + username + "\nPassword: " + password + "\nBalance: 0\nNo Notification");
+			String fileName = "database/" + username + "-" + password + ".txt";
+			createFile(fileName, "User: " + username + "\nPassword: " + password + "\nBalance: 0\nStatus: \nNo Notification");
 
 
 			
@@ -106,7 +118,8 @@ public class UserModel {
 	}
 
 	private static boolean userOrNameExists(String value, int index) {
-		try (BufferedReader reader = new BufferedReader(new FileReader("users.dat"))) {
+		String databaseDirectory = "database/";
+		try (BufferedReader reader = new BufferedReader(new FileReader(databaseDirectory + "users.dat"))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] parts = line.split(":");
@@ -123,7 +136,7 @@ public class UserModel {
 	}
 	
 	public static String getUserNotification(String username, String password) {
-		String fileName = "Accounts/" + username + "-" + password + ".txt";
+		String fileName = "database/" + username + "-" + password + ".txt";
 		StringBuilder notification = new StringBuilder();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {

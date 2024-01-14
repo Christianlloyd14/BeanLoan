@@ -3,9 +3,10 @@ package book.system.dashboard;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.io.*;
 
 public class PremiumView{
-	PremiumView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, JLabel userStatusLabel){
+	PremiumView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, String username, String password){
 		JPanel subscriptionPanel = new JPanel();
 		subscriptionPanel.setBounds(0, 0, 897, 516);
 		subscriptionPanel.setBackground(Color.WHITE);
@@ -134,26 +135,46 @@ public class PremiumView{
 		subscribeButton.setBounds(50, 220, 150, 30);
 		subscribeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (oneMonthSubscriptionRadio.isSelected()) {
-					// Handle 1 Month Subscription
-					JOptionPane.showMessageDialog(frame, "Subscribed to 1 Month Subscription");
-					userStatusLabel.setText("VIP User");
-				} else if (threeMonthsSubscriptionRadio.isSelected()) {
-					// Handle 3 Months Subscription
-					JOptionPane.showMessageDialog(frame, "Subscribed to 3 Months Subscription");
-					userStatusLabel.setText("VIP User");
-				} else if (sixMonthsSubscriptionRadio.isSelected()) {
-					// Handle 6 Months Subscription
-					JOptionPane.showMessageDialog(frame, "Subscribed to 6 Months Subscription");
-					userStatusLabel.setText("VIP User");
-				} else if (oneYearSubscriptionRadio.isSelected()) {
-					// Handle 1 Year Subscription
-					JOptionPane.showMessageDialog(frame, "Subscribed to 1 Year Subscription");
-					userStatusLabel.setText("VIP User");
+				if (oneMonthSubscriptionRadio.isSelected() || threeMonthsSubscriptionRadio.isSelected()
+						|| sixMonthsSubscriptionRadio.isSelected() || oneYearSubscriptionRadio.isSelected()) {
+					// Subscription selected
+					try {
+						// Read the content of the 4th line from the username-password.txt file
+						String filePath = "database/" + username + "-" + password + ".txt";
+						BufferedReader reader = new BufferedReader(new FileReader(filePath));
+						StringBuilder fileContent = new StringBuilder();
+						boolean alreadySubscribed = false;
+						for (int i = 0; i < 5; i++) {
+							String line = reader.readLine();
+							if (i == 3) {
+								// Check if the "Status:" line already contains "VIP USER"
+								if (line.contains("VIP USER")) {
+									alreadySubscribed = true;
+									break;
+								}
+								// Append "VIP USER" to the existing content of the "Status:" line
+								line += "VIP USER";
+							}
+							fileContent.append(line).append("\n");
+						}
+						reader.close();
+
+						if (alreadySubscribed) {
+							// User is already subscribed
+							JOptionPane.showMessageDialog(frame, "Already subscribed!");
+						} else {
+							// Write the updated content back to the file
+							BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+							writer.write(fileContent.toString());
+							writer.close();
+							JOptionPane.showMessageDialog(frame, "Subscribed as a VIP USER!");
+						}
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					}
 				} else {
 					// No subscription selected
 					JOptionPane.showMessageDialog(frame, "Please select a subscription");
-					userStatusLabel.setText("Regular User");
 				}
 			}
 		});
@@ -173,4 +194,5 @@ public class PremiumView{
 		});
 		yellowPanel.add(backButton);
 	}
+
 }
