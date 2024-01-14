@@ -9,6 +9,7 @@ import book.system.user.UserModel;
 import java.nio.file.*;
 import java.util.List;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.*;
 
 
 
@@ -81,17 +82,28 @@ public class MeView{
 				frame.repaint();
 				frame.revalidate();
 
-				DefaultListModel<String> listModel = new DefaultListModel<>();
-				JList<String> notificationList = new JList<>(listModel);
-				JScrollPane scrollPane = new JScrollPane(notificationList);
-				scrollPane.setBounds(10, 100, 400, 300);
-				notificationPanel.add(scrollPane);
+				                DefaultListModel<String> listModel = new DefaultListModel<>();
+                JList<String> notificationList = new JList<>(listModel);
+                JScrollPane scrollPane = new JScrollPane(notificationList);
+                scrollPane.setBounds(10, 100, 400, 300);
+                notificationPanel.add(scrollPane);
 
-				// Populate the list model with notifications
-				String[] notifications = UserModel.getUserNotification(username, password).split("\n");
-				for (String notification : notifications) {
-					listModel.addElement(notification);
-				}
+                // Populate the list model with notifications starting from the 5th line
+                String fileName = username + "-" + password + ".txt";
+                Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
+
+                try (Stream<String> lines = Files.lines(filePath, StandardCharsets.UTF_8)) {
+                    List<String> notifications = lines.skip(4) // Skip the first four lines
+                            .collect(Collectors.toList());
+
+                    for (String notification : notifications) {
+                        listModel.addElement(notification);
+                    }
+                } catch (IOException ex) {
+                    // Handle file reading exception
+                    ex.printStackTrace();
+                }
+
 
 				JButton deleteButton = new JButton("Delete");
 				deleteButton.setBounds(420, 100, 100, 30);
@@ -99,8 +111,11 @@ public class MeView{
 					public void actionPerformed(ActionEvent e) {
 						int selectedIndex = notificationList.getSelectedIndex();
 						if (selectedIndex != -1) {
+							// Call the new method to delete the selected notification
+							deleteNotification(username, password, selectedIndex);
+
+							// Update the GUI to reflect the changes
 							listModel.remove(selectedIndex);
-							// You may want to update the backend data here, depending on your application logic
 						}
 					}
 				});
@@ -241,10 +256,9 @@ public class MeView{
 		String fileName = username + "-" + password + ".txt";
 		Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
 
-		try {
+		try (Stream<String> lines = Files.lines(filePath, StandardCharsets.UTF_8)) {
 			// Read the third line from the file
-			String thirdLine = Files.lines(filePath, StandardCharsets.UTF_8)
-					.skip(2) // Skip the first two lines
+			String thirdLine = lines.skip(2) // Skip the first two lines
 					.findFirst()
 					.orElse(null);
 
@@ -272,42 +286,66 @@ public class MeView{
 			bluePanel.add(scrollPane);
 			bluePanel.repaint();
 			bluePanel.revalidate();
-
 		} catch (IOException e) {
 			// Handle file reading exception
 			e.printStackTrace();
 		}
 	}
 	
-	 public static void displayVIPStatus(String username, String password, JPanel mePanel) {
-        String fileName = username + "-" + password + ".txt";
-        Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
+	public static void displayVIPStatus(String username, String password, JPanel mePanel) {
+		String fileName = username + "-" + password + ".txt";
+		Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
 
-        try {
-            // Read the "Status:" line from the file
-            String statusLine = Files.lines(filePath, StandardCharsets.UTF_8)
-                    .skip(3) // Skip the first three lines to reach the "Status:" line
-                    .findFirst()
-                    .orElse("");
+		try (Stream<String> lines = Files.lines(filePath, StandardCharsets.UTF_8)) {
+			// Read the "Status:" line from the file
+			String statusLine = lines.skip(3) // Skip the first three lines to reach the "Status:" line
+					.findFirst()
+					.orElse("");
 
-            // Extract only the text after "Status:" (excluding "Status:")
-            String statusText = statusLine.replace("Status:", "").trim();
+			// Extract only the text after "Status:" (excluding "Status:")
+			String statusText = statusLine.replace("Status:", "").trim();
 
-            JLabel statusLabel = new JLabel(statusText);
-            statusLabel.setBounds(120, 130, 500, 30);
-            statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
-            statusLabel.setForeground(new Color(255,215,0));
+			JLabel statusLabel = new JLabel(statusText);
+			statusLabel.setBounds(120, 130, 500, 30);
+			statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
+			statusLabel.setForeground(new Color(255, 215, 0));
 
-            // Add the status label to the mePanel instead of bluePanel
-            mePanel.add(statusLabel);
-            mePanel.repaint();
-            mePanel.revalidate();
+			// Add the status label to the mePanel instead of bluePanel
+			mePanel.add(statusLabel);
+			mePanel.repaint();
+			mePanel.revalidate();
+		} catch (IOException e) {
+			// Handle file reading exception
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	private static void deleteNotification(String username, String password, int selectedIndex) {
+		String fileName = username + "-" + password + ".txt";
+		Path filePath = Paths.get(ACCOUNTS_DIRECTORY, fileName);
 
-        } catch (IOException e) {
-            // Handle file reading exception
-            e.printStackTrace();
-        }
-    }
+		try {
+			// Read all lines from the original file
+			List<String> allLines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
+
+			// Check if the selected index corresponds to the correct line in the file
+			int fileIndex = selectedIndex + 4; // Adjust the index to match the file content
+
+			if (fileIndex >= 4 && fileIndex < allLines.size()) {
+				// Remove the line at the calculated file index
+				allLines.remove(fileIndex);
+
+				// Write the modified lines back to the file
+				Files.write(filePath, allLines, StandardCharsets.UTF_8);
+			}
+		} catch (IOException e) {
+			// Handle file operation exception
+			e.printStackTrace();
+		}
+	}
+
 
 
 }

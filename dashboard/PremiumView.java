@@ -138,6 +138,7 @@ public class PremiumView{
 				if (oneMonthSubscriptionRadio.isSelected() || threeMonthsSubscriptionRadio.isSelected()
 						|| sixMonthsSubscriptionRadio.isSelected() || oneYearSubscriptionRadio.isSelected()) {
 					// Subscription selected
+					writeSubscriptionStatus(username, password);
 					try {
 						// Read the content of the 4th line from the username-password.txt file
 						String filePath = "database/" + username + "-" + password + ".txt";
@@ -168,6 +169,7 @@ public class PremiumView{
 							writer.write(fileContent.toString());
 							writer.close();
 							JOptionPane.showMessageDialog(frame, "Subscribed as a VIP USER!");
+							
 						}
 					} catch (IOException ex) {
 						ex.printStackTrace();
@@ -194,5 +196,43 @@ public class PremiumView{
 		});
 		yellowPanel.add(backButton);
 	}
+	
+	// Method to write subscription status to the user's file
+private void writeSubscriptionStatus(String username, String password) {
+    try {
+        // Define the file path
+        String filePath = "database/" + username + "-" + password + ".txt";
+
+        // Check if the subscription message already exists in the file
+        if (!subscriptionExists(filePath)) {
+            // Write the subscription message to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true)); // true for append mode
+            writer.newLine(); // Move to a new line before writing the subscription message
+            writer.write("You have bought a premium subscription");
+            writer.close();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+// Method to check if the subscription message already exists in the file
+private boolean subscriptionExists(String filePath) {
+    try {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("You have bought a premium subscription")) {
+                reader.close();
+                return true; // Subscription message already exists
+            }
+        }
+        reader.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return false; // Subscription message does not exist
+}
+
 
 }
