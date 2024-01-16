@@ -9,16 +9,16 @@ public class PremiumView{
 	PremiumView(JFrame frame, JPanel welcomePanel, JPanel tabPanel, String username, String password){
 		JPanel subscriptionPanel = new JPanel();
 		subscriptionPanel.setBounds(0, 0, 897, 516);
-		subscriptionPanel.setBackground(Color.WHITE);
+		subscriptionPanel.setBackground(new Color(50, 129, 186));
 		subscriptionPanel.setLayout(null);
 		
 		JPanel yellowPanel = new JPanel();
 		yellowPanel.setBounds(0, 0, 442, 516);
-		yellowPanel.setBackground(Color.YELLOW);
+		yellowPanel.setBackground(new Color(73, 30, 192));
 		yellowPanel.setLayout(null);
 		subscriptionPanel.add(yellowPanel);
 		
-		frame.getContentPane().removeAll();
+		frame.getContentPane().removeAll();									
 		frame.getContentPane().add(subscriptionPanel);
 		frame.repaint();
 		frame.revalidate();
@@ -30,75 +30,99 @@ public class PremiumView{
 
 		JLabel fasterLoanApprovalLabel = new JLabel("Faster Loan Approval:");
 		fasterLoanApprovalLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		fasterLoanApprovalLabel.setBounds(470, 80, 200, 30);
+		fasterLoanApprovalLabel.setBounds(470, 70, 200, 30);
 		subscriptionPanel.add(fasterLoanApprovalLabel);
 
-		JLabel fasterLoanApprovalText = new JLabel("• Premium users may enjoy expedited processing of their loan applications, leading to quicker approval times.");
-		fasterLoanApprovalText.setBounds(475, 100, 700, 30);
+		JLabel fasterLoanApprovalText = new JLabel("• Premium users may enjoy expedited processing of their loan");
+		fasterLoanApprovalText.setBounds(475, 90, 700, 30);
 		subscriptionPanel.add(fasterLoanApprovalText);
+
+		JLabel fasterLoanApprovalText1 = new JLabel("applications, leading to quicker approval times.");
+		fasterLoanApprovalText1.setBounds(484, 105, 700, 30);
+		subscriptionPanel.add(fasterLoanApprovalText1);
+
 
 		JLabel lowerInterestRatesLabel = new JLabel("Lower Interest Rates:");
 		lowerInterestRatesLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
 		lowerInterestRatesLabel.setBounds(470, 130, 200, 30);
 		subscriptionPanel.add(lowerInterestRatesLabel);
 
-		JLabel lowerInterestRatesText = new JLabel("• Premium users could be eligible for reduced interest rates on their loans, making borrowing more cost-effective for them.");
+		JLabel lowerInterestRatesText = new JLabel("• Premium users could be eligible for reduced interest rates on their loans,");
 		lowerInterestRatesText.setBounds(475, 150, 700, 30);
 		subscriptionPanel.add(lowerInterestRatesText);
 
+		JLabel lowerInterestRatesText1 = new JLabel("making borrowing more cost-effective for them.");
+		lowerInterestRatesText1.setBounds(484, 165, 700, 30);
+		subscriptionPanel.add(lowerInterestRatesText1);
+
 		JLabel priorityCustomerSupportLabel = new JLabel("Priority Customer Support:");
 		priorityCustomerSupportLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		priorityCustomerSupportLabel.setBounds(470, 180, 200, 30);
+		priorityCustomerSupportLabel.setBounds(470, 190, 250, 30);
 		subscriptionPanel.add(priorityCustomerSupportLabel);
 
-		JLabel priorityCustomerSupportText = new JLabel("• Premium users could receive priority customer support, ensuring that their queries and concerns are addressed promptly and efficiently.");
-		priorityCustomerSupportText.setBounds(475, 200, 700, 30);
+		JLabel priorityCustomerSupportText = new JLabel("• Premium users could receive priority customer support, ensuring that");
+		priorityCustomerSupportText.setBounds(475, 210, 700, 30);
 		subscriptionPanel.add(priorityCustomerSupportText);
+
+		JLabel priorityCustomerSupportText1 = new JLabel("their queries and concerns are addressed promptly and efficiently.");
+		priorityCustomerSupportText1.setBounds(484, 225, 700, 30);
+		subscriptionPanel.add(priorityCustomerSupportText1);
 
 		JLabel exclusiveLoanProductsLabel = new JLabel("Exclusive Loan Products:");
 		exclusiveLoanProductsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		exclusiveLoanProductsLabel.setBounds(470, 230, 200, 30);
+		exclusiveLoanProductsLabel.setBounds(470, 250, 200, 30);
 		subscriptionPanel.add(exclusiveLoanProductsLabel);
 
-		JLabel exclusiveLoanProductsText = new JLabel("• Premium users may have access to exclusive loan products or special financial instruments that are not available to standard users.");
-		exclusiveLoanProductsText.setBounds(475, 250, 700, 30);
+		JLabel exclusiveLoanProductsText = new JLabel("• Premium users may have access to exclusive loan products or special");
+		exclusiveLoanProductsText.setBounds(475, 270, 700, 30);
 		subscriptionPanel.add(exclusiveLoanProductsText);
+
+		JLabel exclusiveLoanProductsText1 = new JLabel("financial instruments that are not available to standard users.");
+		exclusiveLoanProductsText1.setBounds(484, 285, 700, 30);
+		subscriptionPanel.add(exclusiveLoanProductsText1);
 
 		JLabel flexibleRepaymentTermsLabel = new JLabel("Flexible Repayment Terms:");
 		flexibleRepaymentTermsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		flexibleRepaymentTermsLabel.setBounds(470, 280, 200, 30);
+		flexibleRepaymentTermsLabel.setBounds(470, 310, 250, 30);
 		subscriptionPanel.add(flexibleRepaymentTermsLabel);
 
-		JLabel flexibleRepaymentTermsText = new JLabel("• Premium users might be offered more flexible repayment terms, allowing them to customize their loan repayment schedules to better suit their financial situation.");
-		flexibleRepaymentTermsText.setBounds(475, 300, 700, 30);
+		JLabel flexibleRepaymentTermsText = new JLabel("• Premium users might be offered more flexible repayment terms, allowing");
+		flexibleRepaymentTermsText.setBounds(475, 330, 700, 30);
 		subscriptionPanel.add(flexibleRepaymentTermsText);
+
+		JLabel flexibleRepaymentTermsText1 = new JLabel("them to customize their loan repayment schedules to a financial situation.");
+		flexibleRepaymentTermsText1.setBounds(484, 345, 700, 30);
+		subscriptionPanel.add(flexibleRepaymentTermsText1);
 
 		JLabel financialEducationLabel = new JLabel("Financial Education Resources:");
 		financialEducationLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		financialEducationLabel.setBounds(470, 330, 250, 30);
+		financialEducationLabel.setBounds(470, 370, 250, 30);
 		subscriptionPanel.add(financialEducationLabel);
 
-		JLabel financialEducationText = new JLabel("• Premium users could gain access to educational resources and financial planning tools to help them make informed decisions about their loans and personal finances.");
-		financialEducationText.setBounds(475, 350, 700, 30);
+		JLabel financialEducationText = new JLabel("• Premium users could gain access to educational resources and financial");
+		financialEducationText.setBounds(475, 390, 700, 30);
 		subscriptionPanel.add(financialEducationText);
+
+		JLabel financialEducationText1 = new JLabel("planning tools to help them make informed decisions about their loans");
+		financialEducationText1.setBounds(484, 405, 700, 30);
+		subscriptionPanel.add(financialEducationText1);
+
+		JLabel financialEducationTexts = new JLabel("and personal finances.");
+		financialEducationTexts.setBounds(484, 420, 700, 30);
+		subscriptionPanel.add(financialEducationTexts);
 
 		JLabel specialPromotionsLabel = new JLabel("Special Promotions and Rewards:");
 		specialPromotionsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		specialPromotionsLabel.setBounds(470, 380, 250, 30);
+		specialPromotionsLabel.setBounds(470, 445, 300, 30);
 		subscriptionPanel.add(specialPromotionsLabel);
 
-		JLabel specialPromotionsText = new JLabel("• Premium users could be eligible for exclusive promotions, discounts, or rewards programs as a token of appreciation for their loyalty.");
-		specialPromotionsText.setBounds(475, 400, 700, 30);
+		JLabel specialPromotionsText = new JLabel("• Premium users could be eligible for exclusive promotions, discounts, or");
+		specialPromotionsText.setBounds(475, 465, 700, 30);
 		subscriptionPanel.add(specialPromotionsText);
 
-		JLabel financialHealthCheckupsLabel = new JLabel("Financial Health Check-ups:");
-		financialHealthCheckupsLabel.setFont(new Font("CALIBRE", Font.BOLD, 15));
-		financialHealthCheckupsLabel.setBounds(470, 430, 250, 30);
-		subscriptionPanel.add(financialHealthCheckupsLabel);
-
-		JLabel financialHealthCheckupsText = new JLabel("• Premium users may receive periodic financial health assessments or consultations to ensure that their financial goals align with their borrowing activities.");
-		financialHealthCheckupsText.setBounds(475, 450, 700, 30);
-		subscriptionPanel.add(financialHealthCheckupsText);
+		JLabel specialPromotionsText1 = new JLabel("rewards programs as a token of appreciation for their loyalty.");
+		specialPromotionsText1.setBounds(484, 480, 700, 30);
+		subscriptionPanel.add(specialPromotionsText1);
 		
 		
 		// Add subscription details to the subscription panel
