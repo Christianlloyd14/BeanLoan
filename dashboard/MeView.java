@@ -206,8 +206,61 @@ public class MeView{
 				customerSupLabel.setBounds(10, 350, 100, 30);
 				customerSupLabel.setForeground(Color.BLACK);
 				customerSupLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+				customerSupLabel.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						JPanel customerSupPanel = new JPanel();
+						customerSupPanel.setBounds(0,0,897,516);
+						customerSupPanel.setBackground(Color.BLUE);
+						customerSupPanel.setLayout(null);
+
+
+						
+
+						JLabel backLabel = new JLabel("Back");
+				backLabel.setBounds(10, 10, 100, 40);
+				backLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				backLabel.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent e) {
+						frame.getContentPane().removeAll();
+						frame.getContentPane().add(settingsPanel);
+						frame.getContentPane().add(tabPanel);
+						frame.repaint();
+						frame.revalidate();
+					}
+				});
+				customerSupPanel.add(backLabel);
+
+				JLabel chatSupLabel = new JLabel("Customer Support");
+				chatSupLabel.setBounds(70, 80, 400, 30);
+        		chatSupLabel.setForeground(Color.WHITE);
+     		    chatSupLabel.setFont(new Font("Arial", Font.BOLD + Font.ITALIC, 25));
+     		    customerSupPanel.add(chatSupLabel);
+
+     		    JTextArea chatSupArea = new JTextArea("Leave comment here!");
+    		    chatSupArea.setBounds(70, 120, 350, 300);
+	        	customerSupPanel.add(chatSupArea);
+
+	        	JButton submitBut = new JButton("Submit");
+	        	submitBut.setBounds(300, 450, 90, 30);
+	        	submitBut.addActionListener(new ActionListener (){ 
+	        		public void actionPerformed(ActionEvent e){
+	        			chatSupArea.setText("");
+	        		}
+	        	});
+	        	customerSupPanel.add(submitBut);
+
+
+				frame.getContentPane().removeAll();
+				frame.getContentPane().add(customerSupPanel);
+				frame.repaint();
+				frame.revalidate();
+					}
+				});
+
 				settingsPanel.add(customerSupLabel);
 				
+
+
 				
 				JLabel aboutUsLabel = new JLabel("About Us");
 				aboutUsLabel.setBounds(240, 350, 100, 30);
