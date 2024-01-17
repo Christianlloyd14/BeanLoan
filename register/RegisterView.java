@@ -187,7 +187,8 @@ public class RegisterView {
 
     private void showTermsWindow(String termsInfo) {
         JFrame termsFrame = new JFrame("Terms and Privacy");
-        termsFrame.setSize(800, 600);
+        termsFrame.setSize(897, 516);
+        termsFrame.setLocationRelativeTo(null);
         termsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JTextArea termsText = new JTextArea(termsInfo);
